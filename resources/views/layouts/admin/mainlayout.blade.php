@@ -44,9 +44,11 @@
                         </ul>
                     </li>
                 </ul>
-                <form>
-                    <input class="form-control" type="text" placeholder="Search" aria-label="Search">
-                </form>
+
+                <section id="userAccount">
+                    <p class="me-2 mt-1"> <span> <i class="fa-solid fa-user me-2"></i> </span> Resa Komara Akbari </p>
+                </section>
+
             </div>
         </div>
     </nav>
