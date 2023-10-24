@@ -14,6 +14,13 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+//NEXT BIKIN SESSION ATTEMPT
+
+Route::get('/logout', function () {
+    Session::flush();
+    return redirect()->to('/auth');
+});
+
 Route::get('/', function () {
     return view('index');
 });

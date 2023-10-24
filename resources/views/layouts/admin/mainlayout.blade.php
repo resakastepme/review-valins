@@ -45,12 +45,23 @@
                     </li>
                 </ul>
 
-                <section id="userAccount">
-                    <p class="me-2 mt-1"> <span> <i class="fa-solid fa-user me-2"></i> </span> Resa Komara Akbari </p>
-                </section>
-
             </div>
         </div>
+
+        <div class="collapse navbar-collapse" id="navbarNavDarkDropdown">
+            <ul class="navbar-nav">
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDarkDropdownMenuLink" role="button"
+                        data-bs-toggle="dropdown" aria-expanded="false">
+                        <span> <i class="fa-solid fa-user me-2"></i> </span> Resa Komara Akbari
+                    </a>
+                    <ul class="dropdown-menu form-control" aria-labelledby="navbarDarkDropdownMenuLink">
+                        <li><a class="dropdown-item" href="{{ url('/logout') }}"><button class="btn btn-danger form-control"> <span><i class="fa fa-right-from-bracket"></i></span> Logout </button></a></li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+
     </nav>
 
     @yield('content')
@@ -60,6 +71,7 @@
 <script type="text/javascript" src="{{ asset('assets/js/bootstrap.min.js') }}"></script>
 <script type="text/javascript" src="{{ asset('assets/js/jquery.min.js') }}"></script>
 <script type="text/javascript" src="{{ asset('assets/js/fontawesome/all.js') }}"></script>
+<script type="text/javascript" src="{{ asset('assets/js/bootstrap.bundle.min.js') }}"></script>
 
 @yield('script')
 

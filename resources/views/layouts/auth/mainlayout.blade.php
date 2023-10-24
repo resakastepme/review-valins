@@ -22,6 +22,7 @@
 <script type="text/javascript" src="{{ asset('assets/js/bootstrap.min.js') }}"></script>
 <script type="text/javascript" src="{{ asset('assets/js/jquery.min.js') }}"></script>
 <script type="text/javascript" src="{{ asset('assets/js/fontawesome/all.js') }}"></script>
+<script type="text/javascript" src="{{ asset('assets/js/bootstrap.bundle.min.js') }}"></script>
 
     @yield('script')
 
