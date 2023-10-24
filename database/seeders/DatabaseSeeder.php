@@ -20,13 +20,13 @@ class DatabaseSeeder extends Seeder
                 'username' => 'Test Admin',
                 'role' => 1, //1 is Admin , 0 is User
                 'email' => 'admin@admin.com',
-                'password' => bcrypt('admin')
+                'password' => md5('admin')
             ],
             [
                     'username' => 'Test User',
                     'role' => 0,
                     'email' => 'user@user.com',
-                    'password' => bcrypt('user')
+                    'password' => md5('user')
             ]
         ]);
     }

@@ -22,8 +22,8 @@
 
                                 <form id="loginForm">
 
-                                    <label for="username"> username </label>
-                                    <input type="text" name="username" id="username" class="form-control mb-2" />
+                                    <label for="email"> email </label>
+                                    <input type="email" name="email" id="email" class="form-control mb-2" />
 
                                     <label for="password"> password </label>
                                     <input type="password" name="password" id="password" class="form-control mb-3" />
@@ -75,7 +75,7 @@
             <div class="d-flex">
                 <i class="fa fa-2xl fa-circle-exclamation fa-fade mt-2 ms-2"></i>
                 <div class="toast-body">
-                    <h6> Username/password tidak ditemukan! </h6>
+                    <h6> Email/password tidak ditemukan! </h6>
                 </div>
                 <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"
                     aria-label="Close"></button>

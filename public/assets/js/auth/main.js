@@ -8,7 +8,7 @@ document.addEventListener("DOMContentLoaded", function () {
         $('#btnLogin').prop('disabled', true);
         $('#spinnerLogin').show();
 
-        const username = $('#username').val();
+        const email = $('#email').val();
         const password = $('#password').val();
 
         $.ajax({
@@ -16,7 +16,7 @@ document.addEventListener("DOMContentLoaded", function () {
             type: 'GET',
             data: {
                 "_token": "{{ csrf_token() }}",
-                'username': username,
+                'email': email,
                 'password': password
             },
             success: function (response) {
@@ -37,7 +37,7 @@ document.addEventListener("DOMContentLoaded", function () {
                         const toastBootstrap = bootstrap.Toast.getOrCreateInstance(toast_fail);
                         toastBootstrap.show();
                         $('#password').val('');
-                        $('#username').focus();
+                        $('#email').focus();
                         $('#mainCard').addClass('animate__animated animate__headShake');
                         console.log(response['status']);
                     }
@@ -46,14 +46,14 @@ document.addEventListener("DOMContentLoaded", function () {
                         const toastBootstrap = bootstrap.Toast.getOrCreateInstance(toast_fail);
                         toastBootstrap.show();
                         $('#password').val('');
-                        $('#username').focus();
+                        $('#email').focus();
                         $('#mainCard').addClass('animate__animated animate__headShake');
                         console.log(response['status']);
                     }
                     $('#btnLogin').prop('disabled', false);
                     $('#spinnerLogin').hide();
 
-                }, 3000);
+                }, 2000);
 
                 $('#mainCard').removeClass('animate__animated animate__headShake');
 

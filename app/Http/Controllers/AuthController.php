@@ -19,10 +19,10 @@ class AuthController extends Controller
     public function credCheck()
     {
 
-        $username = $_GET['username'];
+        $email = $_GET['email'];
         $password = $_GET['password'];
 
-        if (!$username) {
+        if (!$email) {
             return response()->json([
                 'status' => 'Silahkan lengkapi form!',
                 'trigger' => 'FORM TIDAK LENGKAP'
@@ -34,15 +34,15 @@ class AuthController extends Controller
             ]);
         }
 
-        $userCheck = User::where('username', $username)->first();
-        if (!$userCheck) {
+        $emailCheck = User::where('email', $email)->first();
+        if (!$emailCheck) {
             return response()->json([
                 'status' => 'Username/password tidak ditemukan!',
                 'trigger' => 'USERNAME/PASSWORD ERROR'
             ]);
         } else {
 
-            $passCheck = User::where('password', $password)->first();
+            $passCheck = User::where('password', md5($password))->first();
             if (!$passCheck) {
                 return response()->json([
                     'status' => 'Username/password tidak ditemukan!',
