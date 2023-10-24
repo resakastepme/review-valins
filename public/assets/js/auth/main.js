@@ -28,6 +28,9 @@ document.addEventListener("DOMContentLoaded", function () {
                         const toastBootstrap = bootstrap.Toast.getOrCreateInstance(toast_success);
                         toastBootstrap.show();
                         console.log(response['status']);
+
+                        window.location.href = '/dashboard';
+
                     }
                     if (response['trigger'] == 'USERNAME/PASSWORD ERROR') {
                         const toast_fail = document.getElementById('toast-user/userpass')
