@@ -3,10 +3,21 @@
     <div class="container py-5 h-100 vh-100">
 
         <div class="row d-flex justify-content-center align-items-center h-100">
+
             <div class="col-md-3">
                 {{-- KOSONG --}}
             </div>
             <div class="col-md-6">
+
+                @if (Session('session-timeout'))
+                    <div class="card bg-warning mb-2">
+                        <div class="card-title" align="center">
+                            <h4 class="mt-3 me-3"> <span> <i class="fas fa-exclamation-circle fa-lg"></i> </span> Session
+                                habis! </h4>
+                        </div>
+                    </div>
+                @endif
+
                 <div class="card" id="mainCard">
                     <div class="card-header text-center">
                         <h3> LOGIN </h3>
@@ -28,7 +39,9 @@
                                     <label for="password"> password </label>
                                     <input type="password" name="password" id="password" class="form-control mb-3" />
 
-                                    <button type="submit" class="btn btn-primary form-control" id="btnLogin"> LOGIN <span class="spinner-border spinner-border-sm ms-1" id="spinnerLogin"></span> </button>
+                                    <button type="submit" class="btn btn-primary form-control" id="btnLogin"> LOGIN <span
+                                            class="spinner-border spinner-border-sm ms-1" id="spinnerLogin"></span>
+                                    </button>
 
                                 </form>
 

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\User;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
 
 class AuthController extends Controller
@@ -13,7 +14,19 @@ class AuthController extends Controller
      */
     public function index()
     {
-        return view('auth.index');
+
+        if(Session('role')){
+
+            if(Session('role') == 1){
+                return redirect()->to('/admin/dashboard');
+            }else{
+                return redirect()->to('/user/dashboard');
+            }
+
+        }else{
+            return view('auth.index');
+        }
+
     }
 
     public function credCheck()
@@ -50,10 +63,18 @@ class AuthController extends Controller
                 ]);
             }else{
 
-                // Session::put('username', $username);
+                $role = $passCheck['role'];
+                $username = $passCheck['username'];
+
+                Auth::login($passCheck);
+                Session::put('username', $username);
+                Session::put('role', $role);
+                Session::put('attempt', time());
+
                 return response()->json([
                     'status' => 'Berhasil login!',
-                    'trigger' => 'BERHASIL LOGIN'
+                    'trigger' => 'BERHASIL LOGIN',
+                    'role' => $role == 1 ? 'admin' : 'user'
                 ]);
 
             }

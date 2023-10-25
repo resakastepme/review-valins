@@ -16,18 +16,39 @@ use Illuminate\Support\Facades\Route;
 
 //NEXT BIKIN SESSION ATTEMPT
 
-Route::get('/logout', function () {
+Route::get('/logout/{session}', function ($session) {
     Session::flush();
-    return redirect()->to('/auth');
+
+    if ($session == 'session-timeout') {
+        return redirect()->to('/auth')->with('session-timeout', $session);
+    } else {
+        return redirect()->to('/auth');
+    }
+
 });
 
 Route::get('/', function () {
-    return view('index');
+    if (Session('username')) {
+
+        if (Session('role') == 1) {
+            return redirect()->to('/admin/dashboard');
+        } else {
+            return redirect()->to('/user/dashboard');
+        }
+
+    } else {
+        return redirect()->route('login');
+    }
 });
 
-Route::get('/auth', [AuthController::class, 'index'])->middleware('guest');
-Route::get('/auth/check', [AuthController::class, 'credCheck'])->middleware('guest');
+Route::get('/auth', [AuthController::class, 'index'])->name('login');
+Route::get('/auth/check', [AuthController::class, 'credCheck']);
 
-Route::get('/dashboard', function () {
-    return view('dashboard.index');
+
+Route::prefix('/admin')->group(function () {
+
+    Route::get('/dashboard', function () {
+        return view('admin.dashboard.index');
+    });
+
 });
