@@ -28,16 +28,20 @@
                 <ul class="navbar-nav me-auto mb-2 mb-sm-0">
                     <li class="nav-item">
                         <a class="nav-link {{ request()->is('admin/dashboard') ? 'active' : '' }}" aria-current="page"
-                            href="{{ url('/dashboard') }}">Dashboard</a>
+                            href="{{ url('/' . (Session('role') === 1 ? 'admin' : 'user') . '/dashboard') }}">Dashboard</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="#">Tugas</a>
                     </li>
                     <li class="nav-item">
+                        <a class="nav-link" href="#">Beri tugas</a>
+                    </li>
+                    <li class="nav-item">
                         <a class="nav-link" href="#" tabindex="-1" aria-disabled="true">Data</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#" tabindex="-1" aria-disabled="true">Pengguna</a>
+                        <a class="nav-link {{ request()->is('admin/pengguna') ? 'active' : '' }}" href="{{ url('/' . (Session('role') === 1 ? 'admin' : 'user') . '/pengguna') }}"
+                            tabindex="-1" aria-disabled="true">Pengguna</a>
                     </li>
                     {{-- <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" id="dropdown03" data-bs-toggle="dropdown"

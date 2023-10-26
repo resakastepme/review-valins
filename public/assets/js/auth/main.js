@@ -28,8 +28,7 @@ document.addEventListener("DOMContentLoaded", function () {
                         const toastBootstrap = bootstrap.Toast.getOrCreateInstance(toast_success);
                         toastBootstrap.show();
                         console.log(response['status']);
-                        window.location.href = '/'+ response['role'] +'/dashboard';
-
+                        window.location.href = '/' + response['role'] + '/dashboard';
                     }
                     if (response['trigger'] == 'USERNAME/PASSWORD ERROR') {
                         const toast_fail = document.getElementById('toast-user/userpass')
@@ -39,6 +38,7 @@ document.addEventListener("DOMContentLoaded", function () {
                         $('#email').focus();
                         $('#mainCard').addClass('animate__animated animate__headShake');
                         console.log(response['status']);
+                        $('#btnLogin').prop('disabled', false);
                     }
                     if (response['trigger'] == 'FORM TIDAK LENGKAP') {
                         const toast_fail = document.getElementById('toast-user/tidaklengkap')
@@ -48,8 +48,9 @@ document.addEventListener("DOMContentLoaded", function () {
                         $('#email').focus();
                         $('#mainCard').addClass('animate__animated animate__headShake');
                         console.log(response['status']);
+                        $('#btnLogin').prop('disabled', false);
                     }
-                    $('#btnLogin').prop('disabled', false);
+
                     $('#spinnerLogin').hide();
 
                 }, 2000);

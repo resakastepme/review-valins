@@ -18,12 +18,59 @@ class PenggunaController extends Controller
         ]);
     }
 
+    public function getUser(){
+        $q = User::get();
+        $json_data['data'] = $q;
+        return json_encode($json_data);
+    }
+
     /**
      * Show the form for creating a new resource.
      */
     public function create()
     {
-        //
+        $username = $_GET['username'];
+        $email = $_GET['email'];
+        $password = $_GET['password'];
+        $role = $_GET['role'];
+
+        $username_anti_distinct = User::where('username', $username)->first();
+        if( $username_anti_distinct ){
+            return response()->json([
+                'status' => 'Username sudah ada!',
+                'trigger' => 'USERNAME SUDAH ADA'
+            ]);
+        }
+
+        $email_anti_distinct = User::where('email', $email)->first();
+        if($email_anti_distinct){
+            return response()->json([
+                'status' => 'Email sudah ada!',
+                'trigger' => 'EMAIL SUDAH ADA'
+            ]);
+        }
+
+        $request = [
+            'username' => $username,
+            'email' => $email,
+            'password' => md5($password),
+            'role' => $role
+        ];
+
+        $q = User::create($request);
+
+        if ($q) {
+            return response()->json([
+                'status' => 'Akun sukses ditambah!',
+                'trigger' => 'BERHASIL'
+            ]);
+        }else{
+            return response()->json([
+                'status' => 'Akun gagal ditambah!',
+                'trigger' => 'GAGAL'
+            ]);
+        }
+
     }
 
     /**
