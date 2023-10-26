@@ -46,4 +46,16 @@
 @endsection
 @section('script')
     <script type="text/javascript" src="{{ asset('assets/js/admin/dashboard/main.js') }}"></script>
+    <script type="text/javascript">
+
+        $('#penggunaBtn').on('click', function () {
+
+            var role = '{{ Session("role") }}';
+            var link = null;
+            if(role == 1){var link = 'admin'}else{var link = 'user'};
+            window.location.href = '/'+ link +'/pengguna';
+
+        });
+
+    </script>
 @endsection
