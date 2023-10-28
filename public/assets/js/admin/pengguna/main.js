@@ -1,25 +1,53 @@
 document.addEventListener('DOMContentLoaded', function () {
 
+    function loadTable() {
+        $.ajax({
+            url: '/admin/pengguna/getUser',
+            type: 'GET',
+            dataType: 'json',
+            success: function (response) {
+                // console.log(response.data)
+                $('tbody').html('');
+                var count = 0;
+                $.each(response.data, function (key, item) {
+                    var i = ++count;
+                    if (item.role == 1) {
+                        var roleConvert = 'Admin';
+                    } else {
+                        var roleConvert = 'User';
+                    }
+                    $('tbody').append(" <tr>\
+                                <td>"+ i + "</td>\
+                                <td>"+ roleConvert + "</td>\
+                                <td>"+ item.username + "</td>\
+                                <td>"+ item.email + "</td>\
+                                <td align='center'> <div class='row'>\
+                                <div class='col-md-3'></div>\
+                                <div class='col-md-2'>\
+                                    <button class='btn btn-warning' type='button'\
+                                        style='color: white;' data-user-id=" + item.id + " id='btnEdit'> Edit\
+                                    </button>\
+                                </div>\
+                                <div class='col-md-6'>\
+                                    <button class='btn btn-danger' type='button' data-user-id=" + item.id + " id='btnHapus'> Hapus\
+                                    </button>\
+                                </div>\
+                            </div> </td>\
+                                ");
+                });
+                console.log('berhasil refresh table!');
+            }
+        })
+    }
+
     $('#refresh').on('click', function () {
         $('#refresh').prop('disabled', true);
         $('#refreshIcon').addClass('fa-spin-pulse');
 
         setTimeout(function () {
-            var table = $("#tablePengguna").load(window.location + " #tablePengguna");
-            $('#tablePengguna').DataTable();
 
-            // var table = $('#tablePengguna').DataTable({
-            //     ajax: "/admin/pengguna/getUser",
-            //     column: [
-            //         {data: 'role'},
-            //         {data: 'username'},
-            //         {data: 'email'},
-            //     ]
-            // }).ajax.reload();
+            loadTable();
 
-            if (table) {
-                console.log('berhasil refresh');
-            }
             $('#refresh').prop('disabled', false);
             $('#refreshIcon').removeClass('fa-spin-pulse');
         }, 2000);
@@ -33,6 +61,15 @@ document.addEventListener('DOMContentLoaded', function () {
         $('#konfirmasiPassword').val('');
         $('#roleDefault').prop('selected', true);
         $('#username').focus();
+    });
+
+    $('#edit_clearBtn').on('click', function () {
+        $('#edit_username').val('');
+        $('#edit_email').val('');
+        $('#edit_password').val('');
+        $('#edit_konfirmasiPassword').val('');
+        $('#edit_roleDefault').prop('selected', true);
+        $('#edit_username').focus();
     });
 
     $('#tambahDataForm').on('submit', function (e) {
@@ -140,7 +177,13 @@ document.addEventListener('DOMContentLoaded', function () {
                         $('#submitSpinner').hide();
                         $("#tablePengguna").load(window.location + " #tablePengguna");
                         $('#tablePengguna').DataTable();
-                        $('#tambahAkunModal').dispose();
+                        $('#closeModalBtn').click();
+                        $('#username').val('');
+                        $('#email').val('');
+                        $('#password').val('');
+                        $('#konfirmasiPassword').val('');
+                        $('#roleDefault').prop('selected', true);
+                        loadTable();
                     }
 
                 }, 2500);
@@ -148,6 +191,58 @@ document.addEventListener('DOMContentLoaded', function () {
             }
         })
 
+    });
+
+    $(document).on('click', '#btnEdit', function () {
+        $('#editAkunModal').modal('show');
+        var userId = $(this).data('user-id');
+
+        $.ajax({
+            url: '/admin/pengguna/editIndex',
+            type: 'GET',
+            data: {
+                _token: $('#edit_csrfHidden').val(),
+                id: userId
+            }, success: function (response) {
+
+                if (response['status'] == 'GAGAL') {
+                    $('#serverError').show();
+                    $('#serverSuccess').hide();
+                    $('#edit_submitBtn').prop('disabled', true);
+                    setTimeout(function () {
+                        $('#edit_closeModalBtn').click();
+                        $('#edit_submitBtn').prop('disabled', false);
+                    }, 4000);
+                } else {
+                    $('#serverError').hide();
+                    $('#serverSuccess').show();
+                    $('#edit_username').val(response['data']['username']);
+                    $('#edit_email').val(response['data']['email']);
+                    if (response['data']['role'] == 1) {
+                        $('#edit_role').prop('selected', false);
+                        $('#edit_role_admin').prop('selected', true);
+                    } else {
+                        $('#edit_role').prop('selected', false);
+                        $('#edit_role_user').prop('selected', true);
+                    }
+                }
+
+            }
+        })
+
+    })
+
+    $('#ubahPasswordBtn').on('click', function () {
+        $(this).hide();
+        $('#newPassword').show();
+    });
+
+    $(document).on('click', '#edit_closeModalBtn', function () {
+        $('#editAkunModal').modal('hide');
+        setTimeout(function () {
+            $('#ubahPasswordBtn').show();
+            $('#newPassword').hide();
+        }, 1000);
     });
 
 });

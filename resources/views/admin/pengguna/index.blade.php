@@ -39,12 +39,13 @@
                                                 <div class="row">
                                                     <div class="col-md-3"></div>
                                                     <div class="col-md-2">
-                                                        <button class="btn btn-warning" type="button"
-                                                            style="color: white;"> Edit
+                                                        <button class="btn btn-warning" type="button" style="color: white;"
+                                                            data-user-id="{{ $user['id'] }}" id="btnEdit"> Edit
                                                         </button>
                                                     </div>
                                                     <div class="col-md-6">
-                                                        <button class="btn btn-danger" type="button"> Hapus
+                                                        <button class="btn btn-danger" type="button"
+                                                            data-user-id="{{ $user['id'] }}" id="btnHapus"> Hapus
                                                         </button>
                                                     </div>
                                                 </div>
@@ -126,7 +127,7 @@
         <div class="toast align-items-center text-bg-success border-0" role="alert" aria-live="assertive"
             aria-atomic="true" id="toast-success">
             <div class="d-flex">
-                <i class="fa-solid fa-check fa-fade fa-2xl"></i>
+                <i class="fa-solid fa-check fa-fade fa-2xl mt-2 ms-2"></i>
                 <div class="toast-body">
                     <h6> Berhasil ditambahkan! </h6>
                 </div>
@@ -191,12 +192,93 @@
 
                 </div>
                 <div class="modal-footer" style="margin-top: -3%;">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batalkan</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"
+                        id="closeModalBtn">Batalkan</button>
                     <button type="submit" id="submitBtn" class="btn btn-primary"> <span
                             class="spinner-border spinner-border-sm me-1" id="submitSpinner"
                             style="display: none;"></span> Submit</button>
                 </div>
                 </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Edit Data -->
+    <div class="modal fade" id="editAkunModal" data-bs-backdrop="static" tabindex="-1"
+        aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered modal-lg">
+            <div class="modal-content">
+                <div class="modal-header bg-light">
+                    <h2> Edit Akun </h2>
+                </div>
+                <div class="modal-body">
+
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-md-6">
+
+                                <section id="serverError" style="display: none;">
+                                    <h2 class="p-5" style="color: red;"> SERVER ERROR </h2>
+                                </section>
+
+                                <section id="serverSuccess">
+                                    <form class="p-3" id="editDataForm">
+
+                                        <input type="hidden" name="edit_csrfHidden" id="edit_csrfHidden"
+                                            value="{{ csrf_token() }}" />
+
+                                        <label for="edit_username"> Username <span style="color:red">*</span> </label>
+                                        <input type="text" class="form-control mb-2" name="edit_username"
+                                            id="edit_username" />
+
+                                        <label for="edit_email"> Email <span style="color:red">*</span> </label>
+                                        <input type="email" name="edit_email" id="edit_email"
+                                            class="form-control mb-2" />
+
+                                        <button type="button" class="btn btn-primary form-control mb-2"
+                                            id="ubahPasswordBtn"> Ubah password? </button>
+                                        <section id="newPassword" style="display:none;">
+                                            <label for="edit_password"> Password <span style="color:red">*</span> </label>
+                                            <input type="password" name="edit_password" id="edit_password"
+                                                class="form-control mb-2" />
+
+                                            <label for="edit_konfirmasiPassword"> Konfirmasi password <span
+                                                    style="color:red">*</span>
+                                            </label>
+                                            <input type="password" name="edit_konfirmasiPassword"
+                                                id="edit_konfirmasiPassword" class="form-control mb-2" />
+                                        </section>
+
+                                        <label for="edit_role"> Role <span style="color:red">*</span> </label>
+                                        <select class="form-select mb-3" aria-label="Default select example"
+                                            name="edit_role" id="edit_role">
+                                            <option id="edit_roleDefault" value="TIDAK MEMILIH ROLE" selected>Pilih
+                                            </option>
+                                            <option value="1" id="edit_role_admin">Admin</option>
+                                            <option value="0" id="edit_role_user">User</option>
+                                        </select>
+
+                                        <small style="font-size: 10px;">Catatan: formulir dengan tanda <span
+                                                style="color: red">*</span> wajib diisi <span class="ms-5"> <button
+                                                    type="button" id="edit_clearBtn">clear</button> </span> </small>
+
+                            </div>
+                            <div class="col-md-6">
+                                <img src="{{ asset('assets/img/auth/telkom-mini-logo.png') }}"
+                                    style="width: 100%; height: 100%;">
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="modal-footer" style="margin-top: -3%;">
+                    <button type="button" class="btn btn-secondary" id="edit_closeModalBtn">Batalkan</button>
+                    <button type="submit" id="edit_submitBtn" class="btn btn-primary"> <span
+                            class="spinner-border spinner-border-sm me-1" id="submitSpinner"
+                            style="display: none;"></span> Submit</button>
+                </div>
+                </form>
+                </section>
             </div>
         </div>
     </div>

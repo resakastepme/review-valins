@@ -12,16 +12,31 @@ class PenggunaController extends Controller
      */
     public function index()
     {
-        $q = User::get();
+        $q = User::where('username', '!=', session('username'))->get();
         return view('admin.pengguna.index', [
             'users' => $q
         ]);
     }
 
     public function getUser(){
-        $q = User::get();
+        $q = User::where('username', '!=', session('username'))->get();
         $json_data['data'] = $q;
         return json_encode($json_data);
+    }
+
+    public function getUserEdit(){
+        $id = $_GET['id'];
+        $q = User::where('id', $id)->first();
+        if($q){
+            return response()->json([
+                'status' => 'BERHASIL',
+                'data' => $q
+            ]);
+        }else{
+            return response()->json([
+                'status' => 'GAGAL'
+            ]);
+        }
     }
 
     /**
