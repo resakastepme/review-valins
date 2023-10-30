@@ -45,7 +45,7 @@
                                                     </div>
                                                     <div class="col-md-6">
                                                         <button class="btn btn-danger" type="button"
-                                                            data-user-id="{{ $user['id'] }}" id="btnHapus"> Hapus
+                                                            data-user-id="{{ $user['id'] }}" data-username="{{ $user['username'] }}" id="btnHapus"> Hapus
                                                         </button>
                                                     </div>
                                                 </div>
@@ -124,12 +124,36 @@
             </div>
         </div>
 
+        <div class="toast align-items-center text-bg-danger border-0" role="alert" aria-live="assertive"
+            aria-atomic="true" id="toast-dangerGagalHapus">
+            <div class="d-flex">
+                <i class="fa-solid fa-circle-xmark fa-fade fa-2xl"></i>
+                <div class="toast-body">
+                    <h6> Akun gagal dihapus! coba lagi nanti </h6>
+                </div>
+                <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"
+                    aria-label="Close"></button>
+            </div>
+        </div>
+
         <div class="toast align-items-center text-bg-success border-0" role="alert" aria-live="assertive"
             aria-atomic="true" id="toast-success">
             <div class="d-flex">
                 <i class="fa-solid fa-check fa-fade fa-2xl mt-2 ms-2"></i>
                 <div class="toast-body">
                     <h6> Berhasil ditambahkan! </h6>
+                </div>
+                <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"
+                    aria-label="Close"></button>
+            </div>
+        </div>
+
+        <div class="toast align-items-center text-bg-success border-0" role="alert" aria-live="assertive"
+            aria-atomic="true" id="toast-successDelete">
+            <div class="d-flex">
+                <i class="fa-solid fa-check fa-fade fa-2xl mt-2 ms-2"></i>
+                <div class="toast-body">
+                    <h6> Berhasil dihapus! </h6>
                 </div>
                 <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"
                     aria-label="Close"></button>

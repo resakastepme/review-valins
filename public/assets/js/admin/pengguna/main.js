@@ -29,7 +29,7 @@ document.addEventListener('DOMContentLoaded', function () {
                                     </button>\
                                 </div>\
                                 <div class='col-md-6'>\
-                                    <button class='btn btn-danger' type='button' data-user-id=" + item.id + " id='btnHapus'> Hapus\
+                                    <button class='btn btn-danger' type='button' data-user-id=" + item.id + " data_username="+ item.username +" id='btnHapus'> Hapus\
                                     </button>\
                                 </div>\
                             </div> </td>\
@@ -292,7 +292,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
         $.ajax({
             url: '/admin/pengguna/update',
-            type: 'GET',
+            type: 'POST',
             data: {
                 _token: $('#edit_csrfHidden').val(),
                 userId: userId,
@@ -328,6 +328,53 @@ document.addEventListener('DOMContentLoaded', function () {
 
             }
         });
+
+    });
+
+    $(document).on('click', '#btnHapus', function () {
+
+        var userId = $(this).data('user-id');
+        var username = $(this).data('username');
+        var csrfToken = $("meta[name='csrf_token']").attr("content");
+
+        Swal.fire({
+            title: 'Anda yakin?',
+            text: "Proses menghapus akun dengan username: "+username,
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Ya',
+            cancelButtonText: 'Batalkan'
+          }).then((result) => {
+            if (result.isConfirmed) {
+              $.ajax({
+                url : '/admin/pengguna/destroy',
+                type: 'POST',
+                data: {
+                    _token: csrfToken,
+                    userId: userId
+                },success: function (response) {
+                    console.log(response.status);
+                    if(response.status == 'BERHASIL'){
+                        const toast_berhasil = document.getElementById('toast-successDelete')
+                        const toastBootstrap = bootstrap.Toast.getOrCreateInstance(toast_berhasil);
+                        toastBootstrap.show();
+                        loadTable();
+                        $('#tablePengguna').DataTable();
+                    }else{
+                        const toast_gagalTambah = document.getElementById('toast-dangerGagalHapus')
+                        const toastBootstrap = bootstrap.Toast.getOrCreateInstance(toast_gagalTambah);
+                        toastBootstrap.show();
+                        loadTable();
+                        $('#tablePengguna').DataTable();
+                    }
+                }
+              });
+            }else{
+                console.log('Proses dibatalkan!');
+            }
+          })
 
     });
 

@@ -117,11 +117,11 @@ class PenggunaController extends Controller
      */
     public function update()
     {
-        $userId = $_GET['userId'];
-        $username = $_GET['username'];
-        $email = $_GET['email'];
-        $password = $_GET['password'];
-        $role = $_GET['role'];
+        $userId = $_POST['userId'];
+        $username = $_POST['username'];
+        $email = $_POST['email'];
+        $password = $_POST['password'];
+        $role = $_POST['role'];
 
         $r1 = [
             'username' => $username,
@@ -165,8 +165,20 @@ class PenggunaController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy()
     {
-        //
+        $userId = $_POST['userId'];
+
+        $q = User::where('id', $userId)->delete();
+
+        if($q){
+            return response()->json([
+                'status' => 'BERHASIL'
+            ]);
+        }else{
+            return response()->json([
+                'status' => 'GAGAL'
+            ]);
+        }
     }
 }

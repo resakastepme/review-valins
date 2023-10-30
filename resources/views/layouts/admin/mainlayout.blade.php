@@ -9,7 +9,9 @@
     <link rel="stylesheet" href="{{ asset('assets/css/bootstrap.min.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/css/fontawesome/all.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/css/animate.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/css/sweetalert2.min.css') }}">
     <link rel="shortcut icon" href="{{ asset('assets/img/auth/telkom-logo.png') }}" type="image/x-icon">
+    <meta name="csrf_token" id="csrf_tokenGLobal" content="{{ csrf_token() }}">
     @yield('css')
     <title>Admin - Dashboard</title>
 </head>
@@ -84,6 +86,7 @@
 <script type="text/javascript" src="{{ asset('assets/js/fontawesome/all.js') }}"></script>
 <script type="text/javascript" src="{{ asset('assets/js/bootstrap.bundle.min.js') }}"></script>
 <script type="text/javascript" src="{{ asset('assets/js/autologout.js') }}"></script>
+<script type="text/javascript" src="{{ asset('assets/js/sweetalert2.min.js') }}"></script>
 <script type="text/javascript">
     function logoResizer() {
         if (window.innerWidth < 576) {
