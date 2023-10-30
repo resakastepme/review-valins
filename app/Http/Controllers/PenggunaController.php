@@ -115,9 +115,51 @@ class PenggunaController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update()
     {
-        //
+        $userId = $_GET['userId'];
+        $username = $_GET['username'];
+        $email = $_GET['email'];
+        $password = $_GET['password'];
+        $role = $_GET['role'];
+
+        $r1 = [
+            'username' => $username,
+            'email'=> $email,
+            'password'=> md5($password),
+            'role'=> $role
+        ];
+
+        $r2 = [
+            'username'=> $username,
+            'email'=> $email,
+            'role' => $role
+        ];
+
+        if($password != ''){
+            $q1 = User::where('id', $userId)->update($r1);
+            if($q1){
+                return response()->json([
+                    'status' => 'BERHASIL'
+                ]);
+            }else{
+                return response()->json([
+                    'status' => 'GAGAL'
+                ]);
+            }
+        }else{
+            $q2 = User::where('id', $userId)->update($r2);
+            if($q2){
+                return response()->json([
+                    'status' => 'BERHASIL'
+                ]);
+            }else{
+                return response()->json([
+                    'status' => 'GAGAL'
+                ]);
+            }
+        }
+
     }
 
     /**

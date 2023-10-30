@@ -55,5 +55,6 @@ Route::prefix('/admin')->group(function () {
     Route::get('/pengguna/getUser', [PenggunaController::class,'getUser']);
     Route::get('/pengguna/create', [PenggunaController::class,'create']);
     Route::get('/pengguna/editIndex', [PenggunaController::class,'getUserEdit']);
+    Route::get('/pengguna/update', [PenggunaController::class,'update']);
 
 });

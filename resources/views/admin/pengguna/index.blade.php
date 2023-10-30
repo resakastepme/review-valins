@@ -227,6 +227,8 @@
                                         <input type="hidden" name="edit_csrfHidden" id="edit_csrfHidden"
                                             value="{{ csrf_token() }}" />
 
+                                        <input type="hidden" name="edit_hiddenId" id="edit_hiddenId">
+
                                         <label for="edit_username"> Username <span style="color:red">*</span> </label>
                                         <input type="text" class="form-control mb-2" name="edit_username"
                                             id="edit_username" />
@@ -274,7 +276,7 @@
                 <div class="modal-footer" style="margin-top: -3%;">
                     <button type="button" class="btn btn-secondary" id="edit_closeModalBtn">Batalkan</button>
                     <button type="submit" id="edit_submitBtn" class="btn btn-primary"> <span
-                            class="spinner-border spinner-border-sm me-1" id="submitSpinner"
+                            class="spinner-border spinner-border-sm me-1" id="edit_submitSpinner"
                             style="display: none;"></span> Submit</button>
                 </div>
                 </form>

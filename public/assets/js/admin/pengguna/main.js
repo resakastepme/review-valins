@@ -175,8 +175,6 @@ document.addEventListener('DOMContentLoaded', function () {
                         toastBootstrap.show();
                         $('#submitBtn').prop('disabled', false);
                         $('#submitSpinner').hide();
-                        $("#tablePengguna").load(window.location + " #tablePengguna");
-                        $('#tablePengguna').DataTable();
                         $('#closeModalBtn').click();
                         $('#username').val('');
                         $('#email').val('');
@@ -184,6 +182,7 @@ document.addEventListener('DOMContentLoaded', function () {
                         $('#konfirmasiPassword').val('');
                         $('#roleDefault').prop('selected', true);
                         loadTable();
+                        $('#tablePengguna').DataTable();
                     }
 
                 }, 2500);
@@ -216,13 +215,14 @@ document.addEventListener('DOMContentLoaded', function () {
                 } else {
                     $('#serverError').hide();
                     $('#serverSuccess').show();
+                    $('#edit_hiddenId').val(userId);
                     $('#edit_username').val(response['data']['username']);
                     $('#edit_email').val(response['data']['email']);
                     if (response['data']['role'] == 1) {
-                        $('#edit_role').prop('selected', false);
+                        $('#edit_roleDefault').prop('selected', false);
                         $('#edit_role_admin').prop('selected', true);
                     } else {
-                        $('#edit_role').prop('selected', false);
+                        $('#edit_roleDefault').prop('selected', false);
                         $('#edit_role_user').prop('selected', true);
                     }
                 }
@@ -230,7 +230,106 @@ document.addEventListener('DOMContentLoaded', function () {
             }
         })
 
-    })
+    });
+
+    $('#editDataForm').on('submit', function (e) {
+        e.preventDefault();
+
+        var userId = $('#edit_hiddenId').val();
+        var edit_username = $('#edit_username').val();
+        var edit_email = $('#edit_email').val();
+        var edit_password = $('#edit_password').val();
+        var edit_konfirmasiPassword = $('#edit_konfirmasiPassword').val();
+        var edit_role = $('#edit_role').val();
+
+        if (!edit_username) {
+            const toast_username = document.getElementById('toast-warningLengkapiForm')
+            const toastBootstrap = bootstrap.Toast.getOrCreateInstance(toast_username);
+            toastBootstrap.show();
+            $('#edit_username').focus();
+            exit();
+        }
+        if (!edit_email) {
+            const toast_email = document.getElementById('toast-warningLengkapiForm')
+            const toastBootstrap = bootstrap.Toast.getOrCreateInstance(toast_email);
+            toastBootstrap.show();
+            $('#edit_email').focus();
+            exit();
+        }
+        // if (!edit_password) {
+        //     const toast_password = document.getElementById('toast-warningLengkapiForm')
+        //     const toastBootstrap = bootstrap.Toast.getOrCreateInstance(toast_password);
+        //     toastBootstrap.show();
+        //     $('#edit_password').focus();
+        //     exit();
+        // }
+        // if (!edit_konfirmasiPassword) {
+        //     const toast_konfirmasiPassword = document.getElementById('toast-warningLengkapiForm')
+        //     const toastBootstrap = bootstrap.Toast.getOrCreateInstance(toast_konfirmasiPassword);
+        //     toastBootstrap.show();
+        //     $('#edit_konfirmasiPassword').focus();
+        //     exit();
+        // }
+        if (edit_role == 'TIDAK MEMILIH ROLE') {
+            const toast_role = document.getElementById('toast-warningLengkapiForm')
+            const toastBootstrap = bootstrap.Toast.getOrCreateInstance(toast_role);
+            toastBootstrap.show();
+            $('#edit_role').focus();
+            exit();
+        }
+        if (edit_password != edit_konfirmasiPassword) {
+            const toast_gagalKonfirmasiPassword = document.getElementById('toast-warningKonfirmasiPassword')
+            const toastBootstrap = bootstrap.Toast.getOrCreateInstance(toast_gagalKonfirmasiPassword);
+            toastBootstrap.show();
+            $('#edit_password').val('');
+            $('#edit_konfirmasiPassword').val('');
+            $('#edit_password').focus();
+            exit();
+        }
+
+        $('#edit_submitBtn').prop('disabled', true);
+        $('#edit_submitSpinner').show();
+
+        $.ajax({
+            url: '/admin/pengguna/update',
+            type: 'GET',
+            data: {
+                _token: $('#edit_csrfHidden').val(),
+                userId: userId,
+                username: edit_username,
+                email: edit_email,
+                password: edit_password,
+                role: edit_role
+            }, success: function (response) {
+                console.log(response.status);
+                setTimeout(function (){
+
+                    if(response.status == 'BERHASIL'){
+                        const toast_berhasil = document.getElementById('toast-success')
+                        const toastBootstrap = bootstrap.Toast.getOrCreateInstance(toast_berhasil);
+                        toastBootstrap.show();
+                        $('#edit_submitBtn').prop('disabled', false);
+                        $('#edit_submitSpinner').hide();
+                        $('#edit_closeModalBtn').click();
+                        loadTable();
+                        $('#tablePengguna').DataTable();
+                    }else{
+                        const toast_gagalTambah = document.getElementById('toast-dangerGagal')
+                        const toastBootstrap = bootstrap.Toast.getOrCreateInstance(toast_gagalTambah);
+                        toastBootstrap.show();
+                        $('#edit_submitBtn').prop('disabled', false);
+                        $('#edit_submitSpinner').hide();
+                        $('#edit_closeModalBtn').click();
+                        loadTable();
+                        $('#tablePengguna').DataTable();
+                    }
+
+                }, 2500);
+
+            }
+        });
+
+    });
 
     $('#ubahPasswordBtn').on('click', function () {
         $(this).hide();
