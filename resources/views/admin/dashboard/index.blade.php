@@ -56,6 +56,14 @@
             window.location.href = '/'+ link +'/pengguna';
 
         });
+        $('#dataBtn').on('click', function () {
+
+            var role = '{{ Session("role") }}';
+            var link = null;
+            if(role == 1){var link = 'admin'}else{var link = 'user'};
+            window.location.href = '/'+ link +'/data';
+
+        });
 
     </script>
 @endsection

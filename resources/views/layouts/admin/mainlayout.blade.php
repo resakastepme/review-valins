@@ -29,7 +29,8 @@
             <div class="collapse navbar-collapse ms-2" id="navbarsExample03">
                 <ul class="navbar-nav me-auto mb-2 mb-sm-0">
                     <li class="nav-item">
-                        <a class="nav-link {{ request()->is('admin/dashboard') ? 'active' : '' }}" aria-current="page"
+                        <a class="nav-link {{ request()->is('admin/dashboard') || request()->is('user/dashboard') ? 'active' : '' }}"
+                            aria-current="page"
                             href="{{ url('/' . (Session('role') === 1 ? 'admin' : 'user') . '/dashboard') }}">Dashboard</a>
                     </li>
                     <li class="nav-item">
@@ -39,10 +40,13 @@
                         <a class="nav-link" href="#">Beri tugas</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#" tabindex="-1" aria-disabled="true">Data</a>
+                        <a class="nav-link {{ request()->is('admin/data') || request()->is('user/data') ? 'active' : '' }}"
+                            href="{{ url('/' . (Session('role') === 1 ? 'admin' : 'user') . '/data') }}" tabindex="-1"
+                            aria-disabled="true">Data</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link {{ request()->is('admin/pengguna') ? 'active' : '' }}" href="{{ url('/' . (Session('role') === 1 ? 'admin' : 'user') . '/pengguna') }}"
+                        <a class="nav-link {{ request()->is('admin/pengguna') || request()->is('user/pengguna') ? 'active' : '' }}"
+                            href="{{ url('/' . (Session('role') === 1 ? 'admin' : 'user') . '/pengguna') }}"
                             tabindex="-1" aria-disabled="true">Pengguna</a>
                     </li>
                     {{-- <li class="nav-item dropdown">
@@ -59,15 +63,15 @@
             </div>
         </div>
 
-        <div class="collapse navbar-collapse" id="navbarNavDarkDropdown">
+        <div class="collapse navbar-collapse me-4" id="navbarNavDarkDropdown">
             <ul class="navbar-nav">
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" id="navbarDarkDropdownMenuLink" role="button"
                         data-bs-toggle="dropdown" aria-expanded="false">
                         <span> <i class="fa-solid fa-user me-2"></i> </span> {{ Session('username') }}
                     </a>
-                    <ul class="dropdown-menu form-control" aria-labelledby="navbarDarkDropdownMenuLink">
-                        <li><a class="dropdown-item" href="{{ url('/logout/normal') }}"><button
+                    <ul class="dropdown-menu" aria-labelledby="navbarDarkDropdownMenuLink">
+                        <li><a class="dropdown-item" href="{{ url('/logout/bye-bye') }}"><button
                                     class="btn btn-danger form-control"> <span><i
                                             class="fa fa-right-from-bracket"></i></span> Logout </button></a></li>
                     </ul>

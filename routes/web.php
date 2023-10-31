@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\DataController;
 use App\Http\Controllers\PenggunaController;
 use Illuminate\Support\Facades\Route;
 
@@ -58,6 +59,6 @@ Route::prefix('/admin')->group(function () {
     Route::post('/pengguna/update', [PenggunaController::class,'update']);
     Route::post('/pengguna/destroy', [PenggunaController::class,'destroy']);
 
-
+    Route::get('/data', [DataController::class, 'index']);
 
 });

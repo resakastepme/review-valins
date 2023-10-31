@@ -31,5 +31,12 @@ document.addEventListener('DOMContentLoaded', function () {
 
     });
 
+    $('#penggunaBtn').on('click', function () {
+
+        document.getElementById('penggunaBtn').classList.remove('bg-light');
+        document.getElementById('penggunaBtn').classList.add('bg-primary');
+
+    });
+
 
 });
