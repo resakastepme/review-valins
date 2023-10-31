@@ -11,7 +11,7 @@
     <link rel="stylesheet" href="{{ asset('assets/css/animate.min.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/css/sweetalert2.min.css') }}">
     <link rel="shortcut icon" href="{{ asset('assets/img/auth/telkom-logo.png') }}" type="image/x-icon">
-    <meta name="csrf_token" id="csrf_tokenGLobal" content="{{ csrf_token() }}">
+    <meta name="csrf_token" content="{{ csrf_token() }}">
     @yield('css')
     <title>Admin - Dashboard</title>
 </head>

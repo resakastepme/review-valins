@@ -58,4 +58,6 @@ Route::prefix('/admin')->group(function () {
     Route::post('/pengguna/update', [PenggunaController::class,'update']);
     Route::post('/pengguna/destroy', [PenggunaController::class,'destroy']);
 
+
+
 });

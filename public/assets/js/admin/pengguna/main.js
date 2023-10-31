@@ -29,7 +29,7 @@ document.addEventListener('DOMContentLoaded', function () {
                                     </button>\
                                 </div>\
                                 <div class='col-md-6'>\
-                                    <button class='btn btn-danger' type='button' data-user-id=" + item.id + " data_username="+ item.username +" id='btnHapus'> Hapus\
+                                    <button class='btn btn-danger' type='button' data-user-id=" + item.id + " data-username="+ item.username +" id='btnHapus'> Hapus\
                                     </button>\
                                 </div>\
                             </div> </td>\
