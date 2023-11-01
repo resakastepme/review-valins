@@ -1,5 +1,8 @@
-document.addEventListener('DOMContentLoaded', function () {
+$('.evidenImg').on('error', function () {
+    $(this).parent('a').removeAttr('href');
+});
 
+document.addEventListener('DOMContentLoaded', function () {
     function loadTable() {
         $.ajax({
             url: '/admin/data/getData',
@@ -51,7 +54,7 @@ document.addEventListener('DOMContentLoaded', function () {
                                 ");
                 });
                 console.log('berhasil refresh table!');
-                $('.evidenImg').on('error', function() {
+                $('.evidenImg').on('error', function () {
                     $(this).parent('a').removeAttr('href');
                 });
             }
@@ -176,7 +179,7 @@ document.addEventListener('DOMContentLoaded', function () {
                             toastBootstrap.show();
                             $('#submitBtn').prop('disabled', false);
                             $('#submitSpinner').hide();
-                            $('#'+response.eviden).focus();
+                            $('#' + response.eviden).focus();
                             exit();
                         }
                         if (response.trigger == 'BERHASIL') {
@@ -211,7 +214,7 @@ document.addEventListener('DOMContentLoaded', function () {
         $.get('/getRole', function (data) {
             var role = data.role;
             $.ajax({
-                url: '/'+role+'/data/editIndex',
+                url: '/' + role + '/data/editIndex',
                 type: 'GET',
                 data: {
                     id: dataId

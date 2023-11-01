@@ -217,11 +217,13 @@
                                             <option value="TASIKMALAYA"> Tasikmalaya </option>
                                         </select>
 
-                                        <label for="edit_formIdValins"> ID Valins <span style="color:red"> * </span> </label>
+                                        <label for="edit_formIdValins"> ID Valins <span style="color:red"> * </span>
+                                        </label>
                                         <input type="number" name="edit_formIdValins" id="edit_formIdValins"
                                             class="form-control mb-2" />
 
-                                        <label for="edit_formEviden1"> Eviden 1 <span style="color:red"> * </span> </label>
+                                        <label for="edit_formEviden1"> Eviden 1 <span style="color:red"> * </span>
+                                        </label>
                                         <textarea name="edit_formEviden1" id="edit_formEviden1" cols="10" rows="2" class="form-control mb-2"></textarea>
 
                                         <label for="edit_formEviden2"> Eviden 2 </label>
@@ -340,9 +342,6 @@
     <script type="text/javascript" src="{{ asset('assets/js/admin/pengguna/jquery.dataTables.min.js') }}"></script>
     <script type="text/javascript" src="{{ asset('assets/js/admin/pengguna/dataTables.bootstrap4.min.js') }}"></script>
     <script type="text/javascript">
-        $('.evidenImg').on('error', function() {
-            $(this).parent('a').removeAttr('href');
-        });
         $(function() {
             $(document).ready(function() {
                 $('#tableData').DataTable();
