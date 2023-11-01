@@ -114,12 +114,12 @@
                                     <label for="formWitel"> Witel <span style="color:red"> * </span> </label>
                                     <select name="formWitel" id="formWitel" class="form-control mb-2">
                                         <option value="TIDAK MEMILIH WITEL" id="formWitel_default" default> Pilih </option>
-                                        <option value="BANDUNG" dafault> Bandung </option>
-                                        <option value="BANDUNG BARAT" dafault> Bandung Barat </option>
-                                        <option value="CIREBON" dafault> Cirebon </option>
-                                        <option value="KARAWANG" dafault> Karawang </option>
-                                        <option value="SUKABUMI" dafault> Sukabumi </option>
-                                        <option value="TASIKMALAYA" dafault> Tasikmalaya </option>
+                                        <option value="BANDUNG"> Bandung </option>
+                                        <option value="BANDUNG BARAT"> Bandung Barat </option>
+                                        <option value="CIREBON"> Cirebon </option>
+                                        <option value="KARAWANG"> Karawang </option>
+                                        <option value="SUKABUMI"> Sukabumi </option>
+                                        <option value="TASIKMALAYA"> Tasikmalaya </option>
                                     </select>
 
                                     <label for="formIdValins"> ID Valins <span style="color:red"> * </span> </label>
@@ -177,6 +177,102 @@
                             style="display: none;"></span> Submit</button>
                 </div>
                 </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Edit Data -->
+    <div class="modal fade" id="editDataModal" data-bs-backdrop="static" tabindex="-1"
+        aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered modal-lg">
+            <div class="modal-content">
+                <div class="modal-header bg-light">
+                    <h2> Edit Akun </h2>
+                </div>
+                <div class="modal-body">
+
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-md-6">
+
+                                <section id="serverError" style="display: none;">
+                                    <h2 class="p-5" style="color: red;"> SERVER ERROR </h2>
+                                </section>
+
+                                <section id="serverSuccess">
+                                    <form class="p-3" id="editDataForm">
+
+                                        <input type="hidden" name="edit_csrfHidden" id="csrfHidden"
+                                            value="{{ csrf_token() }}" />
+
+                                        <label for="edit_formWitel"> Witel <span style="color:red"> * </span> </label>
+                                        <select name="edit_formWitel" id="edit_formWitel" class="form-control mb-2">
+                                            <option value="TIDAK MEMILIH WITEL" id="edit_formWitel_default" default> Pilih
+                                            </option>
+                                            <option value="BANDUNG"> Bandung </option>
+                                            <option value="BANDUNG BARAT"> Bandung Barat </option>
+                                            <option value="CIREBON"> Cirebon </option>
+                                            <option value="KARAWANG"> Karawang </option>
+                                            <option value="SUKABUMI"> Sukabumi </option>
+                                            <option value="TASIKMALAYA"> Tasikmalaya </option>
+                                        </select>
+
+                                        <label for="edit_formIdValins"> ID Valins <span style="color:red"> * </span> </label>
+                                        <input type="number" name="edit_formIdValins" id="edit_formIdValins"
+                                            class="form-control mb-2" />
+
+                                        <label for="edit_formEviden1"> Eviden 1 <span style="color:red"> * </span> </label>
+                                        <textarea name="edit_formEviden1" id="edit_formEviden1" cols="10" rows="2" class="form-control mb-2"></textarea>
+
+                                        <label for="edit_formEviden2"> Eviden 2 </label>
+                                        <textarea name="edit_formEviden2" id="edit_formEviden2" cols="10" rows="2" class="form-control mb-2"></textarea>
+
+                                        <label for="edit_formEviden3"> Eviden 3 </label>
+                                        <textarea name="edit_formEviden3" id="edit_formEviden3" cols="10" rows="2" class="form-control mb-2"></textarea>
+
+                                        <label for="edit_formIdValinsLama"> ID Valins Lama </label>
+                                        <input type="number" name="edit_formIdValinsLama" id="edit_formIdValinsLama"
+                                            class="form-control mb-2" />
+
+                                        <label for="edit_formRekon"> Rekon <span style="color:red"> * </span> </label>
+                                        <select name="edit_formRekon" id="edit_formRekon" class="form-control mb-2">
+                                            <option value="TIDAK MEMILIH REKON" id="edit_formRekon_default" default> Pilih
+                                            </option>
+                                            <option value="JANUARI"> Januari </option>
+                                            <option value="FEBRUARI"> Februari </option>
+                                            <option value="MARET"> Maret </option>
+                                            <option value="APRIL"> April </option>
+                                            <option value="MEI"> Mei </option>
+                                            <option value="JUNI"> Juni </option>
+                                            <option value="JULI"> Juli </option>
+                                            <option value="AGUSTUS"> Agustus </option>
+                                            <option value="SEPTEMBER"> September </option>
+                                            <option value="OKTOBER"> Oktober </option>
+                                            <option value="NOVEMBER"> November </option>
+                                            <option value="DESEMBER"> Desember </option>
+                                        </Select>
+
+                                        <small style="font-size: 10px;">Catatan: formulir dengan tanda <span
+                                                style="color: red">*</span> wajib diisi <span class="ms-5"> <button
+                                                    type="button" id="edit_clearBtn">clear</button> </span> </small>
+
+                            </div>
+                            <div class="col-md-6">
+                                <img src="{{ asset('assets/img/auth/telkom-mini-logo.png') }}"
+                                    style="width: 100%; height: 100%;">
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="modal-footer" style="margin-top: -3%;">
+                    <button type="button" class="btn btn-secondary" id="edit_closeModalBtn">Batalkan</button>
+                    <button type="submit" id="edit_submitBtn" class="btn btn-primary"> <span
+                            class="spinner-border spinner-border-sm me-1" id="edit_submitSpinner"
+                            style="display: none;"></span> Submit</button>
+                </div>
+                </form>
+                </section>
             </div>
         </div>
     </div>

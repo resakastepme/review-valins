@@ -7,6 +7,21 @@ use App\Models\Data;
 
 class DataController extends Controller
 {
+    public function getDataEdit(){
+        $id = $_GET['id'];
+        $q = Data::where('id', $id)->first();
+        if($q){
+            return response()->json([
+                'status' => 'BERHASIL',
+                'data' => $q
+            ]);
+        }else{
+            return response()->json([
+                'status' => 'GAGAL'
+            ]);
+        }
+    }
+
     public function getData()
     {
         $q = Data::orderby('id', 'DESC')->get();

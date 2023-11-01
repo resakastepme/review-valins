@@ -204,4 +204,23 @@ document.addEventListener('DOMContentLoaded', function () {
 
     });
 
+    $(document).on('click', '#btnEdit', function () {
+        $('#editDataModal').modal('show');
+        var dataId = $(this).data('data-id');
+        // console.log(dataId);
+        $.get('/getRole', function (data) {
+            var role = data.role;
+            $.ajax({
+                url: '/'+role+'/data/editIndex',
+                type: 'GET',
+                data: {
+                    id: dataId
+                }, success: function (response) {
+                    console.log(response.status);
+                    //UNFINISHED
+                }
+            });
+        });
+    });
+
 });

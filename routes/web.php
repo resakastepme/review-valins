@@ -64,5 +64,6 @@ Route::prefix('/admin')->group(function () {
     Route::get('/data', [DataController::class, 'index']);
     Route::post('/data/create', [DataController::class,'create']);
     Route::get('/data/getData', [DataController::class,'getData']);
+    Route::get('/data/editIndex', [DataController::class,'getDataEdit']);
 
 });
