@@ -11,10 +11,10 @@
                         <button class="ms-4 btn btn-primary" data-bs-toggle="modal" data-bs-target="#tambahAkunModal"
                             type="button" id="tambahDataBtn"> <span class="me-2"> <i class="fas fa-plus-circle fa-lg">
                                 </i> </span> Tambah akun </button>
-                        <button type="button" class="btn btn-success" id="refresh"><i
-                                class="fa-solid fa-arrows-rotate me-1" id="refreshIcon"></i> Refresh </button>
                     </div>
-                    <div class="card-body p-5 bg-white rounded">
+                    <div class="card-body p-4 bg-white rounded">
+                        <button type="button" class="btn btn-success mb-3" id="refresh"><i
+                            class="fa-solid fa-arrows-rotate me-1" id="refreshIcon"></i> Refresh </button>
                         <div class="table-responsive">
                             <table id="tablePengguna" style="width:100%"
                                 class="table table-striped table-bordered table-hover" border="1">

@@ -11,44 +11,77 @@ document.addEventListener('DOMContentLoaded', function () {
                 var count = 0;
                 $.each(response.data, function (key, item) {
                     var i = ++count;
+                    if (item.updated_at == '' || item.updated_at == 'null' || item.updated_at == 'NULL' || item.updated_at == 'Null' || item.updated_at == null) {
+                        var formattedUpdatedAt = '';
+                    } else {
+                        var updatedAt = new Date(item.updated_at);
+                        var formattedUpdatedAt = updatedAt.toISOString().replace('T', ' ').slice(0, -5);
+                    }
                     $('tbody').append(" <tr>\
                                 <td>"+ i + "</td>\
-                                <td>"+ item.updated_at + "</td>\
+                                <td>"+ (formattedUpdatedAt != '' ? formattedUpdatedAt : item.timestamp_bawaan) + "</td>\
                                 <td>"+ item.witel + "</td>\
-                                <td>"+ item.id_valins + "</td>\
-                                <td><a href='"+item.eviden1+"' target='_blank'> <img\
-                                            src='https://drive.google.com/uc?id="+item.id_eviden1+"' id='evidenImg1'\
-                                            alt='Image'  style='width: 200px'> </a></td>\
-                                <td><a href='"+item.eviden2+"' target='_blank'> <img\
-                                            src='https://drive.google.com/uc?id="+item.id_eviden2+"' id='evidenImg1'\
-                                            alt='Image'  style='width: 200px'> </a></td>\
-                                <td><a href='"+item.eviden3+"' target='_blank'> <img\
-                                            src='https://drive.google.com/uc?id="+item.id_eviden3+"' id='evidenImg1'\
-                                            alt='Image'  style='width: 200px'> </a></td>\
-                                <td>"+item.id_valins_lama+"</td>\
-                                <td>"+item.approve_aso+"</td>\
-                                <td>"+item.keterangan_aso+"</td>\
-                                <td>"+item.ram3+"</td>\
-                                <td>"+item.keterangan_ram3+"</td>\
-                                <td>"+item.rekon+"</td>\
-                                <td align='center'> <div class='row'>\
-                                <div class='col-md-3'></div>\
-                                <div class='col-md-2'>\
+                                <td>"+ item.id_valins + "</td><td>\
+                                <a href='"+ item.eviden1 + "' target='_blank'> <img\
+                                            src='https://drive.google.com/uc?id="+ item.id_eviden1 + "' class='evidenImg'\
+                                            alt='Tidak ada Image'  style='width: 300px'> </a></td><td>\
+                                <a href='"+ item.eviden2 + "' target='_blank'> <img\
+                                            src='https://drive.google.com/uc?id="+ item.id_eviden2 + "' class='evidenImg'\
+                                            alt='Tidak ada Image'  style='width: 300px'> </a></td>\
+                                <td><a href='"+ item.eviden3 + "' target='_blank'> <img\
+                                            src='https://drive.google.com/uc?id="+ item.id_eviden3 + "' class='evidenImg'\
+                                            alt='Tidak ada Image'  style='width: 300px'> </a></td>\
+                                <td>"+ (item.id_valins_lama != null ? item.id_valins_lama : '') + "</td>\
+                                <td>"+ (item.approve_aso != null ? item.approve_aso : '') + "</td>\
+                                <td>"+ (item.keterangan_aso != null ? item.keterangan_aso : '') + "</td>\
+                                <td>"+ (item.ram3 != null ? item.ram3 : '') + "</td>\
+                                <td>"+ (item.keterangan_ram3 != null ? item.keterangan_ram3 : '') + "</td>\
+                                <td>"+ item.rekon + "</td>\
+                                <td align='center'> <div class='row d-flex align-items-center justify-content-center'>\
+                                <div class='col-auto mb-1'>\
                                     <button class='btn btn-warning' type='button'\
                                         style='color: white;' data-data-id=" + item.id + " id='btnEdit'> Edit\
                                     </button>\
                                 </div>\
-                                <div class='col-md-6'>\
-                                    <button class='btn btn-danger' type='button' data-data-id=" + item.id + " data-username=" + item.username + " id='btnHapus'> Hapus\
+                                <div class='col-auto'>\
+                                    <button class='btn btn-danger' type='button' data-data-id=" + item.id + " data-valins=" + item.id_valins + " id='btnHapus'> Hapus\
                                     </button>\
                                 </div>\
                             </div> </td>\
                                 ");
                 });
                 console.log('berhasil refresh table!');
+                $('.evidenImg').on('error', function() {
+                    $(this).parent('a').removeAttr('href');
+                });
             }
         })
-    }
+    };
+
+    $('#clearBtn').on('click', function () {
+        $('#formWitel_default').prop('selected', true);
+        $('#formIdValins').val('');
+        $('#formEviden1').val('');
+        $('#formEviden2').val('');
+        $('#formEviden3').val('');
+        $('#formIdValinsLama').val('');
+        $('#formRekon_default').prop('selected', true);
+        $('#formWitel_default').focus();
+
+    });
+
+    $('#refresh').on('click', function () {
+        $('#refresh').prop('disabled', true);
+        $('#refreshIcon').addClass('fa-spin-pulse');
+
+        setTimeout(function () {
+
+            loadTable();
+
+            $('#refresh').prop('disabled', false);
+            $('#refreshIcon').removeClass('fa-spin-pulse');
+        }, 2000);
+    });
 
 
     $('#uploadExcelQuestion').on('click', function () {
@@ -137,23 +170,31 @@ document.addEventListener('DOMContentLoaded', function () {
                             $('#submitSpinner').hide();
                             exit();
                         }
+                        if (response.trigger == 'URL TIDAK VALID') {
+                            const toast = document.getElementById('toast-warningURLTidakValid')
+                            const toastBootstrap = bootstrap.Toast.getOrCreateInstance(toast);
+                            toastBootstrap.show();
+                            $('#submitBtn').prop('disabled', false);
+                            $('#submitSpinner').hide();
+                            $('#'+response.eviden).focus();
+                            exit();
+                        }
                         if (response.trigger == 'BERHASIL') {
                             const toast = document.getElementById('toast-successCreate')
                             const toastBootstrap = bootstrap.Toast.getOrCreateInstance(toast);
                             toastBootstrap.show();
                             $('#submitBtn').prop('disabled', false);
                             $('#submitSpinner').hide();
-                            $('#formWitel_default').prop('default', true);
+                            $('#formWitel_default').prop('selected', true);
                             $('#formIdValins').val('');
                             $('#formEviden1').val('');
                             $('#formEviden2').val('');
                             $('#formEviden3').val('');
                             $('#formIdValinsLama').val('');
-                            $('#formRekon_default').prop('default', true);
+                            $('#formRekon_default').prop('selected', true);
                             $('#closeModalBtn').click();
                             loadTable();
                             $('#tableData').DataTable();
-                            exit();
                         }
                     }
                 });

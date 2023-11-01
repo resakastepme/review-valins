@@ -23,6 +23,8 @@
             <h1> THIS SECTION IS FOR FILTERS </h1>
         </div>
         <div class="card-body">
+            <button type="button" class="btn btn-success mb-3" id="refresh"><i class="fa-solid fa-arrows-rotate me-1"
+                    id="refreshIcon"></i> Refresh </button>
             <div class="table-responsive">
                 <table id="tableData" style="width:100%" class="table table-striped table-bordered table-hover"
                     border="1">
@@ -49,18 +51,18 @@
                         @foreach ($datas as $data)
                             <tr>
                                 <td>{{ $loop->iteration }}</td>
-                                <td>{{ $data->updated_at }}</td>
+                                <td>{{ $data->updated_at != null ? $data->updated_at : $data->timestamp_bawaan }}</td>
                                 <td> {{ $data->witel }} </td>
                                 <td> {{ $data->id_valins }} </td>
                                 <td><a href="{{ $data->eviden1 }}" target="_blank"> <img
-                                            src="https://drive.google.com/uc?id={{ $data->id_eviden1 }}" id="evidenImg1"
-                                            alt="Image" style="width: 200px"> </a></td>
+                                            src="https://drive.google.com/uc?id={{ $data->id_eviden1 }}" class="evidenImg"
+                                            alt="Tidak ada Image" style="width: 300px"> </a></td>
                                 <td><a href="{{ $data->eviden2 }}" target="_blank"> <img
-                                            src="https://drive.google.com/uc?id={{ $data->id_eviden2 }}" id="evidenImg2"
-                                            alt="Image" style="width: 200px"> </a></td>
+                                            src="https://drive.google.com/uc?id={{ $data->id_eviden2 }}" class="evidenImg"
+                                            alt="Tidak ada Image" style="width: 300px"> </a></td>
                                 <td><a href="{{ $data->eviden3 }}" target="_blank"> <img
-                                            src="https://drive.google.com/uc?id={{ $data->id_eviden3 }}" id="evidenImg3"
-                                            alt="Image" style="width: 200px"> </a></td>
+                                            src="https://drive.google.com/uc?id={{ $data->id_eviden3 }}" class="evidenImg"
+                                            alt="Tidak ada Image" style="width: 300px"> </a></td>
                                 <td> {{ $data->id_valins_lama }} </td>
                                 <td> {{ $data->approve_aso == 'null' ? '' : $data->approve_aso }} </td>
                                 <td> {{ $data->keterangan_aso }} </td>
@@ -76,8 +78,8 @@
                                         </div>
                                         <div class="col-auto">
                                             <button class="btn btn-danger" type="button"
-                                                data-data-id="{{ $data['id'] }}"
-                                                data-username="{{ $data['id_valins'] }}" id="btnHapus"> Hapus
+                                                data-data-id="{{ $data['id'] }}" data-valins="{{ $data['id_valins'] }}"
+                                                id="btnHapus"> Hapus
                                             </button>
                                         </div>
                                     </div>
@@ -138,7 +140,8 @@
 
                                     <label for="formRekon"> Rekon <span style="color:red"> * </span> </label>
                                     <select name="formRekon" id="formRekon" class="form-control mb-2">
-                                        <option value="TIDAK MEMILIH REKON" id="formRekon_default" default> Pilih </option>
+                                        <option value="TIDAK MEMILIH REKON" id="formRekon_default" default> Pilih
+                                        </option>
                                         <option value="JANUARI"> Januari </option>
                                         <option value="FEBRUARI"> Februari </option>
                                         <option value="MARET"> Maret </option>
@@ -202,6 +205,17 @@
                     aria-label="Close"></button>
             </div>
         </div>
+        <div class="toast align-items-center text-bg-warning border-0" role="alert" aria-live="assertive"
+            aria-atomic="true" id="toast-warningURLTidakValid">
+            <div class="d-flex">
+                <i class="fa fa-circle-exclamation fa-fade fa-2xl mt-2 ms-2"></i>
+                <div class="toast-body">
+                    <h6> Format URL tidak valid! </h6>
+                </div>
+                <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"
+                    aria-label="Close"></button>
+            </div>
+        </div>
         <div class="toast align-items-center text-bg-danger border-0" role="alert" aria-live="assertive"
             aria-atomic="true" id="toast-dangerGagalCreate">
             <div class="d-flex">
@@ -230,6 +244,9 @@
     <script type="text/javascript" src="{{ asset('assets/js/admin/pengguna/jquery.dataTables.min.js') }}"></script>
     <script type="text/javascript" src="{{ asset('assets/js/admin/pengguna/dataTables.bootstrap4.min.js') }}"></script>
     <script type="text/javascript">
+        $('.evidenImg').on('error', function() {
+            $(this).parent('a').removeAttr('href');
+        });
         $(function() {
             $(document).ready(function() {
                 $('#tableData').DataTable();
