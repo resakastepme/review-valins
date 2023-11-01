@@ -19,7 +19,7 @@ document.addEventListener('DOMContentLoaded', function () {
                     }
                     $('tbody').append(" <tr>\
                                 <td>"+ i + "</td>\
-                                <td>"+ (formattedUpdatedAt != '' ? formattedUpdatedAt : item.timestamp_bawaan) + "</td>\
+                                <td>"+ (formattedUpdatedAt != '' ? formattedUpdatedAt : item.timestamp_bawaan != null ? item.timestamp_bawaan : '<b style="color: red"> ANOMALY </b>') + "</td>\
                                 <td>"+ item.witel + "</td>\
                                 <td>"+ item.id_valins + "</td><td>\
                                 <a href='"+ item.eviden1 + "' target='_blank'> <img\

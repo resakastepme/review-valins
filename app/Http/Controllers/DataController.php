@@ -24,19 +24,31 @@ class DataController extends Controller
         $uri2 = $q[0]['eviden2'];
         $uri3 = $q[0]['eviden3'];
         $queryString1 = parse_url($uri1, PHP_URL_QUERY);
-        parse_str($queryString1, $queryParameters1);
-        $id1 = $queryParameters1['id'];
+        if ($queryString1) {
+            parse_str($queryString1, $queryParameters1);
+            $id1 = $queryParameters1['id'];
+        } else {
+            $id1 = '';
+        }
         if ($uri2 != '') {
             $queryString2 = parse_url($uri2, PHP_URL_QUERY);
-            parse_str($queryString2, $queryParameters2);
-            $id2 = $queryParameters2['id'];
+            if ($queryString2) {
+                parse_str($queryString2, $queryParameters2);
+                $id2 = $queryParameters2['id'];
+            } else {
+                $id2 = '';
+            }
         } else {
             $id2 = '';
         }
         if ($uri3 != '') {
             $queryString3 = parse_url($uri3, PHP_URL_QUERY);
-            parse_str($queryString3, $queryParameters3);
-            $id3 = $queryParameters3['id'];
+            if ($queryString3) {
+                parse_str($queryString3, $queryParameters3);
+                $id3 = $queryParameters3['id'];
+            } else {
+                $id3 = '';
+            }
         } else {
             $id3 = '';
         }
@@ -101,7 +113,7 @@ class DataController extends Controller
             if ($queryString3) {
                 parse_str($queryString3, $queryParameters3);
                 $id3 = $queryParameters3['id'];
-            }else{
+            } else {
                 return response()->json([
                     'status' => 'GAGAL',
                     'trigger' => 'URL TIDAK VALID',
