@@ -19,13 +19,16 @@ class DatasTableSeeder extends Seeder
             'id_valins' => '20981474',
             'eviden1' => 'https://drive.google.com/open?id=1a9MfNNk8R2S2vC_VlD8YmRHCKUw27isC',
             'eviden2' => 'https://drive.google.com/open?id=1vvHWjZrdquhNYzEsROj5CKn_lrByAk5d',
-            'eviden3' => '',
+            'eviden3' => 'https://drive.google.com/open?id=1vvHWjZrdquhNYzEsROj5CKn_lrByAk5d',
             'id_valins_lama' => '',
             'approve_aso' => '',
             'keterangan_aso' => '',
             'ram3' => 'NOK',
             'rekon' => 'SEPTEMBER',
-            'keterangan_ram3' => 'BT/NONE >=50% Jumlah Dropcore'
+            'keterangan_ram3' => 'BT/NONE >=50% Jumlah Dropcore',
+            'id_eviden1' => '1a9MfNNk8R2S2vC_VlD8YmRHCKUw27isC',
+            'id_eviden2' => '1vvHWjZrdquhNYzEsROj5CKn_lrByAk5d',
+            'id_eviden3' => '1vvHWjZrdquhNYzEsROj5CKn_lrByAk5d',
         ]);
     }
 }

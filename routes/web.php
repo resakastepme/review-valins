@@ -43,6 +43,8 @@ Route::get('/', function () {
     }
 });
 
+Route::get('/getRole', [AuthController::class,'getRole']);
+
 Route::get('/auth', [AuthController::class, 'index'])->name('login');
 Route::get('/auth/check', [AuthController::class, 'credCheck']);
 
@@ -60,5 +62,7 @@ Route::prefix('/admin')->group(function () {
     Route::post('/pengguna/destroy', [PenggunaController::class,'destroy']);
 
     Route::get('/data', [DataController::class, 'index']);
+    Route::post('/data/create', [DataController::class,'create']);
+    Route::get('/data/getData', [DataController::class,'getData']);
 
 });

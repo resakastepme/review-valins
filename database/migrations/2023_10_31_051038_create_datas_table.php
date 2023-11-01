@@ -25,6 +25,9 @@ return new class extends Migration
             $table->String('ram3')->nullable();
             $table->String('rekon')->nullable();
             $table->string('keterangan_ram3')->nullable();
+            $table->text('id_eviden1')->nullable();
+            $table->text('id_eviden2')->nullable();
+            $table->text('id_eviden3')->nullable();
             $table->timestamps();
         });
     }

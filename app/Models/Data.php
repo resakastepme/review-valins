@@ -23,7 +23,10 @@ class Data extends Model
         'keterangan_aso',
         'ram3',
         'rekon',
-        'keterangan_ram3'
+        'keterangan_ram3',
+        'id_eviden1',
+        'id_eviden2',
+        'id_eviden3'
     ];
     public $timestamps = true;
 }
