@@ -63,7 +63,7 @@
     </div>
 
     {{-- TOASTS --}}
-    <div class="toast-container top-0 end-0 mt-2 me-2">
+    <div class="toast-container top-0 end-0 mt-2 me-2 position-fixed">
         <div class="toast align-items-center text-bg-warning border-0" role="alert" aria-live="assertive"
             aria-atomic="true" id="toast-warningLengkapiForm">
             <div class="d-flex">

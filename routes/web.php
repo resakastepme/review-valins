@@ -65,5 +65,16 @@ Route::prefix('/admin')->group(function () {
     Route::post('/data/create', [DataController::class,'create']);
     Route::get('/data/getData', [DataController::class,'getData']);
     Route::get('/data/editIndex', [DataController::class,'getDataEdit']);
+    Route::post('/data/update', [DataController::class,'update']);
+    ROute::post('/data/destroy', [DataController::class,'destroy']);
 
+});
+
+// ROUTE FOR CHECK, DELETE LATER
+Route::get('/check', function () {
+    if(Session::has('role')){
+        return Session::get('role');
+    }else{
+        return 'no';
+    }
 });

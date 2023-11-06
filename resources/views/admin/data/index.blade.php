@@ -51,18 +51,46 @@
                         @foreach ($datas as $data)
                             <tr>
                                 <td>{{ $loop->iteration }}</td>
-                                <td>{{ $data->updated_at != null ? $data->updated_at : $data->timestamp_bawaan }}</td>
+                                <td>
+                                    @if ($data->updated_at != null)
+                                        {{ $data->updated_at }}
+                                    @else
+                                        @if ($data->timestamp_bawaan == null)
+                                            <b style="color: red">ANOMALY</b>
+                                        @else
+                                            {{ $data->timestamp_bawaan }}
+                                        @endif
+                                    @endif
+                                </td>
                                 <td> {{ $data->witel }} </td>
                                 <td> {{ $data->id_valins }} </td>
-                                <td><a href="{{ $data->eviden1 }}" target="_blank"> <img
-                                            src="https://drive.google.com/uc?id={{ $data->id_eviden1 }}" class="evidenImg"
-                                            alt="Tidak ada Image" style="width: 300px"> </a></td>
-                                <td><a href="{{ $data->eviden2 }}" target="_blank"> <img
-                                            src="https://drive.google.com/uc?id={{ $data->id_eviden2 }}" class="evidenImg"
-                                            alt="Tidak ada Image" style="width: 300px"> </a></td>
-                                <td><a href="{{ $data->eviden3 }}" target="_blank"> <img
-                                            src="https://drive.google.com/uc?id={{ $data->id_eviden3 }}" class="evidenImg"
-                                            alt="Tidak ada Image" style="width: 300px"> </a></td>
+                                @if (empty($data->id_eviden1))
+                                    <td><a target="_blank"> <img src="" class="evidenImg"
+                                                alt="Tidak ada Image/Error" style="width: 300px"> </a></td>
+                                @else
+                                    <td><a href="{{ $data->eviden1 }}" target="_blank"> <img
+                                                src="https://drive.google.com/uc?id={{ $data->id_eviden1 }}"
+                                                class="evidenImg" alt="Tidak ada Image/Error" style="width: 300px"> </a>
+                                    </td>
+                                @endif
+                                @if (empty($data->id_eviden2))
+                                    <td><a target="_blank"> <img src="" class="evidenImg"
+                                                alt="Tidak ada Image/Error" style="width: 300px"> </a></td>
+                                @else
+                                    <td><a href="{{ $data->eviden2 }}" target="_blank"> <img
+                                                src="https://drive.google.com/uc?id={{ $data->id_eviden2 }}"
+                                                class="evidenImg" alt="Tidak ada Image/Error" style="width: 300px"> </a>
+                                    </td>
+                                @endif
+                                @if (empty($data->id_eviden3))
+                                    <td><a target="_blank"> <img src="" class="evidenImg"
+                                                alt="Tidak ada Image/Error" style="width: 300px"> </a></td>
+                                @else
+                                    <td><a href="{{ $data->eviden3 }}" target="_blank"> <img
+                                                src="https://drive.google.com/uc?id={{ $data->id_eviden3 }}"
+                                                class="evidenImg" alt="Tidak ada Image/Error" style="width: 300px"> </a>
+                                    </td>
+                                @endif
                                 <td> {{ $data->id_valins_lama }} </td>
                                 <td> {{ $data->approve_aso == 'null' ? '' : $data->approve_aso }} </td>
                                 <td> {{ $data->keterangan_aso }} </td>
@@ -73,13 +101,14 @@
                                     <div class="row d-flex align-items-center justify-content-center">
                                         <div class="col-auto mb-1">
                                             <button class="btn btn-warning" type="button" style="color: white;"
-                                                data-data-id="{{ $data['id'] }}" id="btnEdit"> Edit
+                                                data-data-id="{{ $data['id'] }}"
+                                                data-valins-id="{{ $data['id_valins'] }}" id="btnEdit"> Edit
                                             </button>
                                         </div>
                                         <div class="col-auto">
                                             <button class="btn btn-danger" type="button"
-                                                data-data-id="{{ $data['id'] }}" data-valins="{{ $data['id_valins'] }}"
-                                                id="btnHapus"> Hapus
+                                                data-data-id="{{ $data['id'] }}"
+                                                data-valins-id="{{ $data['id_valins'] }}" id="btnHapus"> Hapus
                                             </button>
                                         </div>
                                     </div>
@@ -113,7 +142,8 @@
 
                                     <label for="formWitel"> Witel <span style="color:red"> * </span> </label>
                                     <select name="formWitel" id="formWitel" class="form-control mb-2">
-                                        <option value="TIDAK MEMILIH WITEL" id="formWitel_default" default> Pilih </option>
+                                        <option value="TIDAK MEMILIH WITEL" id="formWitel_default" default> Pilih
+                                        </option>
                                         <option value="BANDUNG"> Bandung </option>
                                         <option value="BANDUNG BARAT"> Bandung Barat </option>
                                         <option value="CIREBON"> Cirebon </option>
@@ -123,7 +153,8 @@
                                     </select>
 
                                     <label for="formIdValins"> ID Valins <span style="color:red"> * </span> </label>
-                                    <input type="number" name="formIdValins" id="formIdValins" class="form-control mb-2" />
+                                    <input type="number" name="formIdValins" id="formIdValins"
+                                        class="form-control mb-2" />
 
                                     <label for="formEviden1"> Eviden 1 <span style="color:red"> * </span> </label>
                                     <textarea name="formEviden1" id="formEviden1" cols="10" rows="2" class="form-control mb-2"></textarea>
@@ -187,7 +218,7 @@
         <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered modal-lg">
             <div class="modal-content">
                 <div class="modal-header bg-light">
-                    <h2> Edit Akun </h2>
+                    <h2> Edit Data: <span id="idValins_here"></span> </h2>
                 </div>
                 <div class="modal-body">
 
@@ -202,19 +233,22 @@
                                 <section id="serverSuccess">
                                     <form class="p-3" id="editDataForm">
 
-                                        <input type="hidden" name="edit_csrfHidden" id="csrfHidden"
+                                        <input type="hidden" name="edit_csrfHidden" id="edit_csrfHidden"
                                             value="{{ csrf_token() }}" />
+                                        <input type="hidden" name="edit_dataId" id="edit_dataId">
+                                        <input type="hidden" name="edit_hiddenIdValins" id="edit_hiddenIdValins">
 
                                         <label for="edit_formWitel"> Witel <span style="color:red"> * </span> </label>
                                         <select name="edit_formWitel" id="edit_formWitel" class="form-control mb-2">
                                             <option value="TIDAK MEMILIH WITEL" id="edit_formWitel_default" default> Pilih
                                             </option>
-                                            <option value="BANDUNG"> Bandung </option>
-                                            <option value="BANDUNG BARAT"> Bandung Barat </option>
-                                            <option value="CIREBON"> Cirebon </option>
-                                            <option value="KARAWANG"> Karawang </option>
-                                            <option value="SUKABUMI"> Sukabumi </option>
-                                            <option value="TASIKMALAYA"> Tasikmalaya </option>
+                                            <option value="BANDUNG" id="witel_BANDUNG"> Bandung </option>
+                                            <option value="BANDUNG BARAT" id="witel_BANDUNG BARAT"> Bandung Barat
+                                            </option>
+                                            <option value="CIREBON" id="witel_CIREBON"> Cirebon </option>
+                                            <option value="KARAWANG" id="witel_KARAWANG"> Karawang </option>
+                                            <option value="SUKABUMI" id="witel_SUKABUMI"> Sukabumi </option>
+                                            <option value="TASIKMALAYA" id="witel_TASIKMALAYA"> Tasikmalaya </option>
                                         </select>
 
                                         <label for="edit_formIdValins"> ID Valins <span style="color:red"> * </span>
@@ -240,18 +274,18 @@
                                         <select name="edit_formRekon" id="edit_formRekon" class="form-control mb-2">
                                             <option value="TIDAK MEMILIH REKON" id="edit_formRekon_default" default> Pilih
                                             </option>
-                                            <option value="JANUARI"> Januari </option>
-                                            <option value="FEBRUARI"> Februari </option>
-                                            <option value="MARET"> Maret </option>
-                                            <option value="APRIL"> April </option>
-                                            <option value="MEI"> Mei </option>
-                                            <option value="JUNI"> Juni </option>
-                                            <option value="JULI"> Juli </option>
-                                            <option value="AGUSTUS"> Agustus </option>
-                                            <option value="SEPTEMBER"> September </option>
-                                            <option value="OKTOBER"> Oktober </option>
-                                            <option value="NOVEMBER"> November </option>
-                                            <option value="DESEMBER"> Desember </option>
+                                            <option value="JANUARI" id="rekon_JANUARI"> Januari </option>
+                                            <option value="FEBRUARI" id="rekon_FEBRUARI"> Februari </option>
+                                            <option value="MARET" id="rekon_MARET"> Maret </option>
+                                            <option value="APRIL" id="rekon_APRIL"> April </option>
+                                            <option value="MEI" id="rekon_MEI"> Mei </option>
+                                            <option value="JUNI" id="rekon_JUNI"> Juni </option>
+                                            <option value="JULI" id="rekon_JULI"> Juli </option>
+                                            <option value="AGUSTUS" id="rekon_AGUSTUS"> Agustus </option>
+                                            <option value="SEPTEMBER" id="rekon_SEPTEMBER"> September </option>
+                                            <option value="OKTOBER" id="rekon_OKTOBER"> Oktober </option>
+                                            <option value="NOVEMBER" id="rekon_NOVEMBER"> November </option>
+                                            <option value="DESEMBER" id="rekon_DESEMBER"> Desember </option>
                                         </Select>
 
                                         <small style="font-size: 10px;">Catatan: formulir dengan tanda <span
@@ -280,7 +314,7 @@
     </div>
 
     {{-- TOAST --}}
-    <div class="toast-container top-0 end-0 mt-2 me-2">
+    <div class="toast-container top-0 end-0 mt-2 me-2 position-fixed">
         <div class="toast align-items-center text-bg-warning border-0" role="alert" aria-live="assertive"
             aria-atomic="true" id="toast-warningLengkapiForm">
             <div class="d-flex">
@@ -336,12 +370,48 @@
                     aria-label="Close"></button>
             </div>
         </div>
+        <div class="toast align-items-center text-bg-success border-0" role="alert" aria-live="assertive"
+            aria-atomic="true" id="toast-successUpdate">
+            <div class="d-flex">
+                <i class="fa-solid fa-check fa-fade fa-2xl mt-2 ms-2"></i>
+                <div class="toast-body">
+                    <h6> Berhasil diupdate! </h6>
+                </div>
+                <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"
+                    aria-label="Close"></button>
+            </div>
+        </div>
+        <div class="toast align-items-center text-bg-success border-0" role="alert" aria-live="assertive"
+            aria-atomic="true" id="toast-successDelete">
+            <div class="d-flex">
+                <i class="fa-solid fa-check fa-fade fa-2xl mt-2 ms-2"></i>
+                <div class="toast-body">
+                    <h6> Berhasil dihapus! </h6>
+                </div>
+                <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"
+                    aria-label="Close"></button>
+            </div>
+        </div>
+        <div class="toast align-items-center text-bg-danger border-0" role="alert" aria-live="assertive"
+            aria-atomic="true" id="toast-dangerGagalHapus">
+            <div class="d-flex">
+                <i class="fa-solid fa-circle-xmark fa-fade fa-2xl"></i>
+                <div class="toast-body">
+                    <h6> Akun gagal dihapus! coba lagi nanti </h6>
+                </div>
+                <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"
+                    aria-label="Close"></button>
+            </div>
+        </div>
     </div>
 @endsection
 @section('script')
     <script type="text/javascript" src="{{ asset('assets/js/admin/pengguna/jquery.dataTables.min.js') }}"></script>
     <script type="text/javascript" src="{{ asset('assets/js/admin/pengguna/dataTables.bootstrap4.min.js') }}"></script>
     <script type="text/javascript">
+        $('.evidenImg').on('error', function() {
+            $(this).parent('a').removeAttr('href');
+        });
         $(function() {
             $(document).ready(function() {
                 $('#tableData').DataTable();
