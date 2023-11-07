@@ -85,7 +85,7 @@ document.addEventListener('DOMContentLoaded', function () {
     $('#uploadExcelQuestion').on('click', function () {
 
         console.log('BERHASIL');
-        //lakukan sesuatu
+        $('#excelQuestionModal').modal('show');
 
     });
 
@@ -379,49 +379,54 @@ document.addEventListener('DOMContentLoaded', function () {
         }, 2000);
     });
 
-    $(document).on('click', '#btnHapus', function (){
+    $(document).on('click', '#btnHapus', function () {
         var userId = $(this).data('data-id');
         var idValins = $(this).data('valins-id');
         var csrfToken = $("meta[name='csrf_token']").attr("content");
 
         Swal.fire({
             title: 'Anda yakin?',
-            text: "Proses menghapus data dengan id valins: "+idValins,
+            text: "Proses menghapus data dengan id valins: " + idValins,
             icon: 'warning',
             showCancelButton: true,
             confirmButtonColor: '#3085d6',
             cancelButtonColor: '#d33',
             confirmButtonText: 'Ya',
             cancelButtonText: 'Batalkan'
-          }).then((result) => {
+        }).then((result) => {
             if (result.isConfirmed) {
-              $.ajax({
-                url : '/admin/data/destroy',
-                type: 'POST',
-                data: {
-                    _token: csrfToken,
-                    userId: userId
-                },success: function (response) {
-                    console.log(response.status);
-                    if(response.status == 'BERHASIL'){
-                        const toast_berhasil = document.getElementById('toast-successDelete')
-                        const toastBootstrap = bootstrap.Toast.getOrCreateInstance(toast_berhasil);
-                        toastBootstrap.show();
-                        loadTable();
-                        $('#tablePengguna').DataTable();
-                    }else{
-                        const toast_gagalTambah = document.getElementById('toast-dangerGagalHapus')
-                        const toastBootstrap = bootstrap.Toast.getOrCreateInstance(toast_gagalTambah);
-                        toastBootstrap.show();
-                        loadTable();
-                        $('#tablePengguna').DataTable();
+                $.ajax({
+                    url: '/admin/data/destroy',
+                    type: 'POST',
+                    data: {
+                        _token: csrfToken,
+                        userId: userId
+                    }, success: function (response) {
+                        console.log(response.status);
+                        if (response.status == 'BERHASIL') {
+                            const toast_berhasil = document.getElementById('toast-successDelete')
+                            const toastBootstrap = bootstrap.Toast.getOrCreateInstance(toast_berhasil);
+                            toastBootstrap.show();
+                            loadTable();
+                            $('#tableData').DataTable();
+                        } else {
+                            const toast_gagalTambah = document.getElementById('toast-dangerGagalHapus')
+                            const toastBootstrap = bootstrap.Toast.getOrCreateInstance(toast_gagalTambah);
+                            toastBootstrap.show();
+                            loadTable();
+                            $('#tableData').DataTable();
+                        }
                     }
-                }
-              });
-            }else{
+                });
+            } else {
                 console.log('Proses dibatalkan!');
             }
-          })
+        })
+    });
+
+    $('#downloadBtn').on('click', function () {
+        var parameter = 'DataTemplate'
+        location.href = '/download/'+parameter;
     });
 
 });

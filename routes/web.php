@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\DataController;
+use App\Http\Controllers\DownloadController;
 use App\Http\Controllers\PenggunaController;
 use Illuminate\Support\Facades\Route;
 
@@ -44,6 +45,7 @@ Route::get('/', function () {
 });
 
 Route::get('/getRole', [AuthController::class,'getRole']);
+Route::get('/download/{parameter}', [DownloadController::class,'download']);
 
 Route::get('/auth', [AuthController::class, 'index'])->name('login');
 Route::get('/auth/check', [AuthController::class, 'credCheck']);

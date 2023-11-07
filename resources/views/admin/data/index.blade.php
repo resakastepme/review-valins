@@ -313,6 +313,53 @@
         </div>
     </div>
 
+    <!-- Modal Upload Excel Question -->
+    <div class="modal fade" id="excelQuestionModal" data-bs-backdrop="static" tabindex="-1"
+        aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered modal-lg">
+            <div class="modal-content">
+                <div class="modal-header bg-light">
+                    <h2> Tutorial upload data Excel </h2>
+                </div>
+                <div class="modal-body m-4">
+
+                    <ul>
+                        <li> Tekan tombol <span style="color: green; font-weight: bold;"> Upload Excel </span> </li>
+                        <li> Tipe file yang di upload harus ber-tipe <span style="font-weight: bold;"> .XLSX </span> </li>
+                        <li> Pastikan file <span style="font-weight: bold;"> .XLSX </span> memiliki heading row dengan
+                            kolom yang sesuai: </li>
+                        <ul style="font-style: italic;">
+                            <li>TIMESTAMP</li>
+                            <li>WITEL</li>
+                            <li>ID VALINS</li>
+                            <li>EVIDEN 1</li>
+                            <li>EVIDEN 2</li>
+                            <li>ID VALINS LAMA</li>
+                            <li>EVIDEN 3</li>
+                            <li>APPROVE ASO</li>
+                            <li>KET ASO</li>
+                            <li>RAM 3</li>
+                            <li>REKON</li>
+                            <li>KET RAM3</li>
+                        </ul>
+                        <img src="https://cdn.discordapp.com/attachments/758697084039462913/1171050943106797568/image.png?ex=655b452d&is=6548d02d&hm=43965ed1d1d7270031b584806a745d12889090d740e3fc4b5759dabf0c6703bf&"
+                            alt="Gagal memuat gambar" class="form-control mt-2">
+                        <button class="btn btn-success mt-2" id="downloadBtn"><span><i
+                                    class="fa-solid fa-download fa-fade me-2"></i></span> Download Template </button>
+                        <li class="mt-2"> Jika upload file sukses dan sudah sesuai format, maka anda telah berhasil!
+                        </li>
+                    </ul>
+
+                </div>
+                <div class="modal-footer" style="margin-top: -3%;">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"
+                        id="edit_closeModalBtn">Tutup</button>
+                </div>
+                </section>
+            </div>
+        </div>
+    </div>
+
     {{-- TOAST --}}
     <div class="toast-container top-0 end-0 mt-2 me-2 position-fixed">
         <div class="toast align-items-center text-bg-warning border-0" role="alert" aria-live="assertive"
