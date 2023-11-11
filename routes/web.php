@@ -3,6 +3,7 @@
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\DataController;
 use App\Http\Controllers\DownloadController;
+use App\Http\Controllers\ExcelController;
 use App\Http\Controllers\PenggunaController;
 use Illuminate\Support\Facades\Route;
 
@@ -46,6 +47,7 @@ Route::get('/', function () {
 
 Route::get('/getRole', [AuthController::class,'getRole']);
 Route::get('/download/{parameter}', [DownloadController::class,'download']);
+Route::patch('/excelhandle', [ExcelController::class, 'proccess']);
 
 Route::get('/auth', [AuthController::class, 'index'])->name('login');
 Route::get('/auth/check', [AuthController::class, 'credCheck']);
@@ -68,7 +70,8 @@ Route::prefix('/admin')->group(function () {
     Route::get('/data/getData', [DataController::class,'getData']);
     Route::get('/data/editIndex', [DataController::class,'getDataEdit']);
     Route::post('/data/update', [DataController::class,'update']);
-    ROute::post('/data/destroy', [DataController::class,'destroy']);
+    Route::post('/data/destroy', [DataController::class,'destroy']);
+    Route::get('/data/preview', [DataController::class,'preview']);
 
 });
 

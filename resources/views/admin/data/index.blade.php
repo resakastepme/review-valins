@@ -13,9 +13,14 @@
             <button class="btn btn-primary me-2" data-bs-toggle="modal" data-bs-target="#tambahDataModal"> <span class="me-1">
                     <i class="fas fa-plus-circle fa-lg">
                     </i> </span> Tambah Data </button>
-            <button class="btn btn-success"> <span class="me-1"> <i class="fa-solid fa-file-excel fa-lg"></i> </span>
-                Upload
-                Excel </button>
+            <form id="excelForm" enctype="multipart/form-data">
+                <input type="hidden" id="hiddenCsrfUpload" value="{{ csrf_token() }}">
+                <label for="excelUploadForm" class="btn btn-success">
+                    <i class="fa-solid fa-file-excel fa-lg me-1"></i>
+                    Upload Excel
+                </label>
+                <input type="file" name="excelUploadForm" id="excelUploadForm" accept=".xlsx" style="display: none;" />
+            </form>
             <span class="ms-2 mt-2" align="center" id="uploadExcelQuestion"> <i
                     class="fa-solid fa-circle-question fa-xl"></i> </span>
         </div>
@@ -138,7 +143,8 @@
 
                                 <form class="p-3" id="tambahDataForm">
 
-                                    <input type="hidden" name="csrfHidden" id="csrfHidden" value="{{ csrf_token() }}" />
+                                    <input type="hidden" name="csrfHidden" id="csrfHidden"
+                                        value="{{ csrf_token() }}" />
 
                                     <label for="formWitel"> Witel <span style="color:red"> * </span> </label>
                                     <select name="formWitel" id="formWitel" class="form-control mb-2">
@@ -332,17 +338,17 @@
                             <li>TIMESTAMP</li>
                             <li>WITEL</li>
                             <li>ID VALINS</li>
-                            <li>EVIDEN 1</li>
-                            <li>EVIDEN 2</li>
+                            <li>Upload Eviden Web Valins</li>
+                            <li>Tambahan Eviden Web Valins</li>
                             <li>ID VALINS LAMA</li>
-                            <li>EVIDEN 3</li>
-                            <li>APPROVE ASO</li>
+                            <li>Eviden Tambahan Untuk Pelanggan Non Indihome / Dinas</li>
+                            <li>Approve ASO (OK/NOK)</li>
                             <li>KET ASO</li>
-                            <li>RAM 3</li>
+                            <li>RAM3</li>
                             <li>REKON</li>
                             <li>KET RAM3</li>
                         </ul>
-                        <img src="https://cdn.discordapp.com/attachments/758697084039462913/1171050943106797568/image.png?ex=655b452d&is=6548d02d&hm=43965ed1d1d7270031b584806a745d12889090d740e3fc4b5759dabf0c6703bf&"
+                        <img src="https://cdn.discordapp.com/attachments/758697084039462913/1171687592970956860/image.png?ex=655d961b&is=654b211b&hm=0789826bcfe32b53bbe817438809282a1d5b40bb7da1c89acb22fb6a4496ebf5&"
                             alt="Gagal memuat gambar" class="form-control mt-2">
                         <button class="btn btn-success mt-2" id="downloadBtn"><span><i
                                     class="fa-solid fa-download fa-fade me-2"></i></span> Download Template </button>

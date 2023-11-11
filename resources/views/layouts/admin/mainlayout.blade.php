@@ -40,7 +40,7 @@
                         <a class="nav-link" href="#">Beri tugas</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link {{ request()->is('admin/data') || request()->is('user/data') ? 'active' : '' }}"
+                        <a class="nav-link {{ request()->is('admin/data') || request()->is('user/data') || request()->is('admin/data/preview') ? 'active' : '' }}"
                             href="{{ url('/' . (Session('role') === 1 ? 'admin' : 'user') . '/data') }}" tabindex="-1"
                             aria-disabled="true">Data</a>
                     </li>

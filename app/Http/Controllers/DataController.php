@@ -298,4 +298,8 @@ class DataController extends Controller
             ]);
         }
     }
+
+    public function preview(){
+        return view('admin.data.preview');
+    }
 }
