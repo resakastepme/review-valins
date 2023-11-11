@@ -28,6 +28,9 @@ return new class extends Migration
             $table->text('id_eviden1')->nullable();
             $table->text('id_eviden2')->nullable();
             $table->text('id_eviden3')->nullable();
+            $table->boolean('status')->default(0);
+            $table->String('upload_by')->nullable();
+            $table->text('unique_id')->nullable();
             $table->timestamps();
         });
     }

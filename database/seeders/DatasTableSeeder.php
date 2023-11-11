@@ -29,6 +29,9 @@ class DatasTableSeeder extends Seeder
             'id_eviden1' => '1a9MfNNk8R2S2vC_VlD8YmRHCKUw27isC',
             'id_eviden2' => '1vvHWjZrdquhNYzEsROj5CKn_lrByAk5d',
             'id_eviden3' => '1vvHWjZrdquhNYzEsROj5CKn_lrByAk5d',
+            'status' => 1,
+            'upload_by' => 'admin',
+            'unique_id' => 'blablabla'
         ]);
     }
 }
