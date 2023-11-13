@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\PreviewData;
 use Illuminate\Http\Request;
 use App\Models\Data;
 
@@ -299,7 +300,28 @@ class DataController extends Controller
         }
     }
 
-    public function preview(){
-        return view('admin.data.preview');
+    public function preview()
+    {
+        if (Session('access') != 'granted') {
+            return redirect()->to('/auth');
+        } else {
+            $qPreview = PreviewData::where('unique_id', Session('unique_id'))->get();
+            foreach ($qPreview as $preview) {
+                $q1 = Data::where('rekon', $preview->rekon)->where('id_valins', $preview->id_valins)->first();
+                if ($q1) {
+                    PreviewData::where('id', $preview->id)->update([
+                        'isValid' => 0
+                    ]);
+                }
+            }
+            $qPreviewNotValid = PreviewData::where('unique_id', Session('unique_id'))->where('isValid', 0)->get();
+            $qPreviewValid = PreviewData::where('unique_id', Session('unique_id'))->where('isValid', 1)->get();
+            // dd('success with id: ' . Session('unique_id'));
+            return view('admin.data.preview', [
+                'previewValid' => $qPreviewValid,
+                'previewNotValid' => $qPreviewNotValid,
+                'access' => 'granted'
+            ]);
+        }
     }
 }

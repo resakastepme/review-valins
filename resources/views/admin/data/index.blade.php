@@ -13,13 +13,15 @@
             <button class="btn btn-primary me-2" data-bs-toggle="modal" data-bs-target="#tambahDataModal"> <span class="me-1">
                     <i class="fas fa-plus-circle fa-lg">
                     </i> </span> Tambah Data </button>
-            <form id="excelForm" enctype="multipart/form-data">
+            <form id="excelForm" action="{{ url('/excelhandle') }}" method="POST" enctype="multipart/form-data">
+                @csrf
                 <input type="hidden" id="hiddenCsrfUpload" value="{{ csrf_token() }}">
-                <label for="excelUploadForm" class="btn btn-success">
+                <label for="file" class="btn btn-success">
                     <i class="fa-solid fa-file-excel fa-lg me-1"></i>
                     Upload Excel
                 </label>
-                <input type="file" name="excelUploadForm" id="excelUploadForm" accept=".xlsx" style="display: none;" />
+                <input type="file" name="file" id="file" accept=".xlsx" style="display: none;" />
+                <button type="submit" id="btnUploadSubmit" style="display:none"></button>
             </form>
             <span class="ms-2 mt-2" align="center" id="uploadExcelQuestion"> <i
                     class="fa-solid fa-circle-question fa-xl"></i> </span>

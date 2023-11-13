@@ -36,8 +36,10 @@ Route::get('/', function () {
 
         if (Session('role') == 1) {
             return redirect()->to('/admin/dashboard');
-        } else {
+        } elseif(Session('role') == 0) {
             return redirect()->to('/user/dashboard');
+        }else{
+            return redirect()->to('/aso/dashboard');
         }
 
     } else {
@@ -47,7 +49,7 @@ Route::get('/', function () {
 
 Route::get('/getRole', [AuthController::class,'getRole']);
 Route::get('/download/{parameter}', [DownloadController::class,'download']);
-Route::patch('/excelhandle', [ExcelController::class, 'proccess']);
+Route::post('/excelhandle', [ExcelController::class, 'process']);
 
 Route::get('/auth', [AuthController::class, 'index'])->name('login');
 Route::get('/auth/check', [AuthController::class, 'credCheck']);

@@ -11,7 +11,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('datas', function (Blueprint $table) {
+        Schema::create('preview_datas', function (Blueprint $table) {
             $table->id();
             $table->String('timestamp_bawaan')->nullable();
             $table->string('witel');
@@ -25,11 +25,10 @@ return new class extends Migration
             $table->String('ram3')->nullable();
             $table->String('rekon')->nullable();
             $table->string('keterangan_ram3')->nullable();
-            $table->text('id_eviden1')->nullable();
-            $table->text('id_eviden2')->nullable();
-            $table->text('id_eviden3')->nullable();
             $table->String('upload_by')->nullable();
-            $table->string('reviewer')->nullable();
+            $table->text('unique_id')->nullable();
+            $table->boolean('isSubmit')->default(0);
+            $table->boolean('isValid')->default(1);
             $table->timestamps();
         });
     }
@@ -39,6 +38,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('datas');
+        Schema::dropIfExists('preview_datas');
     }
 };

@@ -2,32 +2,45 @@
 
 namespace App\Imports;
 
-use App\Models\Data;
+use App\Models\PreviewData;
+use Carbon\Carbon;
 use Maatwebsite\Excel\Concerns\ToModel;
 use Maatwebsite\Excel\Concerns\WithHeadingRow;
+use Maatwebsite\Excel\Concerns\SkipsEmptyRows;
 
-class DatasImport implements ToModel, WithHeadingRow
+class DatasImport implements ToModel, WithHeadingRow, SkipsEmptyRows
 {
     /**
-    * @param array $row
-    *
-    * @return \Illuminate\Database\Eloquent\Model|null
-    */
+     * @param array $row
+     *
+     * @return \Illuminate\Database\Eloquent\Model|null
+     */
+
     public function model(array $row)
     {
-        return new Data([
-            'timestamp_bawaan' => $row['TIMESTAMP'],
-            'witel'=> $row['WITEL'],
-            'id_valins'=> $row['ID VALINS'],
-            'eviden1'=> $row['Upload Eviden Web Valins'],
-            'eviden2'=> $row['Tambahan Eviden Web Valins'],
-            'eviden3'=> $row['Eviden Tambahan Untuk Pelanggan Non Indihome / Dinas'],
-            'id_valins_lama'=> $row['ID VALINS LAMA'],
-            'approve_aso'=> $row['Approve ASO (OK/NOK)'],
-            'keterangan_aso'=> $row['KET ASO'],
-            'ram3'=> $row['RAM3'],
-            'rekon'=> $row['REKON'],
-            'keterangan_ram3'=> $row['KET RAM3'],
+        $excelTimestamp = $row['timestamp'];
+        $timestamp = Carbon::createFromTimestamp(($excelTimestamp - 25569) * 86400);
+        $formattedTimestamp = $timestamp->format('n/j/Y g:i:s A');
+
+        return new PreviewData([
+            'timestamp_bawaan' => $formattedTimestamp,
+            'witel' => $row['witel'],
+            'id_valins' => $row['id_valins'],
+            'eviden1' => $row['eviden_1'],
+            'eviden2' => $row['eviden_2'],
+            'eviden3' => $row['eviden_3'],
+            'id_valins_lama' => $row['id_valins_lama'],
+            'approve_aso' => $row['approve_aso'],
+            'keterangan_aso' => $row['ket_aso'],
+            'ram3' => $row['ram3'],
+            'rekon' => $row['rekon'],
+            'keterangan_ram3' => $row['ket_ram3'],
+            'unique_id' => Session('unique_id'),
+            'upload_by' => Session('username')
         ]);
+    }
+    public function shouldSkipEmptyRows(): bool
+    {
+        return true;
     }
 }

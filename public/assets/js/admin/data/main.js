@@ -475,4 +475,8 @@ document.addEventListener('DOMContentLoaded', function () {
     //     });
     // });
 
+    $('#file').on('change', function () {
+        $('#btnUploadSubmit').click();
+    });
+
 });

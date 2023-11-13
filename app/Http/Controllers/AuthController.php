@@ -13,7 +13,11 @@ class AuthController extends Controller
      * Display a listing of the resource.
      */
     public function getRole(){
-        $role = Session('role') == 1 ? 'admin' : 'user';
+        // $role = Session('role') == 1 ? 'admin' : Session('role')  == 0 ? 'user' : 'aso';
+
+        $role = 'admin';
+        if(Session('role') == 0) return $role = 'user';
+        if(Session('role') == 2) return $role = 'aso';
 
         if($role){
             return response()->json([
