@@ -8,7 +8,7 @@
     </style>
 @endsection
 @section('content')
-<?php if(empty($access)) return redirect()->to('/admin/data')->send() ?>
+<?php if(empty($access)) return redirect()->to('/auth')->send() ?>
     <?php error_reporting(0); ?>
     <div class="container p-3">
         <div class="row">

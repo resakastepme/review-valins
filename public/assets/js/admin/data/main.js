@@ -429,54 +429,18 @@ document.addEventListener('DOMContentLoaded', function () {
         location.href = '/download/' + parameter;
     });
 
-    // document.querySelector('label[for="excelUploadForm"]').addEventListener('click', function () {
-    //     document.getElementById('excelUploadForm').click();
-    // });
-
-    // $('#excelUploadForm').on('change', function () {
-    //     console.log('Change terdeteksi');
-    //     var csrfToken1 = $("meta[name='csrf_token']").attr("content");
-    //     var csrfToken2 = $('#hiddenCsrfUpload').val();
-    //     console.log(csrfToken1);
-    //     console.log(csrfToken2);
-    //     var formData = new FormData();
-    //     formData.append('excelUploadForm', $('#excelUploadForm')[0].files[0]);
-    //     // $.ajaxSetup({
-    //     //     headers: {
-    //     //         'X-CSRF-TOKEN': csrfToken
-    //     //     }
-    //     // });
-    //     $.ajax({
-    //         url: '/excelhandle',
-    //         type: 'patch',
-    //         data: {
-    //             file: formData,
-    //             _token: csrfToken2
-    //         },
-    //         processData: false,
-    //         contentType: false,
-    //         success: function (response) {
-    //             console.log(response.status);
-    //             if (response.status == 'BERHASIL') {
-    //                 console.log('EXCEL EXECUTED');
-    //                 loadTable();
-    //                 $('#tableData').DataTable();
-    //             }
-    //             if(response.status == 'GAGAL'){
-    //                 console.log('EXCEL FAILED');
-    //             }
-    //             if(response.status == 'FILE GAGAL'){
-    //                 console.log('FILE FAILED');
-    //             }
-    //         },
-    //         error: function (error) {
-    //             console.log(error);
-    //         }
-    //     });
-    // });
+    $('#btnUploadExcelBtn').on('click', function () {
+        $('#file').click();
+    });
 
     $('#file').on('change', function () {
-        $('#btnUploadSubmit').click();
+
+        $('#btnUploadExcelBtn').prop('disabled', true);
+        $('#btnUploadExcelBtn').html('');
+        $('#btnUploadExcelBtn').append('<span class="spinner-border spinner-border-sm text-light me-2" role="status"></span> Proses...');
+        setTimeout(function (){
+            $('#btnUploadSubmit').click();
+        }, 1000);
     });
 
 });

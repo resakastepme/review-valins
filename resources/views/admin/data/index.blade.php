@@ -16,10 +16,8 @@
             <form id="excelForm" action="{{ url('/excelhandle') }}" method="POST" enctype="multipart/form-data">
                 @csrf
                 <input type="hidden" id="hiddenCsrfUpload" value="{{ csrf_token() }}">
-                <label for="file" class="btn btn-success">
-                    <i class="fa-solid fa-file-excel fa-lg me-1"></i>
-                    Upload Excel
-                </label>
+                <button type="button" class="btn btn-success" id="btnUploadExcelBtn"><i
+                        class="fa-solid fa-file-excel fa-lg me-2"></i><span>Upload Excel</span></button>
                 <input type="file" name="file" id="file" accept=".xlsx" style="display: none;" />
                 <button type="submit" id="btnUploadSubmit" style="display:none"></button>
             </form>
@@ -464,6 +462,7 @@
     <script type="text/javascript" src="{{ asset('assets/js/admin/pengguna/jquery.dataTables.min.js') }}"></script>
     <script type="text/javascript" src="{{ asset('assets/js/admin/pengguna/dataTables.bootstrap4.min.js') }}"></script>
     <script type="text/javascript">
+        var error = '{{ Session('error') }}';
         $('.evidenImg').on('error', function() {
             $(this).parent('a').removeAttr('href');
         });
@@ -472,6 +471,27 @@
                 $('#tableData').DataTable();
             });
         });
+
+        function excelNotValid() {
+            Swal.fire({
+                title: "GAGAL",
+                text: "File excel tidak sesuai dengan format sistem!",
+                icon: "error",
+                showCancelButton: true,
+                confirmButtonColor: "#212529bf",
+                cancelButtonColor: "#198754",
+                confirmButtonText: "Lihat tutorial",
+                cancelButtonText: "Tutup"
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    Swal.DismissReason.cancel
+                    setTimeout(() => {
+                        $('#excelQuestionModal').modal('show');
+                    }, 500);
+                }
+            });
+        }
+        (error == 'Undefined array key &quot;timestamp&quot;' ? excelNotValid() : '')
     </script>
     <script type="text/javascript" src="{{ asset('assets/js/admin/data/main.js') }}"></script>
 @endsection
