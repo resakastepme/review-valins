@@ -24,12 +24,14 @@ class ExcelController extends Controller
 
             // dd('success with id: '. Session('unique_id'));
             if ($file) {
-                return redirect()->to('admin/data/preview')->with('fileName', $fileName)->with('access', 'granted');
+                Session::put('preview_access','granted');
+                Session::put('fileName', $fileName);
+                return redirect()->to('admin/data/preview');
             } else {
                 return redirect()->back()->with('error', 'Failed');
             }
         } catch (Exception $e) {
-            return redirect()->back()->with('error', $e->getMessage());
+            return redirect()->back()->with('excelNotValid', $e->getMessage());
         }
     }
 }

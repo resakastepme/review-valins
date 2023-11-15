@@ -13,7 +13,7 @@
     <link rel="shortcut icon" href="{{ asset('assets/img/auth/telkom-logo.png') }}" type="image/x-icon">
     <meta name="csrf_token" content="{{ csrf_token() }}">
     @yield('css')
-    <title>Admin - Dashboard</title>
+    <title> {{ Session::get('role') == 1 ? 'Admin' : (Session::get('role') == 2 ? 'Aso' : 'User') }} - @yield('title')</title>
 </head>
 
 <body>
@@ -92,6 +92,7 @@
 <script type="text/javascript" src="{{ asset('assets/js/autologout.js') }}"></script>
 <script type="text/javascript" src="{{ asset('assets/js/sweetalert2.min.js') }}"></script>
 <script type="text/javascript">
+
     function logoResizer() {
         if (window.innerWidth < 576) {
             document.getElementById('telkomLogo').style.width = "20%";

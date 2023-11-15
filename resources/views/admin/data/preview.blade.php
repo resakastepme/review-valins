@@ -1,4 +1,7 @@
 @extends('layouts.admin.mainlayout')
+@section('title')
+    Preview
+@endsection
 @section('css')
     <link rel="stylesheet" href="{{ asset('assets/css/admin/dataTables.bootstrap4.min.css') }}">
     <style>
@@ -8,20 +11,39 @@
     </style>
 @endsection
 @section('content')
-<?php if(empty($access)) return redirect()->to('/auth')->send() ?>
+    <?php
+    // if(Session::get('preview_access') != 'granted'){redirect()->to('/auth')->send()}
+    ?>
     <?php error_reporting(0); ?>
     <div class="container p-3">
         <div class="row">
-            <div class="col-auto d-flex">
+            <div class="col-md-6 d-flex">
 
                 <h2 class="me-2"> Preview: </h2>
                 <div class="card bg-success p-2" id="pointer">
                     <div class="card-title text-white">
                         <i class="fa-solid fa-file-excel fa-lg me-1"></i>
-                        {{Session('fileName')}}
+                        {{ Session('fileName') }}
                     </div>
                 </div>
 
+            </div>
+            <div class="col-md-6">
+                <div class="row d-flex justify-content-end">
+                    <div class="col-auto d-flex justify-content-end">
+                        <div class="card bg-secondary me-2">
+                            <div class="card-body" style="cursor: pointer;">
+                                <h6 style="color: white;" id="batalkan"> Batalkan </h6>
+                            </div>
+                        </div>
+                        <div class="card bg-primary" id="{{ $previewValid[0]['id_valins'] != '' ? 'submitValid' : '~' }}"
+                            style="cursor: {{ $previewValid[0]['id_valins'] != '' ? 'pointer' : 'not-allowed' }}">
+                            <div class="card-body">
+                                <h6 style="color: white;"> Submit </h6>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -101,6 +123,7 @@
             </div>
         </section>
     @endif
+
 @endsection
 @section('script')
     <script type="text/javascript" src="{{ asset('assets/js/admin/pengguna/jquery.dataTables.min.js') }}"></script>
@@ -109,6 +132,24 @@
         $(document).ready(function() {
             $('#tableDataPreviewError').DataTable();
             $('#tableDataPreviewSuccess').DataTable();
+        });
+
+        $('#batalkan').on('click', function() {
+            Swal.fire({
+                title: "Batalkan proses?",
+                icon: "question",
+                showCancelButton: true,
+                confirmButtonColor: "#3085d6",
+                cancelButtonColor: "#d33",
+                confirmButtonText: "Ya",
+                cancelButtonText: "Kembali"
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $.get('/getRole', function(response){
+                        location.href = '/'+response.role+'/data/preview/batal'
+                    });
+                }
+            });
         });
     </script>
 @endsection

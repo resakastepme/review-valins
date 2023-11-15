@@ -74,13 +74,14 @@ Route::prefix('/admin')->group(function () {
     Route::post('/data/update', [DataController::class,'update']);
     Route::post('/data/destroy', [DataController::class,'destroy']);
     Route::get('/data/preview', [DataController::class,'preview']);
+    Route::get('/data/preview/batal', [DataController::class,'previewBatal']);
 
 });
 
 // ROUTE FOR CHECK, DELETE LATER
 Route::get('/check', function () {
-    if(Session::has('role')){
-        return Session::get('role');
+    if(Session::has('preview_access')){
+        return Session::get('preview_access');
     }else{
         return 'no';
     }

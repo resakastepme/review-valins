@@ -1,4 +1,7 @@
 @extends('layouts.admin.mainlayout')
+@section('title')
+Data
+@endsection
 @section('css')
     <link rel="stylesheet" href="{{ asset('assets/css/admin/dataTables.bootstrap4.min.css') }}">
     <style>
@@ -348,7 +351,7 @@
                             <li>rekon</li>
                             <li>ket_ram3</li>
                         </ul>
-                        <img src="https://cdn.discordapp.com/attachments/758697084039462913/1171687592970956860/image.png?ex=655d961b&is=654b211b&hm=0789826bcfe32b53bbe817438809282a1d5b40bb7da1c89acb22fb6a4496ebf5&"
+                        <img src="https://cdn.discordapp.com/attachments/758697084039462913/1174198887062438008/image.png?ex=6566b8ee&is=655443ee&hm=e7d2c089abb802bbf9ded6abbc804ef262c4eee0c91cfdf9fdb6f81797ecfb65&"
                             alt="Gagal memuat gambar" class="form-control mt-2">
                         <button class="btn btn-success mt-2" id="downloadBtn"><span><i
                                     class="fa-solid fa-download fa-fade me-2"></i></span> Download Template </button>
@@ -462,7 +465,10 @@
     <script type="text/javascript" src="{{ asset('assets/js/admin/pengguna/jquery.dataTables.min.js') }}"></script>
     <script type="text/javascript" src="{{ asset('assets/js/admin/pengguna/dataTables.bootstrap4.min.js') }}"></script>
     <script type="text/javascript">
-        var error = '{{ Session('error') }}';
+        var error = '{{ Session('excelNotValid') }}';
+        var previewStatus = '{{ Session('batalkan_status') }}';
+        console.log(previewStatus);
+        // if(previewStatus) return console.log(previewStatus);
         $('.evidenImg').on('error', function() {
             $(this).parent('a').removeAttr('href');
         });
@@ -491,7 +497,7 @@
                 }
             });
         }
-        (error == 'Undefined array key &quot;timestamp&quot;' ? excelNotValid() : '')
+        (error ? excelNotValid() : '')
     </script>
     <script type="text/javascript" src="{{ asset('assets/js/admin/data/main.js') }}"></script>
 @endsection

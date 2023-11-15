@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\PreviewData;
 use Illuminate\Http\Request;
 use App\Models\Data;
+use Illuminate\Support\Facades\Session;
 
 class DataController extends Controller
 {
@@ -302,7 +303,7 @@ class DataController extends Controller
 
     public function preview()
     {
-        if (Session('access') != 'granted') {
+        if (Session('preview_access') != 'granted') {
             return redirect()->to('/auth');
         } else {
             $qPreview = PreviewData::where('unique_id', Session('unique_id'))->get();
@@ -317,11 +318,22 @@ class DataController extends Controller
             $qPreviewNotValid = PreviewData::where('unique_id', Session('unique_id'))->where('isValid', 0)->get();
             $qPreviewValid = PreviewData::where('unique_id', Session('unique_id'))->where('isValid', 1)->get();
             // dd('success with id: ' . Session('unique_id'));
+            Session::put('preview_access','granted');
             return view('admin.data.preview', [
                 'previewValid' => $qPreviewValid,
-                'previewNotValid' => $qPreviewNotValid,
-                'access' => 'granted'
+                'previewNotValid' => $qPreviewNotValid
             ]);
+        }
+    }
+
+    public function previewBatal(){
+        $q = PreviewData::where('unique_id', Session::get('unique_id'))->delete();
+        Session::pull('preview_access');
+        Session::pull('unique_id');
+        if($q){
+            return redirect()->to('/'.(Session::get('role') == 1 ? 'admin' : (Session::get('role') == 2 ? 'aso' : 'user')).'/data')->with('batalkan_status', 'Success');
+        }else{
+            return redirect()->to('/'.(Session::get('role') == 1 ? 'admin' : (Session::get('role') == 2 ? 'aso' : 'user')).'/data')->with('batalkan_status', 'Failed');
         }
     }
 }
