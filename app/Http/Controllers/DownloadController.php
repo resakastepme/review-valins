@@ -13,7 +13,7 @@ class DownloadController extends Controller
             return redirect()->to('/auth');
         } else {
             if ($parameter == 'DataTemplate') {
-                $file = Storage::path('public/template/Data Template.xlsx');
+                $file = Storage::path('public/template/DataTemplate.xlsx');
                 return response()->download($file, 'DataTemplate.xlsx');
             }else{
                 return redirect()->to('/auth');

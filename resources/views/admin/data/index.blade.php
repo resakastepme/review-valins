@@ -335,18 +335,18 @@
                         <li> Pastikan file <span style="font-weight: bold;"> .XLSX </span> memiliki heading row dengan
                             kolom yang sesuai: </li>
                         <ul style="font-style: italic;">
-                            <li>TIMESTAMP</li>
-                            <li>WITEL</li>
-                            <li>ID VALINS</li>
-                            <li>Upload Eviden Web Valins</li>
-                            <li>Tambahan Eviden Web Valins</li>
-                            <li>ID VALINS LAMA</li>
-                            <li>Eviden Tambahan Untuk Pelanggan Non Indihome / Dinas</li>
-                            <li>Approve ASO (OK/NOK)</li>
-                            <li>KET ASO</li>
-                            <li>RAM3</li>
-                            <li>REKON</li>
-                            <li>KET RAM3</li>
+                            <li>timestamp</li>
+                            <li>witel</li>
+                            <li>id_valins</li>
+                            <li>eviden_1</li>
+                            <li>eviden_2</li>
+                            <li>id_valins_lama</li>
+                            <li>eviden_3</li>
+                            <li>approve_aso</li>
+                            <li>ket_aso</li>
+                            <li>ram3</li>
+                            <li>rekon</li>
+                            <li>ket_ram3</li>
                         </ul>
                         <img src="https://cdn.discordapp.com/attachments/758697084039462913/1171687592970956860/image.png?ex=655d961b&is=654b211b&hm=0789826bcfe32b53bbe817438809282a1d5b40bb7da1c89acb22fb6a4496ebf5&"
                             alt="Gagal memuat gambar" class="form-control mt-2">
