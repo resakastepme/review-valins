@@ -402,4 +402,14 @@ class DataController extends Controller
             return redirect()->to('/admin/data')->with('excelFailed', 1);
         }
     }
+
+    public function refreshTable(){
+        $q = Data::get();
+        $data = array();
+        foreach($q as $datas){
+            $data[] = $datas;
+        }
+        // dd(json_encode($data));
+        return json_encode($data);
+    }
 }

@@ -33,6 +33,9 @@
         <div class="card-body">
             <button type="button" class="btn btn-success mb-3" id="refresh"><i class="fa-solid fa-arrows-rotate me-1"
                     id="refreshIcon"></i> Refresh </button>
+            <button type="button" class="btn btn-secondary mb-3" id="historyBtn"><i
+                    class="fa-solid fa-clock-rotate-left"></i>
+                History </button>
             <div class="table-responsive">
                 <table id="tableData" style="width:100%" class="table table-striped table-bordered table-hover"
                     border="1">
@@ -369,6 +372,52 @@
         </div>
     </div>
 
+    <!-- Modal History -->
+    <div class="modal animate__animated animate__slideInUp animate__faster" id="historyModal" data-bs-backdrop="static" tabindex="-1"
+        aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered modal-fullscreen">
+            <div class="modal-content">
+                <div class="modal-header bg-light">
+                    <h2> <i class="fa-solid fa-clock-rotate-left ms-5"></i> History  </h2>
+                </div>
+                <div class="modal-body m-4">
+
+                    <ul>
+                        <li> Tekan tombol <span style="color: green; font-weight: bold;"> Upload Excel </span> </li>
+                        <li> Tipe file yang di upload harus ber-tipe <span style="font-weight: bold;"> .XLSX </span> </li>
+                        <li> Pastikan file <span style="font-weight: bold;"> .XLSX </span> memiliki heading row dengan
+                            kolom yang sesuai: </li>
+                        <ul style="font-style: italic;">
+                            <li>timestamp</li>
+                            <li>witel</li>
+                            <li>id_valins</li>
+                            <li>eviden_1</li>
+                            <li>eviden_2</li>
+                            <li>id_valins_lama</li>
+                            <li>eviden_3</li>
+                            <li>approve_aso</li>
+                            <li>ket_aso</li>
+                            <li>ram3</li>
+                            <li>rekon</li>
+                            <li>ket_ram3</li>
+                        </ul>
+                        <img src="https://cdn.discordapp.com/attachments/758697084039462913/1174198887062438008/image.png?ex=6566b8ee&is=655443ee&hm=e7d2c089abb802bbf9ded6abbc804ef262c4eee0c91cfdf9fdb6f81797ecfb65&"
+                            alt="Gagal memuat gambar" class="form-control mt-2">
+                        <button class="btn btn-success mt-2" id="downloadBtn"><span><i
+                                    class="fa-solid fa-download fa-fade me-2"></i></span> Download Template </button>
+                        <li class="mt-2"> Jika upload file sukses dan sudah sesuai format, maka anda telah berhasil!
+                        </li>
+                    </ul>
+
+                </div>
+                <div class="modal-footer" style="margin-top: -3%;">
+                    <button type="button" class="btn btn-secondary" id="history_closeModalBtn">Tutup</button>
+                </div>
+                </section>
+            </div>
+        </div>
+    </div>
+
     {{-- TOAST --}}
     <div class="toast-container top-0 end-0 mt-2 me-2 position-fixed">
         <div class="toast align-items-center text-bg-warning border-0" role="alert" aria-live="assertive"
@@ -523,7 +572,7 @@
             });
         }
         (error ? excelNotValid() : '')
-        (excelStatus ? excelSubmit() : '')
+        (previewSubmit ? excelSubmit() : '')
     </script>
     <script type="text/javascript" src="{{ asset('assets/js/admin/data/main.js') }}"></script>
 @endsection

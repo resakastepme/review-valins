@@ -76,6 +76,7 @@ Route::prefix('/admin')->group(function () {
     Route::get('/data/preview', [DataController::class,'preview']);
     Route::get('/data/preview/batal', [DataController::class,'previewBatal']);
     Route::get('/data/preview/submit', [DataController::class, 'previewSubmit']);
+    Route::get('/data/refresh', [DataController::class, 'refreshTable']);
 
 });
 
