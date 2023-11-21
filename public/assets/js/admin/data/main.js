@@ -1,62 +1,152 @@
-document.addEventListener('DOMContentLoaded', function () {
-    function loadTable() {
-        $('#tableData').DataTable().clear().destroy();
-        $.ajax({
-            url: '/admin/data/getData',
-            type: 'GET',
-            dataType: 'json',
-            success: function (response) {
-                // console.log(response.data)
-                $('tbody').html('');
-                var count = 0;
-                $.each(response.data, function (key, item) {
+function refresh(callback) {
+    var count = 0;
+    var table = $('#tableData').DataTable({
+        ajax: {
+            url: '/admin/data/refresh',
+            dataSrc: ''
+        },
+        "columns": [
+            {
+                data: null,
+                render: function (row, data, dataIndex) {
                     var i = ++count;
-                    if (item.updated_at == '' || item.updated_at == 'null' || item.updated_at == 'NULL' || item.updated_at == 'Null' || item.updated_at == null) {
+                    return i;
+                },
+                title: "No"
+            },
+            {
+                data: null,
+                render: function (row, data, type) {
+                    if (row.updated_at == '' || row.updated_at == 'null' || row.updated_at == 'NULL' || row.updated_at == 'Null' || row.updated_at == null) {
                         var formattedUpdatedAt = '';
                     } else {
-                        var updatedAt = new Date(item.updated_at);
+                        var updatedAt = new Date(row.updated_at);
                         var formattedUpdatedAt = updatedAt.toISOString().replace('T', ' ').slice(0, -5);
                     }
-                    $('tbody').append(" <tr>\
-                                <td>"+ i + "</td>\
-                                <td>"+ (formattedUpdatedAt != '' ? formattedUpdatedAt : item.timestamp_bawaan != null ? item.timestamp_bawaan : '<b style="color: red"> ANOMALY </b>') + "</td>\
-                                <td>"+ item.witel + "</td>\
-                                <td>"+ item.id_valins + "</td><td>\
-                                <a href='"+ item.eviden1 + "' target='_blank'> <img\
-                                            src='https://drive.google.com/uc?id="+ item.id_eviden1 + "' class='evidenImg'\
-                                            alt='Tidak ada Image/Error'  style='width: 300px'> </a></td><td>\
-                                <a href='"+ item.eviden2 + "' target='_blank'> <img\
-                                            src='https://drive.google.com/uc?id="+ item.id_eviden2 + "' class='evidenImg'\
-                                            alt='Tidak ada Image/Error'  style='width: 300px'> </a></td>\
-                                <td><a href='"+ item.eviden3 + "' target='_blank'> <img\
-                                            src='https://drive.google.com/uc?id="+ item.id_eviden3 + "' class='evidenImg'\
-                                            alt='Tidak ada Image/Error'  style='width: 300px'> </a></td>\
-                                <td>"+ (item.id_valins_lama != null ? item.id_valins_lama : '') + "</td>\
-                                <td>"+ (item.approve_aso != null ? item.approve_aso : '') + "</td>\
-                                <td>"+ (item.keterangan_aso != null ? item.keterangan_aso : '') + "</td>\
-                                <td>"+ (item.ram3 != null ? item.ram3 : '') + "</td>\
-                                <td>"+ (item.keterangan_ram3 != null ? item.keterangan_ram3 : '') + "</td>\
-                                <td>"+ item.rekon + "</td>\
-                                <td align='center'> <div class='row d-flex align-items-center justify-content-center'>\
-                                <div class='col-auto mb-1'>\
-                                    <button class='btn btn-warning' type='button'\
-                                        style='color: white;' data-data-id=" + item.id + " data-valins-id=" + item.id_valins + " id='btnEdit'> Edit\
-                                    </button>\
-                                </div>\
-                                <div class='col-auto'>\
-                                    <button class='btn btn-danger' type='button' data-data-id=" + item.id + " data-valins-id=" + item.id_valins + " id='btnHapus'> Hapus\
-                                    </button>\
-                                </div>\
-                            </div> </td>\
-                                ");
-                });
-                console.log('berhasil refresh table!');
-                $('.evidenImg').on('error', function () {
-                    $(this).parent('a').removeAttr('href');
-                });
+                    return (formattedUpdatedAt != '' ? formattedUpdatedAt : row.timestamp_bawaan != null ? row.timestamp_bawaan : '<b style="color: red"> ANOMALY </b>');
+                },
+                title: "Timestamp"
+            },
+            {
+                data: "witel",
+                title: "Witel"
+            },
+            {
+                data: "id_valins",
+                title: "ID Valins"
+            },
+            {
+                data: null,
+                render: function (row) {
+                    if (!row.id_eviden1) {
+                        return '<td><a target="_blank"> <img src="" class="evidenImg"\
+                        alt="Tidak ada Image/Error" style="width: 300px"> </a></td>';
+                    } else {
+                        return '<td><a href="' + row.id_eviden1 + '" target="_blank"> <img\
+                        src="https://drive.google.com/uc?id='+ row.id_eviden1 + '"\
+                        class="evidenImg" alt="Tidak ada Image/Error" style="width: 300px"> </a>\
+            </td>';
+                    }
+                },
+                title: "Eviden 1"
+            },
+            {
+                data: null,
+                render: function (row) {
+                    if (!row.id_eviden2) {
+                        return '<td><a target="_blank"> <img src="" class="evidenImg"\
+                        alt="Tidak ada Image/Error" style="width: 300px"> </a></td>';
+                    } else {
+                        return '<td><a href="' + row.id_eviden2 + '" target="_blank"> <img\
+                        src="https://drive.google.com/uc?id='+ row.id_eviden2 + '"\
+                        class="evidenImg" alt="Tidak ada Image/Error" style="width: 300px"> </a>\
+            </td>';
+                    }
+                },
+                title: "Eviden 2"
+            },
+            {
+                data: null,
+                render: function (row) {
+                    if (!row.id_eviden3) {
+                        return '<td><a target="_blank"> <img src="" class="evidenImg"\
+                        alt="Tidak ada Image/Error" style="width: 300px"> </a></td>';
+                    } else {
+                        return '<td><a href="' + row.id_eviden3 + '" target="_blank"> <img\
+                        src="https://drive.google.com/uc?id='+ row.id_eviden3 + '"\
+                        class="evidenImg" alt="Tidak ada Image/Error" style="width: 300px"> </a>\
+            </td>';
+                    }
+                },
+                title: "Eviden 3"
+            },
+            {
+                data: "id_valins_lama",
+                title: "ID Valins Lama"
+            },
+            {
+                data: null,
+                render: function (row) {
+                    return (row.approve_aso == 'null' ? '' : row.approve_aso)
+                },
+                title: "ASO"
+            },
+            {
+                data: "keterangan_aso",
+                title: "Ket. ASO"
+            },
+            {
+                data: "ram3",
+                title: "RAM3"
+            },
+            {
+                data: "keterangan_ram3",
+                title: "Ket. RAM3"
+            },
+            {
+                data: "rekon",
+                title: "Rekon"
+            },
+            {
+                data: null,
+                render: function (row) {
+                    return '<div class="row d-flex align-items-center justify-content-center">\
+                    <div class="col-auto mb-1">\
+                        <button class="btn btn-warning" type="button" style="color: white;"\
+                            data-data-id="'+ row.id + '"\
+                            data-valins-id="'+ row.id_valins + '" id="btnEdit"> Edit\
+                        </button>\
+                    </div>\
+                    <div class="col-auto">\
+                        <button class="btn btn-danger" type="button"\
+                            data-data-id="'+ row.id + '"\
+                            data-valins-id="'+ row.id_valins + '" id="btnHapus"> Hapus\
+                        </button>\
+                    </div>\
+                </div>'
+                },
+                title: "Aksi"
             }
-        })
-    };
+        ]
+    });
+    console.log('berhasil load table!');
+    setTimeout(function () {
+        callback();
+    }, 2000);
+}
+
+document.addEventListener('DOMContentLoaded', function () {
+
+    $('#refresh').prop('disabled', true);
+    $('#refreshIcon').addClass('fa-spin-pulse');
+    $('#loadTableSection').show();
+    $('#tableSection').hide();
+    refresh(function () {
+        $('#loadTableSection').hide();
+        $('#tableSection').show();
+        $('#refresh').prop('disabled', false);
+        $('#refreshIcon').removeClass('fa-spin-pulse');
+    });
 
     $('#edit_clearBtn').on('click', function () {
         $('#edit_formWitel_default').prop('selected', true);
@@ -69,141 +159,18 @@ document.addEventListener('DOMContentLoaded', function () {
         $('#edit_formWitel').focus();
     });
 
-    function refresh() {
-        var count = 0;
-        var table = $('#tableData').DataTable({
-            ajax: {
-                url: '/admin/data/refresh',
-                dataSrc: ''
-            },
-            "columns": [
-                {
-                    data: null,
-                    render: function (row, data, dataIndex) {
-                        var i = ++count;
-                        return i;
-                    }
-                },
-                {
-                    data: null,
-                    render: function (row, data, type) {
-                        if (row.updated_at != null) {
-                            return row.updated_at;
-                        } else {
-                            if (row.timestamp_bawaan == null) {
-                                return '<b style="color: red"> ANOMALY </b>';
-                            } else {
-                                return row.timestamp_bawaan;
-                            }
-                        }
-                    }
-                },
-                {
-                    data: "witel"
-                },
-                {
-                    data: "id_valins"
-                },
-                {
-                    data: null,
-                    render: function (row) {
-                        if (!row.id_eviden1) {
-                            return '<td><a target="_blank"> <img src="" class="evidenImg"\
-                            alt="Tidak ada Image/Error" style="width: 300px"> </a></td>';
-                        } else {
-                            return '<td><a href="'+row.id_eviden1+'" target="_blank"> <img\
-                            src="https://drive.google.com/uc?id='+row.id_eviden1+'"\
-                            class="evidenImg" alt="Tidak ada Image/Error" style="width: 300px"> </a>\
-                </td>';
-                        }
-                    }
-                },
-                {
-                    data: null,
-                    render: function (row) {
-                        if (!row.id_eviden2) {
-                            return '<td><a target="_blank"> <img src="" class="evidenImg"\
-                            alt="Tidak ada Image/Error" style="width: 300px"> </a></td>';
-                        } else {
-                            return '<td><a href="'+row.id_eviden2+'" target="_blank"> <img\
-                            src="https://drive.google.com/uc?id='+row.id_eviden2+'"\
-                            class="evidenImg" alt="Tidak ada Image/Error" style="width: 300px"> </a>\
-                </td>';
-                        }
-                    }
-                },
-                {
-                    data: null,
-                    render: function (row) {
-                        if (!row.id_eviden3) {
-                            return '<td><a target="_blank"> <img src="" class="evidenImg"\
-                            alt="Tidak ada Image/Error" style="width: 300px"> </a></td>';
-                        } else {
-                            return '<td><a href="'+row.id_eviden3+'" target="_blank"> <img\
-                            src="https://drive.google.com/uc?id='+row.id_eviden3+'"\
-                            class="evidenImg" alt="Tidak ada Image/Error" style="width: 300px"> </a>\
-                </td>';
-                        }
-                    }
-                },
-                {
-                    data: "id_valins_lama"
-                },
-                {
-                    data: null,
-                    render: function(row){
-                       return (row.approve_aso == 'null' ? '' : row.approve_aso)
-                    }
-                },
-                {
-                    data: "keterangan_aso"
-                },
-                {
-                    data: "ram3"
-                },
-                {
-                    data: "keterangan_ram3"
-                },
-                {
-                    data: "rekon"
-                },
-                {
-                    data: null,
-                    render: function(row){
-                        return '<div class="row d-flex align-items-center justify-content-center">\
-                        <div class="col-auto mb-1">\
-                            <button class="btn btn-warning" type="button" style="color: white;"\
-                                data-data-id="'+row.id+'"\
-                                data-valins-id="'+row.id_valins+'" id="btnEdit"> Edit\
-                            </button>\
-                        </div>\
-                        <div class="col-auto">\
-                            <button class="btn btn-danger" type="button"\
-                                data-data-id="'+row.id+'"\
-                                data-valins-id="'+row.id_valins+'" id="btnHapus"> Hapus\
-                            </button>\
-                        </div>\
-                    </div>'
-                    }
-                }
-            ]
-        });
-    }
-
     $('#refresh').on('click', function () {
         $('#refresh').prop('disabled', true);
         $('#refreshIcon').addClass('fa-spin-pulse');
-
-        setTimeout(function () {
-
-            $('#tableData').DataTable().clear().destroy();
-            // loadTable();
-            // $('#tableData').DataTable();
-            refresh();
-
+        $('#loadTableSection').show();
+        $('#tableSection').hide();
+        $('#tableData').DataTable().clear().destroy();
+        refresh(function () {
+            $('#loadTableSection').hide();
+            $('#tableSection').show();
             $('#refresh').prop('disabled', false);
             $('#refreshIcon').removeClass('fa-spin-pulse');
-        }, 2000);
+        });
     });
 
 
@@ -316,8 +283,17 @@ document.addEventListener('DOMContentLoaded', function () {
                             $('#formIdValinsLama').val('');
                             $('#formRekon_default').prop('selected', true);
                             $('#closeModalBtn').click();
-                            loadTable();
-                            $('#tableData').DataTable();
+                            $('#refresh').prop('disabled', true);
+                            $('#refreshIcon').addClass('fa-spin-pulse');
+                            $('#loadTableSection').show();
+                            $('#tableSection').hide();
+                            $('#tableData').DataTable().clear().destroy();
+                            refresh(function () {
+                                $('#loadTableSection').hide();
+                                $('#tableSection').show();
+                                $('#refresh').prop('disabled', false);
+                                $('#refreshIcon').removeClass('fa-spin-pulse');
+                            });
                         }
                     }
                 });
@@ -494,8 +470,17 @@ document.addEventListener('DOMContentLoaded', function () {
                             $('#edit_formIdValinsLama').val('');
                             $('#edit_formRekon_default').prop('selected', true);
                             $('#edit_closeModalBtn').click();
-                            loadTable();
-                            $('#tableData').DataTable();
+                            $('#refresh').prop('disabled', true);
+                            $('#refreshIcon').addClass('fa-spin-pulse');
+                            $('#loadTableSection').show();
+                            $('#tableSection').hide();
+                            $('#tableData').DataTable().clear().destroy();
+                            refresh(function () {
+                                $('#loadTableSection').hide();
+                                $('#tableSection').show();
+                                $('#refresh').prop('disabled', false);
+                                $('#refreshIcon').removeClass('fa-spin-pulse');
+                            });
                         }
                     }
                 });
@@ -532,14 +517,32 @@ document.addEventListener('DOMContentLoaded', function () {
                             const toast_berhasil = document.getElementById('toast-successDelete')
                             const toastBootstrap = bootstrap.Toast.getOrCreateInstance(toast_berhasil);
                             toastBootstrap.show();
-                            loadTable();
-                            $('#tableData').DataTable();
+                            $('#refresh').prop('disabled', true);
+                            $('#refreshIcon').addClass('fa-spin-pulse');
+                            $('#loadTableSection').show();
+                            $('#tableSection').hide();
+                            $('#tableData').DataTable().clear().destroy();
+                            refresh(function () {
+                                $('#loadTableSection').hide();
+                                $('#tableSection').show();
+                                $('#refresh').prop('disabled', false);
+                                $('#refreshIcon').removeClass('fa-spin-pulse');
+                            });
                         } else {
                             const toast_gagalTambah = document.getElementById('toast-dangerGagalHapus')
                             const toastBootstrap = bootstrap.Toast.getOrCreateInstance(toast_gagalTambah);
                             toastBootstrap.show();
-                            loadTable();
-                            $('#tableData').DataTable();
+                            $('#refresh').prop('disabled', true);
+                            $('#refreshIcon').addClass('fa-spin-pulse');
+                            $('#loadTableSection').show();
+                            $('#tableSection').hide();
+                            $('#tableData').DataTable().clear().destroy();
+                            refresh(function () {
+                                $('#loadTableSection').hide();
+                                $('#tableSection').show();
+                                $('#refresh').prop('disabled', false);
+                                $('#refreshIcon').removeClass('fa-spin-pulse');
+                            });
                         }
                     }
                 });

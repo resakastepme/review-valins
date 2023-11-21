@@ -404,7 +404,7 @@ class DataController extends Controller
     }
 
     public function refreshTable(){
-        $q = Data::get();
+        $q = Data::orderby('id', 'DESC')->get();
         $data = array();
         foreach($q as $datas){
             $data[] = $datas;

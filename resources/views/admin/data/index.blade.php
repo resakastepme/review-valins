@@ -36,100 +36,27 @@
             <button type="button" class="btn btn-secondary mb-3" id="historyBtn"><i
                     class="fa-solid fa-clock-rotate-left"></i>
                 History </button>
-            <div class="table-responsive">
-                <table id="tableData" style="width:100%" class="table table-striped table-bordered table-hover"
-                    border="1">
-                    <thead>
-                        <tr>
-                            <th>No</th>
-                            <th>Timestamp</th>
-                            <th>Witel</th>
-                            <th>ID Valins</th>
-                            <th>Eviden 1</th>
-                            <th>Eviden 2</th>
-                            <th>Eviden 3</th>
-                            <th>ID Valins lama</th>
-                            <th>ASO</th>
-                            <th>Ket. ASO</th>
-                            <th>RAM3</th>
-                            <th>Ket. RAM3</th>
-                            <th>Rekon</th>
-                            <th>Aksi</th>
-                        </tr>
-                    </thead>
-                    <tbody>
 
-                        @foreach ($datas as $data)
-                            <tr>
-                                <td>{{ $loop->iteration }}</td>
-                                <td>
-                                    @if ($data->updated_at != null)
-                                        {{ $data->updated_at }}
-                                    @else
-                                        @if ($data->timestamp_bawaan == null)
-                                            <b style="color: red">ANOMALY</b>
-                                        @else
-                                            {{ $data->timestamp_bawaan }}
-                                        @endif
-                                    @endif
-                                </td>
-                                <td> {{ $data->witel }} </td>
-                                <td> {{ $data->id_valins }} </td>
-                                @if (empty($data->id_eviden1))
-                                    <td><a target="_blank"> <img src="" class="evidenImg"
-                                                alt="Tidak ada Image/Error" style="width: 300px"> </a></td>
-                                @else
-                                    <td><a href="{{ $data->eviden1 }}" target="_blank"> <img
-                                                src="https://drive.google.com/uc?id={{ $data->id_eviden1 }}"
-                                                class="evidenImg" alt="Tidak ada Image/Error" style="width: 300px"> </a>
-                                    </td>
-                                @endif
-                                @if (empty($data->id_eviden2))
-                                    <td><a target="_blank"> <img src="" class="evidenImg"
-                                                alt="Tidak ada Image/Error" style="width: 300px"> </a></td>
-                                @else
-                                    <td><a href="{{ $data->eviden2 }}" target="_blank"> <img
-                                                src="https://drive.google.com/uc?id={{ $data->id_eviden2 }}"
-                                                class="evidenImg" alt="Tidak ada Image/Error" style="width: 300px"> </a>
-                                    </td>
-                                @endif
-                                @if (empty($data->id_eviden3))
-                                    <td><a target="_blank"> <img src="" class="evidenImg"
-                                                alt="Tidak ada Image/Error" style="width: 300px"> </a></td>
-                                @else
-                                    <td><a href="{{ $data->eviden3 }}" target="_blank"> <img
-                                                src="https://drive.google.com/uc?id={{ $data->id_eviden3 }}"
-                                                class="evidenImg" alt="Tidak ada Image/Error" style="width: 300px"> </a>
-                                    </td>
-                                @endif
-                                <td> {{ $data->id_valins_lama }} </td>
-                                <td> {{ $data->approve_aso == 'null' ? '' : $data->approve_aso }} </td>
-                                <td> {{ $data->keterangan_aso }} </td>
-                                <td> {{ $data->ram3 }} </td>
-                                <td> {{ $data->keterangan_ram3 }} </td>
-                                <td> {{ $data->rekon }} </td>
-                                <td align="center">
-                                    <div class="row d-flex align-items-center justify-content-center">
-                                        <div class="col-auto mb-1">
-                                            <button class="btn btn-warning" type="button" style="color: white;"
-                                                data-data-id="{{ $data['id'] }}"
-                                                data-valins-id="{{ $data['id_valins'] }}" id="btnEdit"> Edit
-                                            </button>
-                                        </div>
-                                        <div class="col-auto">
-                                            <button class="btn btn-danger" type="button"
-                                                data-data-id="{{ $data['id'] }}"
-                                                data-valins-id="{{ $data['id_valins'] }}" id="btnHapus"> Hapus
-                                            </button>
-                                        </div>
-                                    </div>
-                                </td>
-                            </tr>
-                        @endforeach
+            <section id="loadTableSection" style="display: block" class="mt-5 mb-5">
+                <div class="d-flex justify-content-center">
+                    <div class="spinner-border" style="width: 5rem; height: 5rem;" role="status">
+                        <span class="visually-hidden">Loading...</span>
+                    </div>
+                </div>
+            </section>
 
-                    </tbody>
-                </table>
-            </div>
+            <section id="tableSection" style="display: none">
+                <div class="table-responsive">
+                    <table id="tableData" style="width:100%" class="table table-striped table-bordered table-hover"
+                        border="1">
+                        <thead>
+                        </thead>
+                        <tbody>
+
+                        </tbody>
+                    </table>
+                </div>
+            </section>
         </div>
     </div>
 
@@ -149,8 +76,7 @@
 
                                 <form class="p-3" id="tambahDataForm">
 
-                                    <input type="hidden" name="csrfHidden" id="csrfHidden"
-                                        value="{{ csrf_token() }}" />
+                                    <input type="hidden" name="csrfHidden" id="csrfHidden" value="{{ csrf_token() }}" />
 
                                     <label for="formWitel"> Witel <span style="color:red"> * </span> </label>
                                     <select name="formWitel" id="formWitel" class="form-control mb-2">
@@ -165,8 +91,7 @@
                                     </select>
 
                                     <label for="formIdValins"> ID Valins <span style="color:red"> * </span> </label>
-                                    <input type="number" name="formIdValins" id="formIdValins"
-                                        class="form-control mb-2" />
+                                    <input type="number" name="formIdValins" id="formIdValins" class="form-control mb-2" />
 
                                     <label for="formEviden1"> Eviden 1 <span style="color:red"> * </span> </label>
                                     <textarea name="formEviden1" id="formEviden1" cols="10" rows="2" class="form-control mb-2"></textarea>
@@ -373,12 +298,12 @@
     </div>
 
     <!-- Modal History -->
-    <div class="modal animate__animated animate__slideInUp animate__faster" id="historyModal" data-bs-backdrop="static" tabindex="-1"
-        aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal animate__animated animate__slideInUp animate__faster" id="historyModal" data-bs-backdrop="static"
+        tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered modal-fullscreen">
             <div class="modal-content">
                 <div class="modal-header bg-light">
-                    <h2> <i class="fa-solid fa-clock-rotate-left ms-5"></i> History  </h2>
+                    <h2> <i class="fa-solid fa-clock-rotate-left ms-5"></i> History </h2>
                 </div>
                 <div class="modal-body m-4">
 
