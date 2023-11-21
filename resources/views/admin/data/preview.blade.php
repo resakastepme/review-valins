@@ -128,28 +128,18 @@
 @section('script')
     <script type="text/javascript" src="{{ asset('assets/js/admin/pengguna/jquery.dataTables.min.js') }}"></script>
     <script type="text/javascript" src="{{ asset('assets/js/admin/pengguna/dataTables.bootstrap4.min.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('assets/js/admin/data/preview.js') }}"></script>
     <script type="text/javascript">
-        $(document).ready(function() {
-            $('#tableDataPreviewError').DataTable();
-            $('#tableDataPreviewSuccess').DataTable();
-        });
+        var excelFailed = 'Session('
+        excelFailed ')';
 
-        $('#batalkan').on('click', function() {
+        function excelFailed() {
             Swal.fire({
-                title: "Batalkan proses?",
-                icon: "question",
-                showCancelButton: true,
-                confirmButtonColor: "#3085d6",
-                cancelButtonColor: "#d33",
-                confirmButtonText: "Ya",
-                cancelButtonText: "Kembali"
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    $.get('/getRole', function(response){
-                        location.href = '/'+response.role+'/data/preview/batal'
-                    });
-                }
+                title: "Error",
+                text: "Kesalahan pada sistem, coba lagi nanti!",
+                icon: "error"
             });
-        });
+        }
+        (excelFailed ? excelFailed() : '')
     </script>
 @endsection

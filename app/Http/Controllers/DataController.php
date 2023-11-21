@@ -318,7 +318,7 @@ class DataController extends Controller
             $qPreviewNotValid = PreviewData::where('unique_id', Session('unique_id'))->where('isValid', 0)->get();
             $qPreviewValid = PreviewData::where('unique_id', Session('unique_id'))->where('isValid', 1)->get();
             // dd('success with id: ' . Session('unique_id'));
-            Session::put('preview_access','granted');
+            Session::put('preview_access', 'granted');
             return view('admin.data.preview', [
                 'previewValid' => $qPreviewValid,
                 'previewNotValid' => $qPreviewNotValid
@@ -326,14 +326,80 @@ class DataController extends Controller
         }
     }
 
-    public function previewBatal(){
+    public function previewBatal()
+    {
         $q = PreviewData::where('unique_id', Session::get('unique_id'))->delete();
         Session::pull('preview_access');
         Session::pull('unique_id');
-        if($q){
-            return redirect()->to('/'.(Session::get('role') == 1 ? 'admin' : (Session::get('role') == 2 ? 'aso' : 'user')).'/data')->with('batalkan_status', 'Success');
-        }else{
-            return redirect()->to('/'.(Session::get('role') == 1 ? 'admin' : (Session::get('role') == 2 ? 'aso' : 'user')).'/data')->with('batalkan_status', 'Failed');
+        if ($q) {
+            return redirect()->to('/' . (Session::get('role') == 1 ? 'admin' : (Session::get('role') == 2 ? 'aso' : 'user')) . '/data')->with('batalkan_status', 'Success');
+        } else {
+            return redirect()->to('/' . (Session::get('role') == 1 ? 'admin' : (Session::get('role') == 2 ? 'aso' : 'user')) . '/data')->with('batalkan_status', 'Failed');
+        }
+    }
+
+    public function previewSubmit()
+    {
+        if (empty(Session::get('unique_id')))
+            return redirect()->to('/auth');
+        $q = PreviewData::where('unique_id', Session::get('unique_id'))->where('isValid', 1)->get();
+        if ($q) {
+            foreach ($q as $data) {
+                $witel = $data['witel'];
+                $id_valins = $data['id_valins'];
+                $eviden1 = $data['eviden1'];
+                $eviden2 = $data['eviden2'];
+                $eviden3 = $data['eviden3'];
+                $id_valins_lama = $data['id_valins_lama'];
+                $rekon = $data['rekon'];
+
+                if ($eviden1 != '') {
+                    $queryString1 = parse_url($eviden1, PHP_URL_QUERY);
+                    if ($queryString1) {
+                        parse_str($queryString1, $queryParameters1);
+                        $id1 = $queryParameters1['id'];
+                    }
+                } else {
+                    $id1 = '';
+                }
+                if ($eviden2 != '') {
+                    $queryString2 = parse_url($eviden2, PHP_URL_QUERY);
+                    if ($queryString2) {
+                        parse_str($queryString2, $queryParameters2);
+                        $id2 = $queryParameters2['id'];
+                    }
+                } else {
+                    $id2 = '';
+                }
+                if ($eviden3 != '') {
+                    $queryString3 = parse_url($eviden3, PHP_URL_QUERY);
+                    if ($queryString3) {
+                        parse_str($queryString3, $queryParameters3);
+                        $id3 = $queryParameters3['id'];
+                    }
+                } else {
+                    $id3 = '';
+                }
+                $create = [
+                    'witel' => $witel,
+                    'id_valins' => $id_valins,
+                    'eviden1' => $eviden1,
+                    'eviden2' => $eviden2,
+                    'eviden3' => $eviden3,
+                    'id_valins_lama' => $id_valins_lama,
+                    'rekon' => $rekon,
+                    'id_eviden1' => $id1,
+                    'id_eviden2' => $id2,
+                    'id_eviden3' => $id3
+                ];
+                Data::create($create);
+                PreviewData::where('unique_id', Session::get('unique_id'))->where('isValid', 1)->where('id_valins', $id_valins)->update([
+                    'isSubmit' => 1
+                ]);
+            }
+            return redirect()->to('/admin/data')->with('excelStatus', 'Proses Berhasil');
+        } else {
+            return redirect()->to('/admin/data')->with('excelFailed', 1);
         }
     }
 }

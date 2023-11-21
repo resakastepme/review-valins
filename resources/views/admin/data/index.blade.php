@@ -1,6 +1,6 @@
 @extends('layouts.admin.mainlayout')
 @section('title')
-Data
+    Data
 @endsection
 @section('css')
     <link rel="stylesheet" href="{{ asset('assets/css/admin/dataTables.bootstrap4.min.css') }}">
@@ -467,6 +467,7 @@ Data
     <script type="text/javascript">
         var error = '{{ Session('excelNotValid') }}';
         var previewStatus = '{{ Session('batalkan_status') }}';
+        var previewSubmit = '{{ Session('excelStatus') }}';
         console.log(previewStatus);
         // if(previewStatus) return console.log(previewStatus);
         $('.evidenImg').on('error', function() {
@@ -497,7 +498,32 @@ Data
                 }
             });
         }
+
+        function excelSubmit() {
+            let timerInterval;
+            Swal.fire({
+                icon: "success",
+                title: "Berhasil!",
+                timer: 2000,
+                timerProgressBar: true,
+                didOpen: () => {
+                    Swal.showLoading();
+                    const timer = Swal.getPopup().querySelector("b");
+                    timerInterval = setInterval(() => {
+                        timer.textContent = `${Swal.getTimerLeft()}`;
+                    }, 100);
+                },
+                willClose: () => {
+                    clearInterval(timerInterval);
+                }
+            }).then((result) => {
+                if (result.dismiss === Swal.DismissReason.timer) {
+                    console.log("Ditutup");
+                }
+            });
+        }
         (error ? excelNotValid() : '')
+        (excelStatus ? excelSubmit() : '')
     </script>
     <script type="text/javascript" src="{{ asset('assets/js/admin/data/main.js') }}"></script>
 @endsection
