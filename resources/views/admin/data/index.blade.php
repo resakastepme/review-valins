@@ -180,7 +180,7 @@
                                             <option value="TIDAK MEMILIH WITEL" id="edit_formWitel_default" default> Pilih
                                             </option>
                                             <option value="BANDUNG" id="witel_BANDUNG"> Bandung </option>
-                                            <option value="BANDUNG BARAT" id="witel_BANDUNG BARAT"> Bandung Barat
+                                            <option value="BANDUNG BARAT" id="witel_BANDUNGBARAT"> Bandung Barat
                                             </option>
                                             <option value="CIREBON" id="witel_CIREBON"> Cirebon </option>
                                             <option value="KARAWANG" id="witel_KARAWANG"> Karawang </option>

@@ -397,6 +397,8 @@ class DataController extends Controller
                     'isSubmit' => 1
                 ]);
             }
+            Session::pull('unique_id');
+            Session::pull('preview_access');
             return redirect()->to('/admin/data')->with('excelStatus', 'Proses Berhasil');
         } else {
             return redirect()->to('/admin/data')->with('excelFailed', 1);

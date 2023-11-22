@@ -42,7 +42,7 @@ function refresh(callback) {
                         return '<td><a target="_blank"> <img src="" class="evidenImg"\
                         alt="Tidak ada Image/Error" style="width: 300px"> </a></td>';
                     } else {
-                        return '<td><a href="' + row.id_eviden1 + '" target="_blank"> <img\
+                        return '<td><a href="https://drive.google.com/open?id=' + row.id_eviden1 + '" target="_blank"> <img\
                         src="https://drive.google.com/uc?id='+ row.id_eviden1 + '"\
                         class="evidenImg" alt="Tidak ada Image/Error" style="width: 300px"> </a>\
             </td>';
@@ -57,7 +57,7 @@ function refresh(callback) {
                         return '<td><a target="_blank"> <img src="" class="evidenImg"\
                         alt="Tidak ada Image/Error" style="width: 300px"> </a></td>';
                     } else {
-                        return '<td><a href="' + row.id_eviden2 + '" target="_blank"> <img\
+                        return '<td><a href="https://drive.google.com/open?id=' + row.id_eviden2 + '" target="_blank"> <img\
                         src="https://drive.google.com/uc?id='+ row.id_eviden2 + '"\
                         class="evidenImg" alt="Tidak ada Image/Error" style="width: 300px"> </a>\
             </td>';
@@ -72,7 +72,7 @@ function refresh(callback) {
                         return '<td><a target="_blank"> <img src="" class="evidenImg"\
                         alt="Tidak ada Image/Error" style="width: 300px"> </a></td>';
                     } else {
-                        return '<td><a href="' + row.id_eviden3 + '" target="_blank"> <img\
+                        return '<td><a href="https://drive.google.com/open?id=' + row.id_eviden3 + '" target="_blank"> <img\
                         src="https://drive.google.com/uc?id='+ row.id_eviden3 + '"\
                         class="evidenImg" alt="Tidak ada Image/Error" style="width: 300px"> </a>\
             </td>';
@@ -135,6 +135,20 @@ function refresh(callback) {
     }, 2000);
 }
 
+function loadTable(){
+    $('#refresh').prop('disabled', true);
+    $('#refreshIcon').addClass('fa-spin-pulse');
+    $('#loadTableSection').show();
+    $('#tableSection').hide();
+    $('#tableData').DataTable().clear().destroy();
+    refresh(function () {
+        $('#loadTableSection').hide();
+        $('#tableSection').show();
+        $('#refresh').prop('disabled', false);
+        $('#refreshIcon').removeClass('fa-spin-pulse');
+    });
+}
+
 document.addEventListener('DOMContentLoaded', function () {
 
     $('#refresh').prop('disabled', true);
@@ -160,17 +174,7 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 
     $('#refresh').on('click', function () {
-        $('#refresh').prop('disabled', true);
-        $('#refreshIcon').addClass('fa-spin-pulse');
-        $('#loadTableSection').show();
-        $('#tableSection').hide();
-        $('#tableData').DataTable().clear().destroy();
-        refresh(function () {
-            $('#loadTableSection').hide();
-            $('#tableSection').show();
-            $('#refresh').prop('disabled', false);
-            $('#refreshIcon').removeClass('fa-spin-pulse');
-        });
+        loadTable();
     });
 
 
@@ -283,17 +287,8 @@ document.addEventListener('DOMContentLoaded', function () {
                             $('#formIdValinsLama').val('');
                             $('#formRekon_default').prop('selected', true);
                             $('#closeModalBtn').click();
-                            $('#refresh').prop('disabled', true);
-                            $('#refreshIcon').addClass('fa-spin-pulse');
-                            $('#loadTableSection').show();
-                            $('#tableSection').hide();
                             $('#tableData').DataTable().clear().destroy();
-                            refresh(function () {
-                                $('#loadTableSection').hide();
-                                $('#tableSection').show();
-                                $('#refresh').prop('disabled', false);
-                                $('#refreshIcon').removeClass('fa-spin-pulse');
-                            });
+                            loadTable();
                         }
                     }
                 });
@@ -338,7 +333,7 @@ document.addEventListener('DOMContentLoaded', function () {
                         $('#edit_dataId').val(dataId);
                         $('#edit_hiddenIdValins').val(response.data.id_valins);
                         console.log(dataValins);
-                        $('#witel_' + response.data.witel).prop('selected', true);
+                        $('#witel_' + response.data.witel.replace(/\s/g, '')).prop('selected', true);
                         $('#edit_formIdValins').val(response.data.id_valins);
                         $('#edit_formEviden1').val(response.data.eviden1);
                         $('#edit_formEviden2').val(response.data.eviden2);
@@ -470,17 +465,8 @@ document.addEventListener('DOMContentLoaded', function () {
                             $('#edit_formIdValinsLama').val('');
                             $('#edit_formRekon_default').prop('selected', true);
                             $('#edit_closeModalBtn').click();
-                            $('#refresh').prop('disabled', true);
-                            $('#refreshIcon').addClass('fa-spin-pulse');
-                            $('#loadTableSection').show();
-                            $('#tableSection').hide();
                             $('#tableData').DataTable().clear().destroy();
-                            refresh(function () {
-                                $('#loadTableSection').hide();
-                                $('#tableSection').show();
-                                $('#refresh').prop('disabled', false);
-                                $('#refreshIcon').removeClass('fa-spin-pulse');
-                            });
+                            loadTable();
                         }
                     }
                 });
@@ -517,32 +503,14 @@ document.addEventListener('DOMContentLoaded', function () {
                             const toast_berhasil = document.getElementById('toast-successDelete')
                             const toastBootstrap = bootstrap.Toast.getOrCreateInstance(toast_berhasil);
                             toastBootstrap.show();
-                            $('#refresh').prop('disabled', true);
-                            $('#refreshIcon').addClass('fa-spin-pulse');
-                            $('#loadTableSection').show();
-                            $('#tableSection').hide();
                             $('#tableData').DataTable().clear().destroy();
-                            refresh(function () {
-                                $('#loadTableSection').hide();
-                                $('#tableSection').show();
-                                $('#refresh').prop('disabled', false);
-                                $('#refreshIcon').removeClass('fa-spin-pulse');
-                            });
+                            loadTable();
                         } else {
                             const toast_gagalTambah = document.getElementById('toast-dangerGagalHapus')
                             const toastBootstrap = bootstrap.Toast.getOrCreateInstance(toast_gagalTambah);
                             toastBootstrap.show();
-                            $('#refresh').prop('disabled', true);
-                            $('#refreshIcon').addClass('fa-spin-pulse');
-                            $('#loadTableSection').show();
-                            $('#tableSection').hide();
                             $('#tableData').DataTable().clear().destroy();
-                            refresh(function () {
-                                $('#loadTableSection').hide();
-                                $('#tableSection').show();
-                                $('#refresh').prop('disabled', false);
-                                $('#refreshIcon').removeClass('fa-spin-pulse');
-                            });
+                            loadTable();
                         }
                     }
                 });
