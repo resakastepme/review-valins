@@ -18,6 +18,12 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+//STORAGE:LINK ROUTE
+Route::get('/generate', function(){
+    \Illuminate\Support\Facades\Artisan::call('storage:link');
+    echo 'ok';
+ });
+
 //NEXT BIKIN SESSION ATTEMPT
 
 Route::get('/logout/{session}', function ($session) {
