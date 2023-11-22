@@ -19,10 +19,10 @@ use Illuminate\Support\Facades\Route;
 */
 
 //STORAGE:LINK ROUTE
-Route::get('/generate', function(){
-    \Illuminate\Support\Facades\Artisan::call('storage:link');
-    echo 'ok';
- });
+// Route::get('/generate', function(){
+//     \Illuminate\Support\Facades\Artisan::call('storage:link');
+//     echo 'ok';
+//  });
 
 //NEXT BIKIN SESSION ATTEMPT
 
