@@ -1,3 +1,4 @@
+console.log('TEST');
 function refresh(callback) {
     var count = 0;
     var table = $('#tableData').DataTable({
