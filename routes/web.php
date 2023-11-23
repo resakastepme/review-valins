@@ -5,7 +5,9 @@ use App\Http\Controllers\DataController;
 use App\Http\Controllers\DownloadController;
 use App\Http\Controllers\ExcelController;
 use App\Http\Controllers\PenggunaController;
+use App\Http\Controllers\BeriTugasController;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Session;
 
 /*
 |--------------------------------------------------------------------------
@@ -83,6 +85,9 @@ Route::prefix('/admin')->group(function () {
     Route::get('/data/preview/batal', [DataController::class,'previewBatal']);
     Route::get('/data/preview/submit', [DataController::class, 'previewSubmit']);
     Route::get('/data/refresh', [DataController::class, 'refreshTable']);
+
+    Route::get('/beriTugas', [BeriTugasController::class, 'index']);
+    Route::get('/beriTugas/quick', [BeriTugasController::class, 'quick']);
 
 });
 

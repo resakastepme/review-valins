@@ -13,7 +13,8 @@
     <link rel="shortcut icon" href="{{ asset('assets/img/auth/telkom-logo.png') }}" type="image/x-icon">
     <meta name="csrf_token" content="{{ csrf_token() }}">
     @yield('css')
-    <title> {{ Session::get('role') == 1 ? 'Admin' : (Session::get('role') == 2 ? 'Aso' : 'User') }} - @yield('title')</title>
+    <title> {{ Session::get('role') == 1 ? 'Admin' : (Session::get('role') == 2 ? 'Aso' : 'User') }} - @yield('title')
+    </title>
 </head>
 
 <body>
@@ -37,12 +38,14 @@
                         <a class="nav-link" href="#">Tugas</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#">Beri tugas</a>
+                        <a class="nav-link {{ request()->is('admin/beriTugas') || request()->is('user/beriTugas') ? 'active' : '' }}"
+                            href="{{ url('/' . (Session::get('role') == 1 ? 'admin' : 'user') . '/beriTugas') }}">Beri
+                            tugas</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link {{ request()->is('admin/data') || request()->is('user/data') || request()->is('admin/data/preview') ? 'active' : '' }}"
-                            href="{{ url('/' . (Session::get('role') == 1 ? 'admin' : 'user') . '/data') }}" tabindex="-1"
-                            aria-disabled="true">Data</a>
+                            href="{{ url('/' . (Session::get('role') == 1 ? 'admin' : 'user') . '/data') }}"
+                            tabindex="-1" aria-disabled="true">Data</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link {{ request()->is('admin/pengguna') || request()->is('user/pengguna') ? 'active' : '' }}"
@@ -92,7 +95,6 @@
 <script type="text/javascript" src="{{ asset('assets/js/autologout.js') }}"></script>
 <script type="text/javascript" src="{{ asset('assets/js/sweetalert2.min.js') }}"></script>
 <script type="text/javascript">
-
     function logoResizer() {
         if (window.innerWidth < 576) {
             document.getElementById('telkomLogo').style.width = "20%";

@@ -6,6 +6,7 @@ use App\Models\PreviewData;
 use Illuminate\Http\Request;
 use App\Models\Data;
 use Illuminate\Support\Facades\Session;
+use Exception;
 
 class DataController extends Controller
 {
@@ -27,7 +28,7 @@ class DataController extends Controller
 
     public function getData()
     {
-        $q = Data::orderby('id', 'DESC')->get();
+        $q = Data::orderby('id', 'ASC')->get();
         $json_data['data'] = $q;
         return json_encode($json_data);
     }
@@ -37,48 +38,54 @@ class DataController extends Controller
      */
     public function index()
     {
-        $q = Data::orderby('id', 'DESC')->get();
-        $uri1 = $q[0]['eviden1'];
-        $uri2 = $q[0]['eviden2'];
-        $uri3 = $q[0]['eviden3'];
-        $queryString1 = parse_url($uri1, PHP_URL_QUERY);
-        if ($queryString1) {
-            parse_str($queryString1, $queryParameters1);
-            $id1 = $queryParameters1['id'];
-        } else {
-            $id1 = '';
-        }
-        if ($uri2 != '') {
-            $queryString2 = parse_url($uri2, PHP_URL_QUERY);
-            if ($queryString2) {
-                parse_str($queryString2, $queryParameters2);
-                $id2 = $queryParameters2['id'];
+        try {
+            $q = Data::orderby('id', 'ASC')->get();
+            $uri1 = $q[0]['eviden1'];
+            $uri2 = $q[0]['eviden2'];
+            $uri3 = $q[0]['eviden3'];
+            $queryString1 = parse_url($uri1, PHP_URL_QUERY);
+            if ($queryString1) {
+                parse_str($queryString1, $queryParameters1);
+                $id1 = $queryParameters1['id'];
+            } else {
+                $id1 = '';
+            }
+            if ($uri2 != '') {
+                $queryString2 = parse_url($uri2, PHP_URL_QUERY);
+                if ($queryString2) {
+                    parse_str($queryString2, $queryParameters2);
+                    $id2 = $queryParameters2['id'];
+                } else {
+                    $id2 = '';
+                }
             } else {
                 $id2 = '';
             }
-        } else {
-            $id2 = '';
-        }
-        if ($uri3 != '') {
-            $queryString3 = parse_url($uri3, PHP_URL_QUERY);
-            if ($queryString3) {
-                parse_str($queryString3, $queryParameters3);
-                $id3 = $queryParameters3['id'];
+            if ($uri3 != '') {
+                $queryString3 = parse_url($uri3, PHP_URL_QUERY);
+                if ($queryString3) {
+                    parse_str($queryString3, $queryParameters3);
+                    $id3 = $queryParameters3['id'];
+                } else {
+                    $id3 = '';
+                }
             } else {
                 $id3 = '';
             }
-        } else {
-            $id3 = '';
+            $array_id = [
+                'id1' => $id1,
+                'id2' => $id2,
+                'id3' => $id3
+            ];
+            return view('admin.data.index', [
+                'datas' => $q,
+                'id' => $array_id
+            ]);
+        } catch (Exception $e) {
+            return view('admin.data.index', [
+                'no data' => $e->getMessage()
+            ]);
         }
-        $array_id = [
-            'id1' => $id1,
-            'id2' => $id2,
-            'id3' => $id3
-        ];
-        return view('admin.data.index', [
-            'datas' => $q,
-            'id' => $array_id
-        ]);
     }
 
     /**
@@ -351,6 +358,10 @@ class DataController extends Controller
                 $eviden2 = $data['eviden2'];
                 $eviden3 = $data['eviden3'];
                 $id_valins_lama = $data['id_valins_lama'];
+                $approve_aso = $data['approve_aso'];
+                $keterangan_aso = $data['keterangan_aso'];
+                $ram3 = $data['ram3'];
+                $keterangan_ram3 = $data['keterangan_ram3'];
                 $rekon = $data['rekon'];
 
                 if ($eviden1 != '') {
@@ -387,6 +398,10 @@ class DataController extends Controller
                     'eviden2' => $eviden2,
                     'eviden3' => $eviden3,
                     'id_valins_lama' => $id_valins_lama,
+                    'approve_aso' => $approve_aso,
+                    'keterangan_aso' => $keterangan_aso,
+                    'ram3' => $ram3,
+                    'keterangan_ram3' => $keterangan_ram3,
                     'rekon' => $rekon,
                     'id_eviden1' => $id1,
                     'id_eviden2' => $id2,
@@ -405,10 +420,11 @@ class DataController extends Controller
         }
     }
 
-    public function refreshTable(){
-        $q = Data::orderby('id', 'DESC')->get();
+    public function refreshTable()
+    {
+        $q = Data::orderby('id', 'ASC')->get();
         $data = array();
-        foreach($q as $datas){
+        foreach ($q as $datas) {
             $data[] = $datas;
         }
         // dd(json_encode($data));
