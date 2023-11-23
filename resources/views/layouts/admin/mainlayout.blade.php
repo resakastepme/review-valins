@@ -31,7 +31,7 @@
                     <li class="nav-item">
                         <a class="nav-link {{ request()->is('admin/dashboard') || request()->is('user/dashboard') ? 'active' : '' }}"
                             aria-current="page"
-                            href="{{ url('/' . (Session('role') === 1 ? 'admin' : 'user') . '/dashboard') }}">Dashboard</a>
+                            href="{{ url('/' . (Session::get('role') == 1 ? 'admin' : 'user') . '/dashboard') }}">Dashboard</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="#">Tugas</a>
@@ -41,12 +41,12 @@
                     </li>
                     <li class="nav-item">
                         <a class="nav-link {{ request()->is('admin/data') || request()->is('user/data') || request()->is('admin/data/preview') ? 'active' : '' }}"
-                            href="{{ url('/' . (Session('role') === 1 ? 'admin' : 'user') . '/data') }}" tabindex="-1"
+                            href="{{ url('/' . (Session::get('role') == 1 ? 'admin' : 'user') . '/data') }}" tabindex="-1"
                             aria-disabled="true">Data</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link {{ request()->is('admin/pengguna') || request()->is('user/pengguna') ? 'active' : '' }}"
-                            href="{{ url('/' . (Session('role') === 1 ? 'admin' : 'user') . '/pengguna') }}"
+                            href="{{ url('/' . (Session::get('role') == 1 ? 'admin' : 'user') . '/pengguna') }}"
                             tabindex="-1" aria-disabled="true">Pengguna</a>
                     </li>
                     {{-- <li class="nav-item dropdown">
