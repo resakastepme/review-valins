@@ -39,7 +39,7 @@ function quickResult(callback) {
             }
         },
         error: function (jqXHR, textStatus, errorThrown) {
-            console.error('AJAX request failed:', textStatus, errorThrown);
+            console.log('AJAX request failed:', textStatus, errorThrown);
         }
     }).fail(function (jqXHR, textStatus, errorThrown) {
         console.log('AJAX request failed:', textStatus, errorThrown);
