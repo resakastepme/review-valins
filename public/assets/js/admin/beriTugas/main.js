@@ -37,12 +37,7 @@ function quickResult(callback) {
                 $('#quickResultModal').addClass('animate__slideInUp animate__faster');
                 $('#quickResultModal').modal('show');
             }
-        },
-        error: function (jqXHR, textStatus, errorThrown) {
-            console.log('AJAX request failed:', textStatus, errorThrown);
         }
-    }).fail(function (jqXHR, textStatus, errorThrown) {
-        console.log('AJAX request failed:', textStatus, errorThrown);
     });
     setTimeout(function () {
         callback();
