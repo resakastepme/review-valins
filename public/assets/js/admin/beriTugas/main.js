@@ -30,7 +30,7 @@ function quickResult(callback) {
                 $('#quickResultModal').removeClass('animate__slideOutDown animate__faster');
                 $('#quickResultModal').addClass('animate__slideInUp animate__faster');
                 $('#quickResultModal').modal('show');
-            }else{
+            } else {
                 $('#queryZero').show();
                 $('#querySuccess').hide();
                 $('#quickResultModal').removeClass('animate__slideOutDown animate__faster');
@@ -38,6 +38,8 @@ function quickResult(callback) {
                 $('#quickResultModal').modal('show');
             }
         }
+    }).fail(function (jqXHR, textStatus, errorThrown) {
+        console.log('AJAX request failed:', textStatus, errorThrown);
     });
     setTimeout(function () {
         callback();
