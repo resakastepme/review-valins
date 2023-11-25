@@ -54,11 +54,17 @@ class BeriTugasController extends Controller
 
         $data = $query->get();
 
-        return response()->json([
-            'status' => 'query success',
-            'count' => count($data),
-            'data' => $data
-        ]);
+        if($data){
+            return response()->json([
+                'status' => 'query success',
+                'count' => count($data),
+                'data' => $data
+            ]);
+        }else{
+            return response()->json([
+                'status' => 'Controller Not Working'
+            ]);
+        }
     }
 
     public function quickAssign(){
