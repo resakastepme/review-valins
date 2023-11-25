@@ -352,6 +352,7 @@ class DataController extends Controller
         $q = PreviewData::where('unique_id', Session::get('unique_id'))->where('isValid', 1)->get();
         if ($q) {
             foreach ($q as $data) {
+                $timestamp = $data['timestamp_bawaan'];
                 $witel = $data['witel'];
                 $id_valins = $data['id_valins'];
                 $eviden1 = $data['eviden1'];
@@ -392,6 +393,7 @@ class DataController extends Controller
                     $id3 = '';
                 }
                 $create = [
+                    'timestamp_bawaan' => $timestamp,
                     'witel' => $witel,
                     'id_valins' => $id_valins,
                     'eviden1' => $eviden1,

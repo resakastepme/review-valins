@@ -1,5 +1,6 @@
 @extends('layouts.admin.mainlayout')
 @section('css')
+    <link rel="stylesheet" href="{{ asset('assets/css/admin/dataTables.bootstrap4.min.css') }}">
 @endsection
 @section('title')
     Beri Tugas
@@ -130,17 +131,58 @@
     <!-- Modal Quick Result -->
     <div class="modal animate__animated animate__slideInUp animate__faster" id="quickResultModal" data-bs-backdrop="static"
         tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered modal-fullscreen">
+        <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered modal-lg">
             <div class="modal-content">
                 <div class="modal-header bg-light">
                     <h2> <i class="fa-brands fa-get-pocket"></i></i> Quick </h2>
                 </div>
                 <div class="modal-body m-4">
 
-                    <h1 id="test"> </h1>
+                    <div class="container">
+                        <div class="row flex justify-content-center align-items-center">
+                            <div class="col-md-6">
+
+                                <section id="querySuccess" style="display: none">
+                                    <p style="color: green; font-weight: bold; font-size: 40px;" id="countData">unlimited
+                                        data lmao</p>
+                                        <h4 style="margin-top: -7%"> Belum ter-assign </h4>
+
+                                    <form>
+                                        <label class="mt-2" for="">Masukan jumlah data</label>
+                                        <input type="number" class="form-control" id="placeholderMax"
+                                            placeholder="max: literally no max lmao" max="1000000000000" required>
+                                        <label class="mt-2" for="">Assign data kepada</label>
+                                        <select class="form-control">
+                                            <option value="null" default>-- Pilih --</option>
+                                            <option value="{{ Session::get('username') }}"> Saya
+                                                ({{ Session::get('role') == 1 ? 'Admin' : 'User' }}) </option>
+                                            @foreach ($users as $user)
+                                                <option value="{{ $user->username }}">{{ $user->username }}
+                                                    ({{ $user->role == 1 ? 'Admin' : 'User' }})
+                                                </option>
+                                            @endforeach
+                                        </select>
+                                        <button type="submit" class="form-control btn btn-success mt-4"> Assign Tugas
+                                        </button>
+                                    </form>
+                                </section>
+                                <section id="queryZero" style="display:none">
+                                    <h4> Total data dari query </h4>
+                                    <p style="color: red; font-weight: bold; font-size: 40px;"> 0 DATA </p>
+                                    <h4> Periksa kembali filter anda! </h4>
+                                </section>
+
+                            </div>
+                            <div class="col-md-6">
+                                <img src="{{ asset('assets/img/auth/telkom-mini-logo.png') }}"
+                                    style="width: 100%; height: 80%;">
+                            </div>
+                        </div>
+                    </div>
+
 
                 </div>
-                <div class="modal-footer" style="margin-top: -3%;">
+                <div class="modal-footer" style="">
                     <button type="button" class="btn btn-secondary" id="quick_closeModalBtn">Tutup</button>
                 </div>
                 </section>
@@ -149,5 +191,7 @@
     </div>
 @endsection
 @section('script')
+    <script type="text/javascript" src="{{ asset('assets/js/admin/pengguna/jquery.dataTables.min.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('assets/js/admin/pengguna/dataTables.bootstrap4.min.js') }}"></script>
     <script type="text/javascript" src="{{ asset('assets/js/admin/beriTugas/main.js') }}"></script>
 @endsection

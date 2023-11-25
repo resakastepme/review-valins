@@ -88,6 +88,7 @@ Route::prefix('/admin')->group(function () {
 
     Route::get('/beriTugas', [BeriTugasController::class, 'index']);
     Route::get('/beriTugas/quick', [BeriTugasController::class, 'quick']);
+    Route::get('/beriTugas/quickAssign', [BeriTugasController::class, 'quickAssign']);
 
 });
 

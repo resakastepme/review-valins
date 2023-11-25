@@ -19,10 +19,22 @@ function quickResult(callback) {
             quickRAM3: quickRAM3,
             quickKetRAM3: quickKetRAM3
         }, success: function (response) {
-            $('#test').html(response.status);
-            $('#quickResultModal').removeClass('animate__slideOutDown animate__faster');
-            $('#quickResultModal').addClass('animate__slideInUp animate__faster');
-            $('#quickResultModal').modal('show');
+            console.log(response.status);
+            if (response.count != 0) {
+                $('#countData').html('');
+                $('#countData').html(response.count + ' TOTAL DATA');
+                $('#placeholderMax').attr('placeholder', 'max: ' + response.count);
+                $('#placeholderMax').attr('max', response.count);
+                $('#querySuccess').show();
+                $('#quickResultModal').removeClass('animate__slideOutDown animate__faster');
+                $('#quickResultModal').addClass('animate__slideInUp animate__faster');
+                $('#quickResultModal').modal('show');
+            }else{
+                $('#queryZero').show();
+                $('#quickResultModal').removeClass('animate__slideOutDown animate__faster');
+                $('#quickResultModal').addClass('animate__slideInUp animate__faster');
+                $('#quickResultModal').modal('show');
+            }
         }
     });
     setTimeout(function () {
@@ -47,6 +59,8 @@ document.addEventListener('DOMContentLoaded', function () {
         $('#quickResultModal').addClass('animate__slideOutDown animate__faster');
         setTimeout(function () {
             $('#quickResultModal').modal('hide');
+            $('#querySuccess').hide();
+            $('#queryZero').hide();
         }, 500);
     });
 });
