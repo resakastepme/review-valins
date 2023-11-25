@@ -22,7 +22,6 @@ function quickResult(callback) {
             console.log(response.status);
             if (response.count != 0) {
                 $('#querySuccess').show();
-                $('#queryZero').hide();
                 $('#countData').html('');
                 $('#countData').html(response.count + ' TOTAL DATA');
                 $('#placeholderMax').attr('placeholder', 'max: ' + response.count);
@@ -32,7 +31,6 @@ function quickResult(callback) {
                 $('#quickResultModal').modal('show');
             } else {
                 $('#queryZero').show();
-                $('#querySuccess').hide();
                 $('#quickResultModal').removeClass('animate__slideOutDown animate__faster');
                 $('#quickResultModal').addClass('animate__slideInUp animate__faster');
                 $('#quickResultModal').modal('show');
@@ -61,6 +59,8 @@ document.addEventListener('DOMContentLoaded', function () {
         $('#quickResultModal').addClass('animate__slideOutDown animate__faster');
         setTimeout(function () {
             $('#quickResultModal').modal('hide');
+            $('#querySuccess').hide();
+            $('#queryZero').hide();
         }, 500);
     });
 });
