@@ -22,7 +22,7 @@ function quickResult(callback) {
             console.log(response.status);
             if(response.status == 'query success'){
                 if (response.count != 0) {
-                    $('#querySuccess').show();
+                    $('#querySuccess').css('display', 'block');
                     $('#countData').html('');
                     $('#countData').html(response.count + ' TOTAL DATA');
                     $('#placeholderMax').attr('placeholder', 'max: ' + response.count);
@@ -31,7 +31,7 @@ function quickResult(callback) {
                     $('#quickResultModal').addClass('animate__slideInUp animate__faster');
                     $('#quickResultModal').modal('show');
                 } else {
-                    $('#queryZero').show();
+                    $('#queryZero').css('display', 'block');
                     $('#quickResultModal').removeClass('animate__slideOutDown animate__faster');
                     $('#quickResultModal').addClass('animate__slideInUp animate__faster');
                     $('#quickResultModal').modal('show');
@@ -63,8 +63,8 @@ document.addEventListener('DOMContentLoaded', function () {
         $('#quickResultModal').addClass('animate__slideOutDown animate__faster');
         setTimeout(function () {
             $('#quickResultModal').modal('hide');
-            $('#querySuccess').hide();
-            $('#queryZero').hide();
+            $('#querySuccess').css('display', 'none');
+            $('#queryZero').css('display', 'none');
         }, 500);
     });
 });
