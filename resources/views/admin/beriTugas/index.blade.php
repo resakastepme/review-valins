@@ -142,7 +142,7 @@
                         <div class="row flex justify-content-center align-items-center">
                             <div class="col-md-6">
 
-                                <section id="querySuccess" style="display: none">
+                                <section id="querySuccess">
                                     <p style="color: green; font-weight: bold; font-size: 40px;" id="countData">unlimited
                                         data lmao</p>
                                         <h4 style="margin-top: -7%"> Belum ter-assign </h4>
@@ -166,7 +166,7 @@
                                         </button>
                                     </form>
                                 </section>
-                                <section id="queryZero" style="display:none">
+                                <section id="queryZero">
                                     <h4> Total data dari query </h4>
                                     <p style="color: red; font-weight: bold; font-size: 40px;"> 0 DATA </p>
                                     <h4> Periksa kembali filter anda! </h4>
