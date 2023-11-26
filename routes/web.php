@@ -91,7 +91,6 @@ Route::prefix('/admin')->group(function () {
     Route::get('/beriTugas/quickAssign', [BeriTugasController::class, 'quickAssign']);
 
 });
-
 // ROUTE FOR CHECK, DELETE LATER
 Route::get('/check', function () {
     if(Session::has('preview_access')){

@@ -29,7 +29,7 @@ return new class extends Migration
             $table->text('id_eviden2')->nullable();
             $table->text('id_eviden3')->nullable();
             $table->String('upload_by')->nullable();
-            $table->string('reviewer')->nullable();
+            $table->string('id_reviewer')->nullable();
             $table->timestamps();
         });
     }

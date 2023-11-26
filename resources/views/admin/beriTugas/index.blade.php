@@ -21,7 +21,7 @@
 
                             <label for="quickTimestamp">Timestamp <span style="font-weight: bold">(tahun)</span></label>
                             <select class="form-control" name="quickTimestamp" id="quickTimestamp">
-                                <option value="null" default>-</option>
+                                <option value="null" default>Semua</option>
                                 @foreach ($updated_at as $data)
                                     @if ($data['year'] != null)
                                         <option value="{{ $data['year'] }}"> {{ $data['year'] }} </option>
@@ -31,7 +31,7 @@
 
                             <label class="mt-2" for="quickWitel"> Witel </label>
                             <select class="form-control" name="quickWitel" id="quickWitel">
-                                <option value="null" default>-</option>
+                                <option value="null" default>Semua</option>
                                 @foreach ($witel as $data)
                                     @if ($data['witel'] != null)
                                         <option value="{{ $data['witel'] }}"> {{ $data['witel'] }} </option>
@@ -41,7 +41,7 @@
 
                             <label class="mt-2" for="quickRekon"> Rekon </label>
                             <select class="form-control" name="quickRekon" id="quickRekon">
-                                <option value="null" default>-</option>
+                                <option value="null" default>Semua</option>
                                 @foreach ($rekon as $data)
                                     @if ($data['rekon'] != null)
                                         <option value="{{ $data['rekon'] }}"> {{ $data['rekon'] }} </option>
@@ -51,14 +51,16 @@
 
                             <label class="mt-2" for="quickAso"> Approve ASO </label>
                             <select class="form-control" name="quickAso" id="quickAso">
-                                <option value="null" default>-</option>
+                                <option value="semua" default>Semua</option>
+                                <option value="kosong"> Kosong </option>
                                 <option value="OK"> OK </option>
                                 <option value="NOK"> NOK </option>
                             </select>
 
                             <label class="mt-2" for="quickKetASO"> Keterangan ASO </label>
                             <select class="form-control" name="quickKetASO" id="quickKetASO">
-                                <option value="null" default>-</option>
+                                <option value="semua" default>Semua</option>
+                                <option value="kosong">Kosong</option>
                                 @foreach ($keterangan_aso as $data)
                                     @if ($data['keterangan_aso'] != null && $data['keterangan_aso'] != '-')
                                         <option value="{{ $data['keterangan_aso'] }}"> {{ $data['keterangan_aso'] }}
@@ -69,14 +71,16 @@
 
                             <label class="mt-2" for="quickRAM3"> RAM3 </label>
                             <select class="form-control" name="quickRAM3" id="quickRAM3">
-                                <option value="null" default>-</option>
+                                <option value="semua" default>Semua</option>
+                                <option value="kosong"> Kosong </option>
                                 <option value="OK"> OK </option>
                                 <option value="NOK"> NOK </option>
                             </select>
 
                             <label class="mt-2" for="quickKetRAM3"> Keterangan RAM3 </label>
                             <select class="form-control" name="quickKetRAM3" id="quickKetRAM3">
-                                <option value="null" default>-</option>
+                                <option value="semua" default>Semua</option>
+                                <option value="kosong">Kosong</option>
                                 @foreach ($keterangan_ram3 as $data)
                                     @if ($data['keterangan_ram3'] != null && $data['keterangan_ram3'] != '-')
                                         <option value="{{ $data['keterangan_ram3'] }}"> {{ $data['keterangan_ram3'] }}
@@ -88,7 +92,7 @@
                             <div class="row d-flex mt-4">
                                 <div class="col-auto">
                                     <button class="btn btn-success" type="submit" id="submitQuickBtn"> <i
-                                            class="fa-brands fa-get-pocket" id="getDataIcon"></i> Get Data </button>
+                                            class="fa-brands fa-get-pocket" id="getDataIcon"></i> Filter </button>
                                     <button type="reset" class="btn btn-secondary" id="clearQuickFromBtn"> Clear </button>
                                 </div>
                             </div>
@@ -145,14 +149,17 @@
                                 <section id="querySuccess" style="display: none">
                                     <p style="color: green; font-weight: bold; font-size: 40px;" id="countData">unlimited
                                         data lmao</p>
-                                        <h4 style="margin-top: -7%"> Belum ter-assign </h4>
+                                    <h4 style="margin-top: -7%"> Belum ter-assign </h4>
 
-                                    <form>
-                                        <label class="mt-2" for="">Masukan jumlah data</label>
-                                        <input type="number" class="form-control" id="placeholderMax"
-                                            placeholder="max: literally no max lmao" max="1000000000000" required>
-                                        <label class="mt-2" for="">Assign data kepada</label>
-                                        <select class="form-control">
+                                    <form id="quickResultForm" method="POST">
+                                        @csrf
+                                        <label class="mt-2" for="placeholderMax">Masukan jumlah data <span
+                                                style="color: red">* </span></label>
+                                        <input type="number" class="form-control" name="placeholderMax"
+                                            id="placeholderMax" placeholder="max: literally no max lmao">
+                                        <label class="mt-2" for="assignForm">Assign data kepada <span
+                                                style="color: red">* </span></label>
+                                        <select class="form-control" name="assignForm" id="assignForm">
                                             <option value="null" default>-- Pilih --</option>
                                             <option value="{{ Session::get('username') }}"> Saya
                                                 ({{ Session::get('role') == 1 ? 'Admin' : 'User' }}) </option>
@@ -162,7 +169,16 @@
                                                 </option>
                                             @endforeach
                                         </select>
-                                        <button type="submit" class="form-control btn btn-success mt-4"> Assign Tugas
+                                        <label class="mt-2" for="komentarForm"> Komentar </label>
+                                        <textarea name="komentarForm" id="komentarForm" cols="3" rows="3" class="form-control"
+                                            placeholder="Tolong kerjakan ini ya~"></textarea>
+                                        <small style="font-size: 10px;">Catatan: formulir dengan tanda <span
+                                                style="color: red">*</span> wajib diisi </small>
+                                        <button type="submit" id="btnSubmitForm"
+                                            class="form-control btn btn-success mt-3"> <span
+                                                class="spinner-border spinner-border-sm me-1" id="submitSpinner"
+                                                style="display: none;"></span> Assign
+                                            Tugas
                                         </button>
                                     </form>
                                 </section>
@@ -186,6 +202,42 @@
                     <button type="button" class="btn btn-secondary" id="quick_closeModalBtn">Tutup</button>
                 </div>
                 </section>
+            </div>
+        </div>
+    </div>
+
+    {{-- TOAST --}}
+    <div class="toast-container top-0 end-0 mt-2 me-2 position-fixed">
+        <div class="toast align-items-center text-bg-warning border-0" role="alert" aria-live="assertive"
+            aria-atomic="true" id="toast-warningLengkapiForm">
+            <div class="d-flex">
+                <i class="fa fa-circle-exclamation fa-fade fa-2xl mt-2 ms-2"></i>
+                <div class="toast-body">
+                    <h6> Jumlah data tidak bisa zero! </h6>
+                </div>
+                <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"
+                    aria-label="Close"></button>
+            </div>
+        </div>
+        <div class="toast align-items-center text-bg-warning border-0" role="alert" aria-live="assertive"
+            aria-atomic="true" id="toast-warningLengkapiForm2">
+            <div class="d-flex">
+                <i class="fa fa-circle-exclamation fa-fade fa-2xl mt-2 ms-2"></i>
+                <div class="toast-body">
+                    <h6> Silahkan lengkapi form! </h6>
+                </div>
+                <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"
+                    aria-label="Close"></button>
+            </div>
+        </div>
+        <div class="toast align-items-center text-bg-warning border-0" role="alert" aria-live="assertive"
+            aria-atomic="true" id="toast-warningLengkapiForm3">
+            <div class="d-flex">
+                <i class="fa fa-circle-exclamation fa-fade fa-2xl mt-2 ms-2"></i>
+                <div class="toast-body" id="countCustomDiv">
+                </div>
+                <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"
+                    aria-label="Close"></button>
             </div>
         </div>
     </div>
