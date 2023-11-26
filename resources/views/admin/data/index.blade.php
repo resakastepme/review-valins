@@ -47,12 +47,10 @@
 
             <section id="tableSection" style="display: none">
                 <div class="table-responsive">
-                    <table id="tableData" style="width:100%" class="table table-striped table-bordered table-hover"
-                        border="1">
+                    <table id="tableData" style="width:100%" class="table table-striped table-bordered table-hover">
                         <thead>
                         </thead>
                         <tbody>
-
                         </tbody>
                     </table>
                 </div>
@@ -65,7 +63,7 @@
         aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered modal-lg">
             <div class="modal-content">
-                <div class="modal-header bg-light">
+                <div class="modal-header">
                     <h2> Tambah Data </h2>
                 </div>
                 <div class="modal-body">
@@ -137,7 +135,7 @@
                     </div>
 
                 </div>
-                <div class="modal-footer" style="margin-top: -3%;">
+                <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"
                         id="closeModalBtn">Batalkan</button>
                     <button type="submit" id="submitBtn" class="btn btn-primary"> <span
@@ -154,7 +152,7 @@
         aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered modal-lg">
             <div class="modal-content">
-                <div class="modal-header bg-light">
+                <div class="modal-header">
                     <h2> Edit Data: <span id="idValins_here"></span> </h2>
                 </div>
                 <div class="modal-body">
@@ -238,7 +236,7 @@
                     </div>
 
                 </div>
-                <div class="modal-footer" style="margin-top: -3%;">
+                <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" id="edit_closeModalBtn">Batalkan</button>
                     <button type="submit" id="edit_submitBtn" class="btn btn-primary"> <span
                             class="spinner-border spinner-border-sm me-1" id="edit_submitSpinner"
@@ -255,7 +253,7 @@
         aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered modal-lg">
             <div class="modal-content">
-                <div class="modal-header bg-light">
+                <div class="modal-header">
                     <h2> Tutorial upload data Excel </h2>
                 </div>
                 <div class="modal-body m-4">
@@ -302,7 +300,7 @@
         tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered modal-fullscreen">
             <div class="modal-content">
-                <div class="modal-header bg-light">
+                <div class="modal-header">
                     <h2> <i class="fa-solid fa-clock-rotate-left ms-5"></i> History </h2>
                 </div>
                 <div class="modal-body m-4">

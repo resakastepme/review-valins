@@ -15,13 +15,179 @@
     @yield('css')
     <title> {{ Session::get('role') == 1 ? 'Admin' : (Session::get('role') == 2 ? 'Aso' : 'User') }} - @yield('title')
     </title>
+
+    <style>
+        /* CSS */
+        :root {
+            --background-color: #fff;
+            /* Light mode background color */
+            --text-color: #333;
+            /* Light mode text color */
+            --icon-color: #333;
+            /* Light mode icon color */
+            --modal-background: #fff;
+            /* Light mode modal background color */
+            --modal-text: #333;
+            /* Light mode modal text color */
+        }
+
+        body {
+            background-color: var(--background-color);
+            color: var(--text-color);
+        }
+
+        .card {
+            background-color: var(--background-color);
+            color: var(--text-color);
+        }
+
+        .card .card-title {
+            color: var(--text-color);
+        }
+
+        .navbar-toggler-icon {
+            background-color: var(--icon-color);
+        }
+
+        /* Additional styles for other elements in light mode */
+
+        /* Navbar styles */
+        .navbar {
+            background-color: var(--background-color);
+            color: var(--text-color);
+        }
+
+        .navbar-dark .navbar-toggler-icon {
+            background-color: var(--icon-color);
+        }
+
+        .navbar-dark .navbar-nav .nav-link {
+            color: var(--text-color);
+        }
+
+        /* Modal styles */
+        .modal-content {
+            background-color: var(--modal-background);
+            color: var(--modal-text);
+        }
+
+        .modal-header {
+            background-color: var(--modal-background);
+            color: var(--modal-text);
+        }
+
+        /* Dark mode styles */
+        .dark-mode {
+            --background-color: #333;
+            /* Dark mode background color */
+            --text-color: #fff;
+            /* Dark mode text color */
+            --icon-color: #fff;
+            /* Dark mode icon color */
+            --modal-background: #333;
+            /* Dark mode modal background color */
+            --modal-text: #fff;
+            /* Dark mode modal text color */
+        }
+
+        .dark-mode body {
+            background-color: var(--background-color);
+            color: var(--text-color);
+        }
+
+        .dark-mode .card,
+        .dark-mode .bg-dark {
+            background-color: var(--background-color);
+            color: var(--text-color);
+        }
+
+        .dark-mode .navbar {
+            background-color: var(--background-color);
+            color: var(--text-color);
+        }
+
+        .dark-mode .navbar-toggler-icon {
+            background-color: var(--icon-color);
+        }
+
+        .dark-mode .navbar-nav .nav-link {
+            color: var(--text-color);
+        }
+
+        /* Dark mode modal styles */
+        .dark-mode .modal-content {
+            background-color: var(--modal-background);
+            color: var(--modal-text);
+        }
+
+        .dark-mode .modal-header {
+            background-color: var(--modal-background);
+            color: var(--modal-text);
+        }
+
+        body.dark-mode #example_wrapper {
+            background-color: #333;
+            color: #fff;
+        }
+
+        body.dark-mode #tableData th {
+            /* border-color: #555; */
+            background-color: #555;
+            color: #fff;
+        }
+
+        body.dark-mode #tableData td {
+            /* border-color: #555; */
+            background-color: #333;
+            color: #fff;
+        }
+
+        body.dark-mode #tableDataPreviewError th {
+            /* border-color: #555; */
+            background-color: #555;
+            color: #fff;
+        }
+
+        body.dark-mode #tableDataPreviewError td {
+            /* border-color: #555; */
+            background-color: #333;
+            color: #fff;
+        }
+
+        body.dark-mode #tableDataPreviewSuccess th {
+            /* border-color: #555; */
+            background-color: #555;
+            color: #fff;
+        }
+
+        body.dark-mode #tableDataPreviewSuccess td {
+            /* border-color: #555; */
+            background-color: #333;
+            color: #fff;
+        }
+
+        body.dark-mode #tablePengguna th {
+            /* border-color: #555; */
+            background-color: #555;
+            color: #fff;
+        }
+
+        body.dark-mode #tablePengguna td {
+            /* border-color: #555; */
+            background-color: #333;
+            color: #fff;
+        }
+
+        /* Add more styles for other elements in dark mode */
+    </style>
+
 </head>
 
 <body>
 
-    <nav class="navbar navbar-expand-sm navbar-light bg-light" aria-label="Third navbar example">
+    <nav class="navbar navbar-expand-sm navbar-light bg-light" aria-label="Third navbar example" id="navbarExample">
         <div class="container-fluid">
-            <img src="{{ asset('assets/img/auth/telkom-logo.png') }}" id="telkomLogo">
+            <img src="{{ asset('assets/img/auth/telkom-mini-logo.png') }}" id="telkomLogo">
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarsExample03"
                 aria-controls="navbarsExample03" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
@@ -52,7 +218,7 @@
                             href="{{ url('/' . (Session::get('role') == 1 ? 'admin' : 'user') . '/pengguna') }}"
                             tabindex="-1" aria-disabled="true">Pengguna</a>
                     </li>
-                    {{-- <li class="nav-item dropdown">
+                    {{-- <li class"nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" id="dropdown03" data-bs-toggle="dropdown"
                             aria-expanded="false">Pengguna</a>
                         <ul class="dropdown-menu" aria-labelledby="dropdown03">
@@ -60,12 +226,11 @@
                             <li><a class="dropdown-item" href="#">Another action</a></li>
                             <li><a class="dropdown-item" href="#">Something else here</a></li>
                         </ul>
-                    </li> --}}
+                    </li>= --}}
                 </ul>
 
             </div>
         </div>
-
         <div class="collapse navbar-collapse me-4" id="navbarNavDarkDropdown">
             <ul class="navbar-nav">
                 <li class="nav-item dropdown">
@@ -74,6 +239,10 @@
                         <span> <i class="fa-solid fa-user me-2"></i> </span> {{ Session('username') }}
                     </a>
                     <ul class="dropdown-menu" aria-labelledby="navbarDarkDropdownMenuLink">
+                        <li>
+                            <button id="theme-toggle" class="btn btn-primary ms-3">Toggle Theme</button>
+
+                        </li>
                         <li><a class="dropdown-item" href="{{ url('/logout/bye-bye') }}"><button
                                     class="btn btn-danger form-control"> <span><i
                                             class="fa fa-right-from-bracket"></i></span> Logout </button></a></li>
@@ -95,6 +264,50 @@
 <script type="text/javascript" src="{{ asset('assets/js/autologout.js') }}"></script>
 <script type="text/javascript" src="{{ asset('assets/js/sweetalert2.min.js') }}"></script>
 <script type="text/javascript">
+
+    // JavaScript with jQuery
+    $(document).ready(function() {
+        const themeToggle = $('#theme-toggle');
+        const body = $('body');
+        const exampleCard = $('.card.bg-light'); // Select only cards with bg-light class
+        const navbar = $('#navbarExample');
+        const modalContent = $('.modal-content'); // Update with the actual class for your modal content
+
+        // Check user's preference from local storage
+        if (localStorage.getItem('theme') == 'dark') {
+            body.addClass('dark-mode');
+            exampleCard.removeClass('bg-light').addClass('bg-dark');
+            navbar.removeClass('bg-light').addClass('bg-dark');
+            modalContent.removeClass('bg-light').addClass('bg-dark');
+        }
+
+        // Toggle between light and dark modes
+        themeToggle.on('click', function() {
+            body.toggleClass('dark-mode');
+            const isDarkMode = body.hasClass('dark-mode');
+
+            // Update card background class based on dark mode
+            exampleCard.each(function() {
+                const card = $(this);
+                card.removeClass(isDarkMode ? 'bg-light' : 'bg-dark').addClass(isDarkMode ?
+                    'bg-dark' : 'bg-light');
+            });
+
+            // Update navbar background class based on dark mode
+            navbar.removeClass(isDarkMode ? 'bg-light' : 'bg-dark').addClass(isDarkMode ? 'bg-dark' :
+                'bg-light');
+
+            // Update modal content background class based on dark mode
+            modalContent.removeClass(isDarkMode ? 'bg-light' : 'bg-dark').addClass(isDarkMode ?
+                'bg-dark' : 'bg-light');
+
+            // Save user's preference to local storage
+            localStorage.setItem('theme', isDarkMode ? 'dark' : 'light');
+        });
+    });
+
+
+
     function logoResizer() {
         if (window.innerWidth < 576) {
             document.getElementById('telkomLogo').style.width = "20%";

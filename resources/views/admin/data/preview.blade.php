@@ -20,7 +20,7 @@
             <div class="col-md-6 d-flex">
 
                 <h2 class="me-2"> Preview: </h2>
-                <div class="card bg-success p-2" id="pointer">
+                <div class="card bg-success p-2" id="pointer" style="background-color: green">
                     <div class="card-title text-white">
                         <i class="fa-solid fa-file-excel fa-lg me-1"></i>
                         {{ Session('fileName') }}

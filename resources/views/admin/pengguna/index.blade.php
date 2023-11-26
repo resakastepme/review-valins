@@ -6,18 +6,17 @@
     <div class="container">
         <div class="row py-5">
             <div class="col-lg-10 mx-auto">
-                <div class="card rounded shadow border-0">
+                <div class="card rounded shadow">
                     <div class="card-header p-3">
                         <button class="ms-4 btn btn-primary" data-bs-toggle="modal" data-bs-target="#tambahAkunModal"
                             type="button" id="tambahDataBtn"> <span class="me-2"> <i class="fas fa-plus-circle fa-lg">
                                 </i> </span> Tambah akun </button>
                     </div>
-                    <div class="card-body p-4 bg-white rounded">
+                    <div class="card-body p-4">
                         <button type="button" class="btn btn-success mb-3" id="refresh"><i
-                            class="fa-solid fa-arrows-rotate me-1" id="refreshIcon"></i> Refresh </button>
+                                class="fa-solid fa-arrows-rotate me-1" id="refreshIcon"></i> Refresh </button>
                         <div class="table-responsive">
-                            <table id="tablePengguna" style="width:100%"
-                                class="table table-striped table-bordered table-hover" border="1">
+                            <table id="tablePengguna" class="table table-striped table-bordered table-hover">
                                 <thead>
                                     <tr>
                                         <th>No</th>
@@ -35,17 +34,15 @@
                                             <td>{{ $user['role'] == 1 ? 'Admin' : 'User' }}</td>
                                             <td>{{ $user['username'] }}</td>
                                             <td>{{ $user['email'] }}</td>
-                                            <td align="center">
-                                                <div class="row">
-                                                    <div class="col-md-3"></div>
-                                                    <div class="col-md-2">
+                                            <td>
+                                                <div class="row d-flex justify-content-center align-items-center">
+                                                    <div class="col-auto">
                                                         <button class="btn btn-warning" type="button" style="color: white;"
                                                             data-user-id="{{ $user['id'] }}" id="btnEdit"> Edit
                                                         </button>
-                                                    </div>
-                                                    <div class="col-md-6">
                                                         <button class="btn btn-danger" type="button"
-                                                            data-user-id="{{ $user['id'] }}" data-username="{{ $user['username'] }}" id="btnHapus"> Hapus
+                                                            data-user-id="{{ $user['id'] }}"
+                                                            data-username="{{ $user['username'] }}" id="btnHapus"> Hapus
                                                         </button>
                                                     </div>
                                                 </div>

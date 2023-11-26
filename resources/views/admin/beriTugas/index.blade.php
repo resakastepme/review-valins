@@ -136,8 +136,8 @@
     <div class="modal animate__animated animate__slideInUp animate__faster" id="quickResultModal" data-bs-backdrop="static"
         tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered modal-lg">
-            <div class="modal-content">
-                <div class="modal-header bg-light">
+            <div class="modal-content bg-dark">
+                <div class="modal-header">
                     <h2> <i class="fa-brands fa-get-pocket"></i></i> Quick </h2>
                 </div>
                 <div class="modal-body m-4">
