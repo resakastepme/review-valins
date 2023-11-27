@@ -119,14 +119,27 @@
         </div>
     </div>
 
-    <div class="row-auto">
-        <div class="col-auto">
-            <div class="card bg-light m-4 rounded shadow border-0">
-                <div class="card-header p-4">
-                    <h4> List tugas </h4>
-                </div>
-                <div class="card-body m-4">
-                    <h1> TEST </h1>
+    <hr>
+
+    <div class="container mb-3">
+        <div class="row-auto">
+            <div class="card rounded shadow">
+                <div class="card-body">
+
+                    <div class="col-auto">
+
+                        <h4 class="ms-5"> <i class="fa-solid fa-list fa-lg me-2"></i> LIST TUGAS </h4>
+                        <section id="paginationAjax">
+
+                            @include('admin.beriTugas.lists')
+
+                        </section>
+                    </div>
+
+                    <div class="d-flex justify-content-center align-items-center">
+                        {!! $post->links() !!}
+                    </div>
+
                 </div>
             </div>
         </div>
@@ -136,7 +149,7 @@
     <div class="modal animate__animated animate__slideInUp animate__faster" id="quickResultModal" data-bs-backdrop="static"
         tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered modal-lg">
-            <div class="modal-content bg-dark">
+            <div class="modal-content">
                 <div class="modal-header">
                     <h2> <i class="fa-brands fa-get-pocket"></i></i> Quick </h2>
                 </div>
@@ -246,4 +259,49 @@
     <script type="text/javascript" src="{{ asset('assets/js/admin/pengguna/jquery.dataTables.min.js') }}"></script>
     <script type="text/javascript" src="{{ asset('assets/js/admin/pengguna/dataTables.bootstrap4.min.js') }}"></script>
     <script type="text/javascript" src="{{ asset('assets/js/admin/beriTugas/main.js') }}"></script>
+    <script type="text/javascript">
+        var appUrl = "{{ url('/') }}";
+        $('li[aria-label="pagination.previous"]').remove();
+        $('a[aria-label="pagination.next"]').parent('li').remove();
+        setTimeout(() => {
+            $('.pagination li').find('span').parent('li').removeClass('active');
+            $('.pagination li').find('span').remove().html(
+                '<a class="page-link" href="'+appUrl+'/admin/beriTugas?page=1">1</a>');
+            $('.pagination li:first').html(
+                '<a class="page-link" href="'+appUrl+'/admin/beriTugas?page=1">1</a>');
+        }, 500);
+
+        $(window).on('hashchange', function() {
+            if (window.location.hash) {
+                var page = window.location.hash.replace('#', '');
+                if (page == Number.NaN || page <= 0) {
+                    return false;
+                } else {
+                    getData(page);
+                }
+            }
+        });
+
+        $(document).on('click', '.pagination a', function(event) {
+            event.preventDefault();
+            var page = $(this).attr('href').split('page=')[1];
+            getData(page);
+        });
+
+
+        function getData(page) {
+            $.ajax({
+                    url: '?page=' + page,
+                    type: "get",
+                    datatype: "html",
+                })
+                .done(function(data) {
+                    $("#paginationAjax").empty().html(data);
+                    location.hash = page;
+                })
+                .fail(function(jqXHR, ajaxOptions, thrownError) {
+                    alert('No response from server');
+                });
+        }
+    </script>
 @endsection

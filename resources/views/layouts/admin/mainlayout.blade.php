@@ -264,7 +264,6 @@
 <script type="text/javascript" src="{{ asset('assets/js/autologout.js') }}"></script>
 <script type="text/javascript" src="{{ asset('assets/js/sweetalert2.min.js') }}"></script>
 <script type="text/javascript">
-
     // JavaScript with jQuery
     $(document).ready(function() {
         const themeToggle = $('#theme-toggle');

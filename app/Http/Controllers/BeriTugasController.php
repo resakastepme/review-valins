@@ -10,20 +10,27 @@ use Illuminate\Http\Request;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Str;
+use Illuminate\View\View;
 
 class BeriTugasController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request): View
     {
         $q = Data::selectRaw('distinct year(updated_at) as year')->get();
         $q2 = Data::select('witel')->distinct()->get();
         $q3 = Data::select('rekon')->distinct()->get();
         $q4 = Data::select('keterangan_aso')->distinct()->get();
         $q5 = Data::select('keterangan_ram3')->distinct()->get();
-        $qUser = User::where('username', '!=', Session::get('username'))->get();
+        $qUsers = User::where('username', '!=', Session::get('username'))->get();
+
+        $post = Assignment::with('getUsers')->with('getReviewers')->orderby('id', 'DESC')->paginate(5);
+
+        if ($request->ajax()) {
+            return view('admin.beriTugas.lists', compact('post'));
+        }
 
         return view('admin.beriTugas.index', [
             'updated_at' => $q,
@@ -31,8 +38,8 @@ class BeriTugasController extends Controller
             'rekon' => $q3,
             'keterangan_aso' => $q4,
             'keterangan_ram3' => $q5,
-            'users' => $qUser
-        ]);
+            'users' => $qUsers
+        ], compact('post'));
     }
 
     public function quick()

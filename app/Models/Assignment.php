@@ -15,4 +15,14 @@ class Assignment extends Model
         'tugas_dari',
         'komentar'
     ];
+
+    public function getUsers()
+    {
+        return $this->belongsTo(User::class, 'tugas_dari', 'id');
+    }
+
+    public function getReviewers()
+    {
+        return $this->belongsTo(User::class, 'reviewer', 'id');
+    }
 }
