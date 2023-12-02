@@ -128,17 +128,36 @@
 
                     <div class="col-auto">
 
-                        <h4 class="ms-5"> <i class="fa-solid fa-list fa-lg me-2"></i> LIST TUGAS </h4>
-                        <section id="paginationAjax">
+                        <div class="row">
+                            <div class="col-auto d-flex justify-content-start align-items-start">
+                                <h4 class="ms-5"> <i class="fa-solid fa-list fa-lg me-2"></i> LIST TUGAS </h4>
+                            </div>
+                            <div class="col-auto d-flex justify-content-end align-items-right d-none d-md-block">
+                                <button type="button" class="btn btn-success" id="listsRefresh"> <i class="fa-solid fa-arrows-rotate me-1"
+                                    id="refreshIcon"></i> Refresh </button>
+                            </div>
+                            <div class="col-auto d-flex justify-content-end align-items-right d-md-none">
+                                <button type="button" class="btn btn-success" id="listsRefresh1"> <i class="fa-solid fa-arrows-rotate me-1"
+                                    id="refreshIcon1"></i></button>
+                            </div>
+                        </div>
 
-                            @include('admin.beriTugas.lists')
+                        <section id="loadTableLists" style="display: block" class="mt-5 mb-5">
+                            <div class="d-flex justify-content-center">
+                                <div class="spinner-border" style="width: 5rem; height: 5rem;" role="status">
+                                    <span class="visually-hidden">Loading...</span>
+                                </div>
+                            </div>
+                        </section>
+                        @csrf
+                        <section id="paginationAjax" style="display: none">
 
                         </section>
+                        <div class="d-flex justify-content-center align-items-center d-none" id="paginationLinks">
+                            {!! $post->links() !!}
+                        </div>
                     </div>
 
-                    <div class="d-flex justify-content-center align-items-center">
-                        {!! $post->links() !!}
-                    </div>
 
                 </div>
             </div>
@@ -146,8 +165,8 @@
     </div>
 
     <!-- Modal Quick Result -->
-    <div class="modal animate__animated animate__slideInUp animate__faster" id="quickResultModal" data-bs-backdrop="static"
-        tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal animate__animated animate__slideInUp animate__faster" id="quickResultModal"
+        data-bs-backdrop="static" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered modal-lg">
             <div class="modal-content">
                 <div class="modal-header">
@@ -259,49 +278,4 @@
     <script type="text/javascript" src="{{ asset('assets/js/admin/pengguna/jquery.dataTables.min.js') }}"></script>
     <script type="text/javascript" src="{{ asset('assets/js/admin/pengguna/dataTables.bootstrap4.min.js') }}"></script>
     <script type="text/javascript" src="{{ asset('assets/js/admin/beriTugas/main.js') }}"></script>
-    <script type="text/javascript">
-        var appUrl = "{{ url('/') }}";
-        $('li[aria-label="pagination.previous"]').remove();
-        $('a[aria-label="pagination.next"]').parent('li').remove();
-        setTimeout(() => {
-            $('.pagination li').find('span').parent('li').removeClass('active');
-            $('.pagination li').find('span').remove().html(
-                '<a class="page-link" href="'+appUrl+'/admin/beriTugas?page=1">1</a>');
-            $('.pagination li:first').html(
-                '<a class="page-link" href="'+appUrl+'/admin/beriTugas?page=1">1</a>');
-        }, 500);
-
-        $(window).on('hashchange', function() {
-            if (window.location.hash) {
-                var page = window.location.hash.replace('#', '');
-                if (page == Number.NaN || page <= 0) {
-                    return false;
-                } else {
-                    getData(page);
-                }
-            }
-        });
-
-        $(document).on('click', '.pagination a', function(event) {
-            event.preventDefault();
-            var page = $(this).attr('href').split('page=')[1];
-            getData(page);
-        });
-
-
-        function getData(page) {
-            $.ajax({
-                    url: '?page=' + page,
-                    type: "get",
-                    datatype: "html",
-                })
-                .done(function(data) {
-                    $("#paginationAjax").empty().html(data);
-                    location.hash = page;
-                })
-                .fail(function(jqXHR, ajaxOptions, thrownError) {
-                    alert('No response from server');
-                });
-        }
-    </script>
 @endsection

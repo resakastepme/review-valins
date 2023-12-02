@@ -11,7 +11,6 @@
                         <p class="mb-0" style="font-weight: bold">Tugas Dari:</p>
                         <p class="mb-0 ml-2 ms-2" style="font-style: italic">
                             {{ $p->getUsers->username }}</p>
-                        <!-- Hide on mobile devices -->
                         <p class="mb-0 ml-md-5 d-none d-md-block ms-5" style="font-weight: bold">
                             Reviewer:</p>
                         <p class="mb-0 ml-2 d-none d-md-block ms-2" style="font-style: italic">
@@ -21,7 +20,6 @@
                         <p class="mb-0 ml-2 d-none d-md-block ms-2" style="font-style: italic">
                             {{ \Carbon\Carbon::parse($p->created_at)->format('Y-m-d') }}</p>
                     </div>
-                    <!-- Show on mobile devices only -->
                     <div class="d-md-none mb-3 d-flex">
                         <p class="mb-0" style="font-weight: bold">Reviewer:</p>
                         <p class="mb-0 ml-2 ms-2" style="font-style: italic">
@@ -51,8 +49,8 @@
                     <div class="d-md-none mb-3 d-flex">
                         <p class="mb-0" style="font-weight: bold">Status:</p>
                         <p class="mb-0 ml-2 ms-2"
-                            style="font-style: italic; {{ \App\Models\Reviewer::where('id_assignments', $p->id)->where('finish', 1)->count() == 0? 'color: rgb(213, 157, 59);': 'color: green;' }}">
-                            {{ \App\Models\Reviewer::where('id_assignments', $p->id)->where('finish', 1)->count() == 0? 'Belum selesai': 'Selesai' }}
+                            style="font-style: italic; {{ \App\Models\Reviewer::where('id_assignments', $p->id)->where('finish', 1)->count() == \App\Models\Data::where('id_reviewer', $p->id_reviewer)->count()? 'color: green;': 'color: rgb(213, 157, 59);' }}">
+                            {{ \App\Models\Reviewer::where('id_assignments', $p->id)->where('finish', 1)->count() == \App\Models\Data::where('id_reviewer', $p->id_reviewer)->count()? 'Belum selesai': 'Belum selesai' }}
                         </p>
                     </div>
                     <div class="d-none d-md-block">
@@ -66,16 +64,22 @@
                         </p>
                         <p class="mb-0" style="font-weight: bold">Status:</p>
                         <p class="mb-0 ml-2 ms-2"
-                            style="font-style: italic; {{ \App\Models\Reviewer::where('id_assignments', $p->id)->where('finish', 1)->count() == 0? 'color: rgb(213, 157, 59);': 'color: green;' }}">
-                            {{ \App\Models\Reviewer::where('id_assignments', $p->id)->where('finish', 1)->count() == 0? 'Belum selesai': 'Selesai' }}
+                            style="font-style: italic; {{ \App\Models\Reviewer::where('id_assignments', $p->id)->where('finish', 1)->count() == \App\Models\Data::where('id_reviewer', $p->id_reviewer)->count()? 'color: green;': 'color: rgb(213, 157, 59);' }}">
+                            {{ \App\Models\Reviewer::where('id_assignments', $p->id)->where('finish', 1)->count() == \App\Models\Data::where('id_reviewer', $p->id_reviewer)->count()? 'Selesai': 'Belum selesai' }}
                         </p>
                     </div>
                 </div>
                 <div class="col-12 col-md-2">
                     <div class="d-flex justify-content-center align-items-center">
-                        <button class="btn btn-secondary"> <i class="fa-solid fa-eye"></i></button>
-                        <button class="btn btn-primary ms-2"> <i class="fa-solid fa-pen-to-square"></i></button>
-                        <button class="btn btn-danger ms-2"> <i class="fa-solid fa-trash"></i></button>
+                        <button class="btn btn-secondary" data-bs-toggle="tooltip" data-bs-placement="top"
+                            data-bs-title="Lihat" title="Lihat" id="lihatListsBtn"> <i
+                                class="fa-solid fa-eye"></i></button>
+                        <button class="btn btn-primary ms-2" data-bs-toggle="tooltip" data-bs-placement="top"
+                            data-bs-title="Edit" title="Edit" id="editListsBtn"> <i
+                                class="fa-solid fa-pen-to-square"></i></button>
+                        <button class="btn btn-danger ms-2" data-bs-toggle="tooltip" data-bs-placement="top"
+                            data-bs-title="Hapus" title="Hapus" id="hapusListsBtn"> <i
+                                class="fa-solid fa-trash"></i></button>
                     </div>
                 </div>
             </div>
