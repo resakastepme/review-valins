@@ -6,6 +6,7 @@ use App\Models\Reviewer;
 use App\Models\Assignment;
 use App\Models\Data;
 use App\Models\User;
+use App\Models\Dumps;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Session;
@@ -76,11 +77,34 @@ class BeriTugasController extends Controller
             $query->where('keterangan_ram3', $qketRam3);
         }
         $data = $query->where('id_reviewer', null)->get();
+        $unique = time() . Str::random(10);
+        // Session::set('quick_unique', $unique);
+        foreach ($data as $d) {
+            $create = [
+                'timestamp_bawaan' => $d['timestamp_bawaan'],
+                'witel' => $d['witel'],
+                'id_valins' => $d['id_valins'],
+                'eviden1' => $d['eviden1'],
+                'eviden2' => $d['eviden2'],
+                'eviden3' => $d['eviden3'],
+                'id_valins_lama' => $d['id_valins_lama'],
+                'approve_aso' => $d['approve_aso'],
+                'keterangan_aso' => $d['keterangan_aso'],
+                'ram3' => $d['ram3'],
+                'keterangan_ram3' => $d['keterangan_ram3'],
+                'rekon' => $d['rekon'],
+                'id_eviden1' => $d['id_eviden1'],
+                'id_eviden2' => $d['id_eviden2'],
+                'id_eviden3' => $d['id_eviden3'],
+                'unique_id' => $unique
+            ];
+            Dumps::create($create);
+        }
         if ($data) {
             return response()->json([
                 'status' => 'query success',
                 'count' => count($data),
-                'data' => $data
+                'unique' => $unique
             ]);
         } else {
             return response()->json([
@@ -92,12 +116,13 @@ class BeriTugasController extends Controller
     public function quickAssign()
     {
         try {
+            set_time_limit(200);
             $jumlahData = $_GET['jumlahData'];
             $assign = $_GET['assign'];
             $komentar = $_GET['komentar'];
             $komentarRill = $komentar;
             if ($komentar == null) $komentarRill = 'Tolong kerjakan ini ya~';
-            $dataQuery = $_GET['dataQuery'];
+            $dataQuery1 = $_GET['unique'];
             $unique = time() . Str::random(10);
             $reviewer = User::where('username', $assign)->first();
             $tugas_dari = User::where('username', Session::get('username'))->first();
@@ -108,6 +133,7 @@ class BeriTugasController extends Controller
                 'komentar' => $komentarRill
             ]);
             $id_assignments = Assignment::where('id_reviewer', $unique)->first();
+            $dataQuery = Dumps::where('unique_id', $dataQuery1)->get();
             $counters = 0;
             foreach ($dataQuery as $data) {
                 Data::where('id', $data['id'])->update([
@@ -122,6 +148,49 @@ class BeriTugasController extends Controller
             }
             return response()->json([
                 'status' => 'ok',
+                'unique' => $dataQuery1
+            ]);
+        } catch (\Throwable $th) {
+            return response()->json([
+                'status' => $th->getMessage()
+            ]);
+        }
+    }
+
+    public function yeet()
+    {
+        $unique = $_GET['unique'];
+        $q = Dumps::where('unique_id', $unique)->delete();
+        if ($q) {
+            return response()->json([
+                'status' => 'ok'
+            ]);
+        } else {
+            return response()->json([
+                'status' => 'not ok'
+            ]);
+        }
+    }
+
+    public function selectiveGet()
+    {
+        try {
+            // $perPage = $_GET['perPage'];
+            // $page = $_GET['page'];
+            $timestamp = $_GET['timestamp'];
+            $rekon = $_GET['rekon'];
+            $q = Data::query();
+            if ($timestamp != 'null') {
+                $q->where('updated_at', 'LIKE', '%' . $timestamp . '%');
+            }
+            if ($rekon != 'null') {
+                $q->where('rekon', $rekon);
+            }
+            // $result = $q->paginate($perPage, ['*'], 'page', $page);
+            $result = $q->limit(10)->get();
+            return response()->json([
+                'status' => 'ok',
+                'data' => $result
             ]);
         } catch (\Throwable $th) {
             return response()->json([

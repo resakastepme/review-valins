@@ -50,7 +50,7 @@ function getData(page) {
         });
 }
 var countResult;
-var dataReview;
+var unique_quick;
 var timeoutGlobal = setTimeout(() => { }, 10000); // 10 seconds
 function quickResult(callback) {
     var quickTimestamp = $('#quickTimestamp').val();
@@ -77,7 +77,7 @@ function quickResult(callback) {
             if (response.status == 'query success') {
                 if (response.count != 0) {
                     countResult = response.count;
-                    dataReview = response.data;
+                    unique_quick = response.unique;
                     $('#querySuccess').css('display', 'block');
                     $('#countData').html('');
                     $('#countData').html(response.count + ' TOTAL DATA');
@@ -143,9 +143,10 @@ function quickResultSubmit(callback) {
                 jumlahData: jumlahData,
                 assign: assign,
                 komentar: komentar,
-                dataQuery: dataReview
+                unique: unique_quick
             }, success: function (response) {
                 clearTimeout(timeoutGlobal)
+                console.log(response.status);
                 if (response.status == 'ok') {
                     $('#quick_closeModalBtn').click();
                     let timerInterval;
@@ -166,7 +167,7 @@ function quickResultSubmit(callback) {
                         }
                     }).then((result) => {
                         if (result.dismiss === Swal.DismissReason.timer) {
-                            console.log("Berhasil");
+                            console.log(response.unique + '✅');
                         }
                     });
                 } else {
@@ -176,9 +177,10 @@ function quickResultSubmit(callback) {
                         icon: "error"
                     });
                 }
-            }, error: function (error) {
-                console.error('Error:', error);
-            }
+            },
+            // error: function (error) {
+            //     console.error('Error:', error);
+            // }
         });
 
         callback();
@@ -235,6 +237,20 @@ document.addEventListener('DOMContentLoaded', function () {
     $('#quick_closeModalBtn').on('click', function () {
         $('#quickResultModal').removeClass('animate__slideInUp animate__faster');
         $('#quickResultModal').addClass('animate__slideOutDown animate__faster');
+        $.ajax({
+            url: '/admin/beriTugas/yeet',
+            type: 'GET',
+            data: {
+                _token: $('meta[name="csrf_token"]').attr('content'),
+                unique: unique_quick
+            }, success: function (response) {
+                if (response.status == 'ok') {
+                    console.log("Session YEET");
+                } else {
+                    console.log('Session not yeet');
+                }
+            }
+        })
         setTimeout(function () {
             $('#quickResultModal').modal('hide');
             $('#querySuccess').css('display', 'none');
@@ -283,4 +299,170 @@ document.addEventListener('DOMContentLoaded', function () {
             $('#refreshIcon1').removeClass('fa-spin-pulse');
         });
     });
+    $('#beriTugasSelectiveForm').on('submit', function (e) {
+        e.preventDefault();
+
+        var timestamp = $('#selectiveTimestamp').val();
+        var rekon = $('#selectiveRekon').val();
+
+        $.ajax({
+            url: '/admin/beriTugas/selectiveGet',
+            type: 'GET',
+            data: {
+                _token: $('meta[name="csrf_token"]').attr('content'),
+                timestamp: timestamp,
+                rekon: rekon
+            }, success: function (response) {
+                var count = 0;
+                $.each(response.data, function (index, item) {
+                    ++count;
+                    var newRow = $('<tr>');
+                    var buttonElement = $('<button class="btn btn-success add-btn ms-1" type="button" id="checkBtnSelective">')
+                        .attr('data-hidden-value', item.id);
+                    var iconElement = $('<i class="fa-solid fa-circle-plus fa-lg">');
+                    buttonElement.append(iconElement);
+
+                    var updatedAt = new Date(item.updated_at);
+                    var formattedUpdatedAt = updatedAt.toISOString().replace('T', ' ').slice(0, -5);
+
+                    // Create new td elements for count and item.id_valins
+                    var countCell = $('<td>').text(count);
+                    var timestamp = $('<td>').text(formattedUpdatedAt);
+                    var idValins = $('<td>').text(item.id_valins);
+                    var idValinsLama = $('<td>').text(item.id_valins_lama);
+                    var ketAso = $('<td>').text(item.keterangan_aso);
+                    var aso = $('<td>').text(item.approve_aso);
+                    var ketRam3 = $('<td>').text(item.keterangan_ram3);
+                    var ram3 = $('<td>').text(item.ram3);
+                    var rekon = $('<td>').text(item.rekon);
+
+
+                    // Append the button cell, count cell, and id_valins cell to the newRow
+                    newRow.append($('<td>').append(buttonElement));
+                    newRow.append(countCell);
+                    newRow.append(timestamp);
+                    newRow.append(idValins);
+                    newRow.append(idValinsLama);
+                    newRow.append(ketAso);
+                    newRow.append(aso);
+                    newRow.append(ketRam3);
+                    newRow.append(ram3);
+                    newRow.append(rekon);
+
+                    // Append the new row to the table's tbody
+                    $('#tableSelective').children('tbody').append(newRow);
+                });
+
+
+            }
+        });
+
+        // var currentPage = 1;
+        // var perPage = 10;
+
+        // function fetchData(page) {
+        //     $.ajax({
+        //         url: '/admin/beriTugas/selectiveGet',
+        //         type: 'GET',
+        //         data: {
+        //             _token: $('meta[name="csrf_token"]').attr('content'),
+        //             timestamp: timestamp,
+        //             rekon: rekon,
+        //             perPage: perPage,
+        //             page: page
+        //         },
+        //         success: function (response) {
+        //             updateTable(response.data);
+        //             updatePagination(response);
+        //         },
+        //         error: function (error) {
+        //             console.error('Error fetching data:', error);
+        //         }
+        //     });
+        // }
+
+        // function updateTable(data) {
+        //     // Clear existing rows
+        //     $('#selectiveTable tbody').empty();
+
+        //     // Append new rows based on the current page data
+        //     var count = 0;
+        //     $.each(data, function (index, item) {
+        //         ++count;
+        //         var newRow = $('<tr>');
+        //         var buttonElement = $('<button class="btn btn-success add-btn ms-1" type="button" id="checkBtnSelective">')
+        //             .attr('data-hidden-value', item.id);
+        //         var iconElement = $('<i class="fa-solid fa-circle-plus fa-lg">');
+        //         buttonElement.append(iconElement);
+
+        //         var updatedAt = new Date(item.updated_at);
+        //         var formattedUpdatedAt = updatedAt.toISOString().replace('T', ' ').slice(0, -5);
+
+        //         // Create new td elements for count and item.id_valins
+        //         var countCell = $('<td>').text(count);
+        //         var timestamp = $('<td>').text(formattedUpdatedAt);
+        //         var idValins = $('<td>').text(item.id_valins);
+        //         var idValinsLama = $('<td>').text(item.id_valins_lama);
+        //         var ketAso = $('<td>').text(item.keterangan_aso);
+        //         var aso = $('<td>').text(item.approve_aso);
+        //         var ketRam3 = $('<td>').text(item.keterangan_ram3);
+        //         var ram3 = $('<td>').text(item.ram3);
+        //         var rekon = $('<td>').text(item.rekon);
+
+
+        //         // Append the button cell, count cell, and id_valins cell to the newRow
+        //         newRow.append($('<td>').append(buttonElement));
+        //         newRow.append(countCell);
+        //         newRow.append(timestamp);
+        //         newRow.append(idValins);
+        //         newRow.append(idValinsLama);
+        //         newRow.append(ketAso);
+        //         newRow.append(aso);
+        //         newRow.append(ketRam3);
+        //         newRow.append(ram3);
+        //         newRow.append(rekon);
+
+        //         // Append the new row to the table's tbody
+        //         $('#tableSelective').children('tbody').append(newRow);
+        //     });
+
+        //     function updatePagination(response) {
+        //         $('#pagination-sel').empty();
+
+        //         for (var i = 1; i <= response.last_page; i++) {
+        //             var pageLink = $('<a>').text(i);
+        //             if (i == response.current_page) {
+        //                 pageLink.addClass('active');
+        //             }
+
+        //             pageLink.on('click', function () {
+        //                 var page = parseInt($(this).text());
+        //                 currentPage = page;
+        //                 fetchData(page);
+        //             });
+
+        //             $('#pagination-sel').append(pageLink);
+        //         }
+        //     }
+        // }
+
+        // fetchData(currentPage);
+
+        $('#selectiveModal').removeClass('animate__slideOutDown animate__faster');
+        $('#selectiveModal').addClass('animate__slideInUp animate__faster');
+        $('#selectiveModal').modal('show');
+    });
+    $('#quick_closeSelectiveModalBtn').on('click', function () {
+        $('#selectiveModal').removeClass('animate__slideInUp animate__faster');
+        $('#selectiveModal').addClass('animate__slideOutDown animate__faster');
+        setTimeout(() => {
+            $('#selectiveModal').modal('hide');
+        }, 500);
+    });
 });
+tableSelective();
+function tableSelective() {
+    $(document).on('click', '#checkBtnSelective', function () {
+        console.log(this.dataset.hiddenValue);
+    });
+}

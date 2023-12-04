@@ -90,6 +90,8 @@ Route::prefix('/admin')->group(function () {
     Route::get('/beriTugas/loadLists', function () {
         return response()->json(['view' => view('admin.beriTugas.lists')->render()]);
     });
+    Route::get('/beriTugas/yeet', [BeriTugasController::class, 'yeet']);
+    Route::get('/beriTugas/selectiveGet', [BeriTugasController::class, 'selectiveGet']);
 });
 
 // ROUTE FOR CHECK, DELETE LATER

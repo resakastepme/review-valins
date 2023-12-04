@@ -4,7 +4,10 @@ function refresh(callback) {
     var table = $('#tableData').DataTable({
         ajax: {
             url: '/admin/data/refresh',
-            dataSrc: ''
+            dataSrc: '',
+            deferLoading: 10,
+            processing: true,
+            serverSide: true
         },
         "columns": [
             {
@@ -136,7 +139,7 @@ function refresh(callback) {
     }, 2000);
 }
 
-function loadTable(){
+function loadTable() {
     $('#refresh').prop('disabled', true);
     $('#refreshIcon').addClass('fa-spin-pulse');
     $('#loadTableSection').show();

@@ -104,14 +104,56 @@
             </div>
             <div class="col-md-6">
 
-                <div class="card bg-light m-2 rounded shadow border-0">
-                    <div class="card-header p-4">
-                        <h4> Beri tugas (Selective) </h4>
+                <div class="row-auto">
+                    <div class="card bg-light m-2 rounded shadow border-0">
+                        <div class="card-header p-4">
+                            <h4> Beri tugas (Selective) </h4>
+                        </div>
+                        <div class="card-body m-4">
+
+                            <form id="beriTugasSelectiveForm">
+                                @csrf
+                                <label for="selectiveTimestamp">Timestamp <span
+                                        style="font-weight: bold">(tahun)</span></label>
+                                <select class="form-control" name="selectiveTimestamp" id="selectiveTimestamp">
+                                    <option value="null" default>Semua</option>
+                                    @foreach ($updated_at as $data)
+                                        @if ($data['year'] != null)
+                                            <option value="{{ $data['year'] }}"> {{ $data['year'] }} </option>
+                                        @endif
+                                    @endforeach
+                                </select>
+
+                                <label class="mt-2" for="selectiveRekon"> Rekon </label>
+                                <select class="form-control" name="selectiveRekon" id="selectiveRekon">
+                                    <option value="null" default>Semua</option>
+                                    @foreach ($rekon as $data)
+                                        @if ($data['rekon'] != null)
+                                            <option value="{{ $data['rekon'] }}"> {{ $data['rekon'] }} </option>
+                                        @endif
+                                    @endforeach
+                                </select>
+
+                                <div class="row d-flex mt-4">
+                                    <div class="col-auto">
+                                        <button class="btn btn-success" type="submit" id="submitSelectiveBtn"> <i
+                                                class="fa-brands fa-get-pocket" id="getDataIcon"></i> Filter </button>
+                                        <button type="reset" class="btn btn-secondary" id="clearSelectiveFromBtn">
+                                            Clear
+                                        </button>
+                                    </div>
+                                </div>
+                            </form>
+
+                        </div>
                     </div>
-                    <div class="card-body m-4">
-
-                        <h6> TEST </h6>
-
+                </div>
+                <div class="row-auto d-none d-md-block" align="center">
+                    <div class="card m-2 bg-light rounded shadow border-0 ">
+                        <div class="card-body p-4">
+                            <img src="{{ asset('assets/img/auth/telkom-mini-logo.png') }}"
+                                style="width: 57%; height: 50%;">
+                        </div>
                     </div>
                 </div>
 
@@ -133,12 +175,12 @@
                                 <h4 class="ms-5"> <i class="fa-solid fa-list fa-lg me-2"></i> LIST TUGAS </h4>
                             </div>
                             <div class="col-auto d-flex justify-content-end align-items-right d-none d-md-block">
-                                <button type="button" class="btn btn-success" id="listsRefresh"> <i class="fa-solid fa-arrows-rotate me-1"
-                                    id="refreshIcon"></i> Refresh </button>
+                                <button type="button" class="btn btn-success" id="listsRefresh"> <i
+                                        class="fa-solid fa-arrows-rotate me-1" id="refreshIcon"></i> Refresh </button>
                             </div>
                             <div class="col-auto d-flex justify-content-end align-items-right d-md-none">
-                                <button type="button" class="btn btn-success" id="listsRefresh1"> <i class="fa-solid fa-arrows-rotate me-1"
-                                    id="refreshIcon1"></i></button>
+                                <button type="button" class="btn btn-success" id="listsRefresh1"> <i
+                                        class="fa-solid fa-arrows-rotate me-1" id="refreshIcon1"></i></button>
                             </div>
                         </div>
 
@@ -232,6 +274,74 @@
                 </div>
                 <div class="modal-footer" style="">
                     <button type="button" class="btn btn-secondary" id="quick_closeModalBtn">Tutup</button>
+                </div>
+                </section>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Selective -->
+    <div class="modal animate__animated animate__slideInUp animate__faster" id="selectiveModal" data-bs-backdrop="static"
+        tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered modal-fullscreen">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2> <i class="fa-brands fa-get-pocket"></i></i> Selective </h2>
+                </div>
+                <div class="modal-body m-4">
+
+                    <div class="table-responsive-lg">
+                        <table class="table table-hover" border="2" id="tableSelective">
+                            <thead>
+                                <tr>
+                                    <th scope="col">Tambah</th>
+                                    <th scope="col">No</th>
+                                    <th scope="col">Timestamp</th>
+                                    <th scope="col">ID Valins</th>
+                                    <th scope="col">ID Valins Lama</th>
+                                    <th scope="col">Keterangan ASO</th>
+                                    <th scope="col">Approve ASO</th>
+                                    <th scope="col">Keterangan RAM3</th>
+                                    <th scope="col">RAM3</th>
+                                    <th scope="col">Rekon</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {{-- <tr>
+                                    <td> <button class="btn btn-success add-btn ms-1" type="button"
+                                            data-hidden-value="10" id="checkBtnSelective"> <i class="fa-solid fa-circle-plus fa-lg"></i>
+                                        </button> </td>
+                                    <td> 1 </td>
+                                    <td> 2023 </td>
+                                    <td> 1283784342 </td>
+                                    <td> 1435435345 </td>
+                                    <td> BT >= 50% </td>
+                                    <td> NOK </td>
+                                    <td> BT >= 50% </td>
+                                    <td> NOK </td>
+                                    <td> SEPTEMBER </td>
+                                </tr>
+                                <tr>
+                                    <td> <button class="btn btn-success add-btn ms-1" type="button"
+                                            data-hidden-value="20" id="checkBtnSelective"> <i class="fa-solid fa-circle-plus fa-lg"></i>
+                                        </button> </td>
+                                    <td> 2 </td>
+                                    <td> 2023 </td>
+                                    <td> 28378324 </td>
+                                    <td> 324234324 </td>
+                                    <td> BT >= 50% </td>
+                                    <td> NOK </td>
+                                    <td> BT >= 50% </td>
+                                    <td> NOK </td>
+                                    <td> SEPTEMBER </td>
+                                </tr> --}}
+                            </tbody>
+                        </table>
+                        <div class="pagination-sel" id="pagination-sel"></div>
+                    </div>
+                </div>
+                <div class="modal-footer" style="">
+                    <button type="button" class="btn btn-secondary" id="quick_closeSelectiveModalBtn">Tutup</button>
                 </div>
                 </section>
             </div>

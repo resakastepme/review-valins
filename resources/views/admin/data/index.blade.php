@@ -441,6 +441,9 @@
         var previewStatus = '{{ Session('batalkan_status') }}';
         var previewSubmit = '{{ Session('excelStatus') }}';
         console.log(previewStatus);
+        if(error){
+            console.log(error);
+        }
         // if(previewStatus) return console.log(previewStatus);
         $('.evidenImg').on('error', function() {
             $(this).parent('a').removeAttr('href');

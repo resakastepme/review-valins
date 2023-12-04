@@ -1,0 +1,33 @@
+<?php
+
+namespace App\Models;
+
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Notifications\Notifiable;
+use Laravel\Sanctum\HasApiTokens;
+
+class Dumps extends Model
+{
+    use HasApiTokens, HasFactory, Notifiable;
+    protected $table = 'dumps';
+    protected $fillable = [
+        'timestamp_bawaan',
+        'witel',
+        'id_valins',
+        'eviden1',
+        'eviden2',
+        'eviden3',
+        'id_valins_lama',
+        'approve_aso',
+        'keterangan_aso',
+        'ram3',
+        'rekon',
+        'keterangan_ram3',
+        'id_eviden1',
+        'id_eviden2',
+        'id_eviden3',
+        'unique_id'
+    ];
+    public $timestamps = true;
+}

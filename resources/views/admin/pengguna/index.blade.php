@@ -1,4 +1,7 @@
 @extends('layouts.admin.mainlayout')
+@section('title')
+    Pengguna
+@endsection
 @section('css')
     <link rel="stylesheet" href="{{ asset('assets/css/admin/dataTables.bootstrap4.min.css') }}">
 @endsection
@@ -163,7 +166,7 @@
         aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered modal-lg">
             <div class="modal-content">
-                <div class="modal-header bg-light">
+                <div class="modal-header">
                     <h2> Tambah Akun </h2>
                 </div>
                 <div class="modal-body">
