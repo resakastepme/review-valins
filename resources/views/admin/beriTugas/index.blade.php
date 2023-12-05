@@ -225,7 +225,7 @@
                                         data lmao</p>
                                     <h4 style="margin-top: -7%"> Belum ter-assign </h4>
 
-                                    <form id="quickResultForm" method="POST">
+                                    <form id="quickResultForm">
                                         @csrf
                                         <label class="mt-2" for="placeholderMax">Masukan jumlah data <span
                                                 style="color: red">* </span></label>

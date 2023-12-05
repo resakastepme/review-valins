@@ -116,12 +116,13 @@ class BeriTugasController extends Controller
     public function quickAssign()
     {
         try {
-            set_time_limit(200);
             $jumlahData = $_GET['jumlahData'];
             $assign = $_GET['assign'];
             $komentar = $_GET['komentar'];
             $komentarRill = $komentar;
-            if ($komentar == null) $komentarRill = 'Tolong kerjakan ini ya~';
+            if ($komentar == null) {
+                $komentarRill = 'Tolong kerjakan ini ya~';
+            }
             $dataQuery1 = $_GET['unique'];
             $unique = time() . Str::random(10);
             $reviewer = User::where('username', $assign)->first();
