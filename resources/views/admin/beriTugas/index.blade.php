@@ -137,7 +137,7 @@
                                 <div class="row d-flex mt-4">
                                     <div class="col-auto">
                                         <button class="btn btn-success" type="submit" id="submitSelectiveBtn"> <i
-                                                class="fa-brands fa-get-pocket" id="getDataIcon"></i> Filter </button>
+                                                class="fa-brands fa-get-pocket" id="selectiveIcon"></i> Filter </button>
                                         <button type="reset" class="btn btn-secondary" id="clearSelectiveFromBtn">
                                             Clear
                                         </button>
@@ -293,48 +293,8 @@
                     <div class="table-responsive-lg">
                         <table class="table table-hover" border="2" id="tableSelective">
                             <thead>
-                                <tr>
-                                    <th scope="col">Tambah</th>
-                                    <th scope="col">No</th>
-                                    <th scope="col">Timestamp</th>
-                                    <th scope="col">ID Valins</th>
-                                    <th scope="col">ID Valins Lama</th>
-                                    <th scope="col">Keterangan ASO</th>
-                                    <th scope="col">Approve ASO</th>
-                                    <th scope="col">Keterangan RAM3</th>
-                                    <th scope="col">RAM3</th>
-                                    <th scope="col">Rekon</th>
-                                </tr>
                             </thead>
                             <tbody>
-                                {{-- <tr>
-                                    <td> <button class="btn btn-success add-btn ms-1" type="button"
-                                            data-hidden-value="10" id="checkBtnSelective"> <i class="fa-solid fa-circle-plus fa-lg"></i>
-                                        </button> </td>
-                                    <td> 1 </td>
-                                    <td> 2023 </td>
-                                    <td> 1283784342 </td>
-                                    <td> 1435435345 </td>
-                                    <td> BT >= 50% </td>
-                                    <td> NOK </td>
-                                    <td> BT >= 50% </td>
-                                    <td> NOK </td>
-                                    <td> SEPTEMBER </td>
-                                </tr>
-                                <tr>
-                                    <td> <button class="btn btn-success add-btn ms-1" type="button"
-                                            data-hidden-value="20" id="checkBtnSelective"> <i class="fa-solid fa-circle-plus fa-lg"></i>
-                                        </button> </td>
-                                    <td> 2 </td>
-                                    <td> 2023 </td>
-                                    <td> 28378324 </td>
-                                    <td> 324234324 </td>
-                                    <td> BT >= 50% </td>
-                                    <td> NOK </td>
-                                    <td> BT >= 50% </td>
-                                    <td> NOK </td>
-                                    <td> SEPTEMBER </td>
-                                </tr> --}}
                             </tbody>
                         </table>
                         <div class="pagination-sel" id="pagination-sel"></div>

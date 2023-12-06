@@ -209,6 +209,76 @@ function loadLists(callback) {
     });
 
 }
+function loadSelectiveTable(callback) {
+    var timestamp = $('#selectiveTimestamp').val();
+    var rekon = $('#selectiveRekon').val();
+    var num = 0;
+
+    $('#tableSelective').DataTable({
+        ajax: {
+            url: '/admin/beriTugas/selectiveGet',
+            type: 'GET',
+            dataSrc: function (response) {
+                console.log(response.status);
+                callback();
+                return response.data;
+            },
+            processing: true,
+            serverSide: true,
+            data: {
+                _token: $('meta[name="csrf_token"]').attr('content'),
+                timestamp: timestamp,
+                rekon: rekon
+            }
+        },
+        "columns": [
+            {
+                data: null,
+                render: function (row) {
+                    return '<button class="btn btn-success add-btn ms-1" type="button" id="checkBtnSelective" data-hidden-value="' + row.id + '">\
+                        <i class="fa-solid fa-circle-plus fa-lg"> </i> </button>'
+                },
+                title: "Tambah"
+            }, {
+                data: null,
+                render: function () {
+                    ++num
+                    return num
+                },
+                title: "No"
+            }, {
+                data: null,
+                render: function (row) {
+                    var updatedAt = new Date(row.updated_at);
+                    var formattedUpdatedAt = updatedAt.toISOString().replace('T', ' ').slice(0, -5);
+                    return formattedUpdatedAt
+                },
+                title: "Timestamp"
+            }, {
+                data: "id_valins",
+                title: "ID Valins"
+            }, {
+                data: "id_valins_lama",
+                title: "ID Valins Lama"
+            }, {
+                data: "keterangan_aso",
+                title: "Keterangan ASO"
+            }, {
+                data: "approve_aso",
+                title: "Approve ASO"
+            }, {
+                data: "keterangan_ram3",
+                title: "Keterangan RAM3"
+            }, {
+                data: "ram3",
+                title: "RAM3"
+            }, {
+                data: "rekon",
+                title: "Rekon"
+            }
+        ]
+    });
+}
 document.addEventListener('DOMContentLoaded', function () {
 
     $('#listsRefresh').prop('disabled', true);
@@ -302,163 +372,32 @@ document.addEventListener('DOMContentLoaded', function () {
     $('#beriTugasSelectiveForm').on('submit', function (e) {
         e.preventDefault();
 
-        var timestamp = $('#selectiveTimestamp').val();
-        var rekon = $('#selectiveRekon').val();
+        $('#submitSelectiveBtn').prop('disabled', true);
+        $('#submitSelectiveBtn').html('');
+        $('#submitSelectiveBtn').append('<span class="spinner-border spinner-border-sm text-light me-2" role="status"></span> Filter');
 
-        $.ajax({
-            url: '/admin/beriTugas/selectiveGet',
-            type: 'GET',
-            data: {
-                _token: $('meta[name="csrf_token"]').attr('content'),
-                timestamp: timestamp,
-                rekon: rekon
-            }, success: function (response) {
-                var count = 0;
-                $.each(response.data, function (index, item) {
-                    ++count;
-                    var newRow = $('<tr>');
-                    var buttonElement = $('<button class="btn btn-success add-btn ms-1" type="button" id="checkBtnSelective">')
-                        .attr('data-hidden-value', item.id);
-                    var iconElement = $('<i class="fa-solid fa-circle-plus fa-lg">');
-                    buttonElement.append(iconElement);
-
-                    var updatedAt = new Date(item.updated_at);
-                    var formattedUpdatedAt = updatedAt.toISOString().replace('T', ' ').slice(0, -5);
-
-                    // Create new td elements for count and item.id_valins
-                    var countCell = $('<td>').text(count);
-                    var timestamp = $('<td>').text(formattedUpdatedAt);
-                    var idValins = $('<td>').text(item.id_valins);
-                    var idValinsLama = $('<td>').text(item.id_valins_lama);
-                    var ketAso = $('<td>').text(item.keterangan_aso);
-                    var aso = $('<td>').text(item.approve_aso);
-                    var ketRam3 = $('<td>').text(item.keterangan_ram3);
-                    var ram3 = $('<td>').text(item.ram3);
-                    var rekon = $('<td>').text(item.rekon);
-
-
-                    // Append the button cell, count cell, and id_valins cell to the newRow
-                    newRow.append($('<td>').append(buttonElement));
-                    newRow.append(countCell);
-                    newRow.append(timestamp);
-                    newRow.append(idValins);
-                    newRow.append(idValinsLama);
-                    newRow.append(ketAso);
-                    newRow.append(aso);
-                    newRow.append(ketRam3);
-                    newRow.append(ram3);
-                    newRow.append(rekon);
-
-                    // Append the new row to the table's tbody
-                    $('#tableSelective').children('tbody').append(newRow);
-                });
-
-
-            }
+        loadSelectiveTable(function () {
+            clearTimeout(timeoutGlobal);
+            $('#selectiveModal').removeClass('animate__slideOutDown animate__faster');
+            $('#selectiveModal').addClass('animate__slideInUp animate__faster');
+            $('#selectiveModal').modal('show');
+            $('#submitSelectiveBtn').prop('disabled', false);
+            $('#submitSelectiveBtn').html('');
+            $('#submitSelectiveBtn').append('<i class="fa-brands fa-get-pocket" id="selectiveIcon"></i> Filter');
         });
 
-        // var currentPage = 1;
-        // var perPage = 10;
-
-        // function fetchData(page) {
-        //     $.ajax({
-        //         url: '/admin/beriTugas/selectiveGet',
-        //         type: 'GET',
-        //         data: {
-        //             _token: $('meta[name="csrf_token"]').attr('content'),
-        //             timestamp: timestamp,
-        //             rekon: rekon,
-        //             perPage: perPage,
-        //             page: page
-        //         },
-        //         success: function (response) {
-        //             updateTable(response.data);
-        //             updatePagination(response);
-        //         },
-        //         error: function (error) {
-        //             console.error('Error fetching data:', error);
-        //         }
-        //     });
-        // }
-
-        // function updateTable(data) {
-        //     // Clear existing rows
-        //     $('#selectiveTable tbody').empty();
-
-        //     // Append new rows based on the current page data
-        //     var count = 0;
-        //     $.each(data, function (index, item) {
-        //         ++count;
-        //         var newRow = $('<tr>');
-        //         var buttonElement = $('<button class="btn btn-success add-btn ms-1" type="button" id="checkBtnSelective">')
-        //             .attr('data-hidden-value', item.id);
-        //         var iconElement = $('<i class="fa-solid fa-circle-plus fa-lg">');
-        //         buttonElement.append(iconElement);
-
-        //         var updatedAt = new Date(item.updated_at);
-        //         var formattedUpdatedAt = updatedAt.toISOString().replace('T', ' ').slice(0, -5);
-
-        //         // Create new td elements for count and item.id_valins
-        //         var countCell = $('<td>').text(count);
-        //         var timestamp = $('<td>').text(formattedUpdatedAt);
-        //         var idValins = $('<td>').text(item.id_valins);
-        //         var idValinsLama = $('<td>').text(item.id_valins_lama);
-        //         var ketAso = $('<td>').text(item.keterangan_aso);
-        //         var aso = $('<td>').text(item.approve_aso);
-        //         var ketRam3 = $('<td>').text(item.keterangan_ram3);
-        //         var ram3 = $('<td>').text(item.ram3);
-        //         var rekon = $('<td>').text(item.rekon);
-
-
-        //         // Append the button cell, count cell, and id_valins cell to the newRow
-        //         newRow.append($('<td>').append(buttonElement));
-        //         newRow.append(countCell);
-        //         newRow.append(timestamp);
-        //         newRow.append(idValins);
-        //         newRow.append(idValinsLama);
-        //         newRow.append(ketAso);
-        //         newRow.append(aso);
-        //         newRow.append(ketRam3);
-        //         newRow.append(ram3);
-        //         newRow.append(rekon);
-
-        //         // Append the new row to the table's tbody
-        //         $('#tableSelective').children('tbody').append(newRow);
-        //     });
-
-        //     function updatePagination(response) {
-        //         $('#pagination-sel').empty();
-
-        //         for (var i = 1; i <= response.last_page; i++) {
-        //             var pageLink = $('<a>').text(i);
-        //             if (i == response.current_page) {
-        //                 pageLink.addClass('active');
-        //             }
-
-        //             pageLink.on('click', function () {
-        //                 var page = parseInt($(this).text());
-        //                 currentPage = page;
-        //                 fetchData(page);
-        //             });
-
-        //             $('#pagination-sel').append(pageLink);
-        //         }
-        //     }
-        // }
-
-        // fetchData(currentPage);
-
-        $('#selectiveModal').removeClass('animate__slideOutDown animate__faster');
-        $('#selectiveModal').addClass('animate__slideInUp animate__faster');
-        $('#selectiveModal').modal('show');
     });
+
     $('#quick_closeSelectiveModalBtn').on('click', function () {
         $('#selectiveModal').removeClass('animate__slideInUp animate__faster');
         $('#selectiveModal').addClass('animate__slideOutDown animate__faster');
+        // console.log($('#tableSelective').DataTable().page());
         setTimeout(() => {
+            $('#tableSelective').DataTable().clear().destroy();
             $('#selectiveModal').modal('hide');
         }, 500);
     });
+
 });
 tableSelective();
 function tableSelective() {

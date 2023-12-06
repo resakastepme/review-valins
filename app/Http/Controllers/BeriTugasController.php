@@ -175,28 +175,20 @@ class BeriTugasController extends Controller
 
     public function selectiveGet()
     {
-        try {
-            // $perPage = $_GET['perPage'];
-            // $page = $_GET['page'];
-            $timestamp = $_GET['timestamp'];
-            $rekon = $_GET['rekon'];
-            $q = Data::query();
-            if ($timestamp != 'null') {
-                $q->where('updated_at', 'LIKE', '%' . $timestamp . '%');
-            }
-            if ($rekon != 'null') {
-                $q->where('rekon', $rekon);
-            }
-            // $result = $q->paginate($perPage, ['*'], 'page', $page);
-            $result = $q->limit(10)->get();
-            return response()->json([
-                'status' => 'ok',
-                'data' => $result
-            ]);
-        } catch (\Throwable $th) {
-            return response()->json([
-                'status' => $th->getMessage()
-            ]);
+        $timestamp = $_GET['timestamp'];
+        $rekon = $_GET['rekon'];
+        $q = Data::query();
+        if ($timestamp != 'null') {
+            $q->where('updated_at', 'LIKE', '%' . $timestamp . '%');
         }
+        if ($rekon != 'null') {
+            $q->where('rekon', $rekon);
+        }
+        $result = $q->get();
+        // return json_encode($result);
+        return response()->json([
+            'status' => 'ok',
+            'data' => $result
+        ]);
     }
 }
