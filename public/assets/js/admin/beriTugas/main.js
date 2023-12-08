@@ -214,36 +214,45 @@ function loadSelectiveTable(callback) {
     var rekon = $('#selectiveRekon').val();
     var num = 0;
 
-    $('#tableSelective').DataTable({
+    var table = $('#tableSelective').DataTable({
         ajax: {
             url: '/admin/beriTugas/selectiveGet',
             type: 'GET',
-            dataSrc: function (response) {
-                console.log(response.status);
-                callback();
-                return response.data;
-            },
             processing: true,
             serverSide: true,
             data: {
                 _token: $('meta[name="csrf_token"]').attr('content'),
                 timestamp: timestamp,
                 rekon: rekon
+            },
+            dataSrc: function (response) {
+                console.log(response.status);
+                callback();
+                return response.data;
             }
         },
         "columns": [
             {
                 data: null,
                 render: function (row) {
-                    return '<button class="btn btn-success add-btn ms-1" type="button" id="checkBtnSelective" data-hidden-value="' + row.id + '">\
-                        <i class="fa-solid fa-circle-plus fa-lg"> </i> </button>'
+                    return '<button class="btn btn-success add-btn ms-1" type="button" id="checkBtnSelective" \
+                    data-hidden-idvalins="' + row.id_valins + '" \
+                    data-hidden-timestamp="'+ row.updated_at + '" \
+                    data-hidden-idvalinslama="'+ row.id_valins_lama + '" \
+                    data-hidden-ketaso="'+ row.keterangan_aso + '" \
+                    data-hidden-aso="'+ row.approve_aso + '" \
+                    data-hidden-ketram3="'+ row.keterangan_ram3 + '" \
+                    data-hidden-ram3="'+ row.ram3 + '" \
+                    data-hidden-rekon="'+ row.rekon + '" \
+                    data-hidden-rowid="'+ row.id + '">\
+                    <i class="fa-solid fa-circle-plus fa-lg"> </i> </button>'
                 },
                 title: "Tambah"
             }, {
                 data: null,
                 render: function () {
-                    ++num
-                    return num
+                    ++num;
+                    return num;
                 },
                 title: "No"
             }, {
@@ -277,8 +286,85 @@ function loadSelectiveTable(callback) {
                 title: "Rekon"
             }
         ]
+    })
+
+    table.on('init.dt', function (e) {
+        table.page(0).draw(false);
+    });
+
+}
+
+var selectedSelective = [];
+$(document).on('click', '#checkBtnSelective', function () {
+    var table = $('#tableSelective').DataTable();
+    var row = $(this).closest('tr');
+    var currentPage = table.page();
+
+    selectedSelective.push(table.row(row).data());
+
+    console.log(selectedSelective);
+
+    table.row(row).remove().draw(false);
+    table.page(currentPage).draw(false);
+
+    $('#tableAddSelective').DataTable().clear().destroy();
+    tableAddSelective();
+
+    const toast_username = document.getElementById('toast-successAddSelective')
+    const toastBootstrap = bootstrap.Toast.getOrCreateInstance(toast_username);
+    toastBootstrap.show();
+});
+
+function tableAddSelective() {
+    var numadd = 0;
+    +numadd;
+    $('#tableAddSelective').DataTable({
+        data: selectedSelective,
+        width: 200,
+        columns: [
+            {
+                data: null,
+                render: function (data) {
+                    return '<button class="btn btn-danger add-btn ms-1" type="button" id="checkBtnSelective" \
+                    data-hidden-idvalins="' + data.id_valins + '" \
+                    data-hidden-timestamp="'+ data.updated_at + '" \
+                    data-hidden-idvalinslama="'+ data.id_valins_lama + '" \
+                    data-hidden-ketaso="'+ data.keterangan_aso + '" \
+                    data-hidden-aso="'+ data.approve_aso + '" \
+                    data-hidden-ketram3="'+ data.keterangan_ram3 + '" \
+                    data-hidden-ram3="'+ data.ram3 + '" \
+                    data-hidden-rekon="'+ data.rekon + '"" \
+                    data-hidden-rowid="'+ data.id + '">\
+                    <i class="fa-solid fa-square-minus fa-lg"></i> </button>'
+                },
+                title: "Kurangi"
+            },
+            {
+                data: null,
+                render: function () {
+                    return numadd;
+                },
+                title: "No"
+            },
+            {
+                data: null,
+                render: function (data) {
+                    return data.id_valins;
+                },
+                title: "ID Valins"
+            },
+            {
+                data: null,
+                render: function (data) {
+                    return data.rekon;
+                },
+                title: "Rekon"
+            }
+        ]
     });
 }
+tableAddSelective();
+
 document.addEventListener('DOMContentLoaded', function () {
 
     $('#listsRefresh').prop('disabled', true);
@@ -391,17 +477,19 @@ document.addEventListener('DOMContentLoaded', function () {
     $('#quick_closeSelectiveModalBtn').on('click', function () {
         $('#selectiveModal').removeClass('animate__slideInUp animate__faster');
         $('#selectiveModal').addClass('animate__slideOutDown animate__faster');
+        selectedSelective.length = 0;
         // console.log($('#tableSelective').DataTable().page());
         setTimeout(() => {
+            $('#tableAddSelective').DataTable().clear().destroy();
             $('#tableSelective').DataTable().clear().destroy();
             $('#selectiveModal').modal('hide');
         }, 500);
     });
 
 });
-tableSelective();
-function tableSelective() {
-    $(document).on('click', '#checkBtnSelective', function () {
-        console.log(this.dataset.hiddenValue);
-    });
-}
+// tableSelective();
+// function tableSelective() {
+//     $(document).on('click', '#checkBtnSelective', function () {
+//         console.log(this.dataset.hiddenValue);
+//     });
+// }

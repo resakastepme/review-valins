@@ -184,7 +184,7 @@ class BeriTugasController extends Controller
         if ($rekon != 'null') {
             $q->where('rekon', $rekon);
         }
-        $result = $q->get();
+        $result = $q->where('id_reviewer', null)->get();
         // return json_encode($result);
         return response()->json([
             'status' => 'ok',

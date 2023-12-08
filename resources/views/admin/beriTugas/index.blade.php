@@ -289,16 +289,37 @@
                     <h2> <i class="fa-brands fa-get-pocket"></i></i> Selective </h2>
                 </div>
                 <div class="modal-body m-4">
-
-                    <div class="table-responsive-lg">
-                        <table class="table table-hover" border="2" id="tableSelective">
-                            <thead>
-                            </thead>
-                            <tbody>
-                            </tbody>
-                        </table>
-                        <div class="pagination-sel" id="pagination-sel"></div>
+                    <p class="ms-2 text-center"> <i class="fa-solid fa-circle-plus fa-lg"></i> <span
+                            style="font-weight: bold; font-size: 20px;"> Pilih data </span> </p>
+                    <div class="card m-2 rounded shadow border-0">
+                        <div class="card-body">
+                            <div class="table-responsive-lg">
+                                <table class="table table-hover" border="2" id="tableSelective">
+                                    <thead>
+                                    </thead>
+                                    <tbody>
+                                    </tbody>
+                                </table>
+                                <div class="pagination-sel" id="pagination-sel"></div>
+                            </div>
+                        </div>
                     </div>
+
+                    <p class="ms-2 mt-4 text-center"> <i class="fa-solid fa-circle-check fa-lg"></i> <span
+                            style="font-weight: bold; font-size: 20px; color: green;"> Data terpilih </span> </p>
+                    <div class="card m-2 rounded shadow border-0">
+                        <div class="card-body">
+                            <div class="table-responsive-lg">
+                                <table class="table table-hover" border="2" id="tableAddSelective">
+                                    <thead>
+                                    </thead>
+                                    <tbody>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
                 </div>
                 <div class="modal-footer" style="">
                     <button type="button" class="btn btn-secondary" id="quick_closeSelectiveModalBtn">Tutup</button>
@@ -307,6 +328,9 @@
             </div>
         </div>
     </div>
+
+    {{-- TOAST JAVASCRIPT --}}
+    <div id="toastContainer"></div>
 
     {{-- TOAST --}}
     <div class="toast-container top-0 end-0 mt-2 me-2 position-fixed">
@@ -337,6 +361,17 @@
             <div class="d-flex">
                 <i class="fa fa-circle-exclamation fa-fade fa-2xl mt-2 ms-2"></i>
                 <div class="toast-body" id="countCustomDiv">
+                </div>
+                <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"
+                    aria-label="Close"></button>
+            </div>
+        </div>
+        <div class="toast align-items-center text-bg-success border-0" role="alert" aria-live="assertive"
+            aria-atomic="true" id="toast-successAddSelective">
+            <div class="d-flex">
+                <i class="fa-solid fa-check fa-fade fa-2xl mt-2 ms-2"></i>
+                <div class="toast-body">
+                    <h6> Data dipilih! </h6>
                 </div>
                 <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"
                     aria-label="Close"></button>
