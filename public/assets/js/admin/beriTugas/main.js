@@ -234,36 +234,13 @@ function loadSelectiveTable(callback) {
         "columns": [
             {
                 data: null,
-                render: function (row) {
-                    return '<button class="btn btn-success add-btn ms-1" type="button" id="checkBtnSelective" \
-                    data-hidden-idvalins="' + row.id_valins + '" \
-                    data-hidden-timestamp="'+ row.updated_at + '" \
-                    data-hidden-idvalinslama="'+ row.id_valins_lama + '" \
-                    data-hidden-ketaso="'+ row.keterangan_aso + '" \
-                    data-hidden-aso="'+ row.approve_aso + '" \
-                    data-hidden-ketram3="'+ row.keterangan_ram3 + '" \
-                    data-hidden-ram3="'+ row.ram3 + '" \
-                    data-hidden-rekon="'+ row.rekon + '" \
-                    data-hidden-rowid="'+ row.id + '">\
-                    <i class="fa-solid fa-circle-plus fa-lg"> </i> </button>'
-                },
-                title: "Tambah"
-            }, {
-                data: null,
                 render: function () {
                     ++num;
                     return num;
                 },
                 title: "No"
-            }, {
-                data: null,
-                render: function (row) {
-                    var updatedAt = new Date(row.updated_at);
-                    var formattedUpdatedAt = updatedAt.toISOString().replace('T', ' ').slice(0, -5);
-                    return formattedUpdatedAt
-                },
-                title: "Timestamp"
-            }, {
+            },
+            {
                 data: "id_valins",
                 title: "ID Valins"
             }, {
@@ -284,6 +261,23 @@ function loadSelectiveTable(callback) {
             }, {
                 data: "rekon",
                 title: "Rekon"
+            },
+            {
+                data: null,
+                render: function (row) {
+                    return '<button class="btn btn-success add-btn ms-1" type="button" id="checkBtnSelective" \
+                    data-hidden-idvalins="' + row.id_valins + '" \
+                    data-hidden-timestamp="'+ row.updated_at + '" \
+                    data-hidden-idvalinslama="'+ row.id_valins_lama + '" \
+                    data-hidden-ketaso="'+ row.keterangan_aso + '" \
+                    data-hidden-aso="'+ row.approve_aso + '" \
+                    data-hidden-ketram3="'+ row.keterangan_ram3 + '" \
+                    data-hidden-ram3="'+ row.ram3 + '" \
+                    data-hidden-rekon="'+ row.rekon + '" \
+                    data-hidden-rowid="'+ row.id + '"> \
+                    <i class="fa-solid fa-circle-plus fa-lg"> </i> </button>'
+                },
+                title: "Tambah"
             }
         ]
     })
@@ -299,53 +293,67 @@ $(document).on('click', '#checkBtnSelective', function () {
     var table = $('#tableSelective').DataTable();
     var row = $(this).closest('tr');
     var currentPage = table.page();
+    var info = table.row(row).index();
+    var dataWithIndex = $.extend({}, table.row(row).data(), { index: info });
 
-    selectedSelective.push(table.row(row).data());
-
+    // selectedSelective.push(dataWithIndex);
     console.log(selectedSelective);
 
-    table.row(row).remove().draw(false);
-    table.page(currentPage).draw(false);
+    var id_valins = this.dataset.hiddenIdvalins;
+    var rekon = this.dataset.hiddenRekon;
 
-    $('#tableAddSelective').DataTable().clear().destroy();
-    tableAddSelective();
+    var alreadyExists = selectedSelective.some(function (item) {
+        return item.id_valins == id_valins && item.rekon == rekon;
+    });
 
-    const toast_username = document.getElementById('toast-successAddSelective')
-    const toastBootstrap = bootstrap.Toast.getOrCreateInstance(toast_username);
-    toastBootstrap.show();
+    if (!alreadyExists) {
+        selectedSelective.push(dataWithIndex);
+        $('#tableAddSelective').DataTable().clear().destroy();
+        tableAddSelective();
+
+        const toast_username = document.getElementById('toast-successAddSelective')
+        const toastBootstrap = bootstrap.Toast.getOrCreateInstance(toast_username);
+        toastBootstrap.show();
+        showAddedSelective();
+        return;
+    } else {
+        const toast_username = document.getElementById('toast-warningSelectiveAlreadyExists')
+        const toastBootstrap = bootstrap.Toast.getOrCreateInstance(toast_username);
+        toastBootstrap.show();
+        showAddedSelective();
+        return;
+    }
+
+    // table.row(row).remove().draw(false);
+    // table.page(currentPage).draw(false);
+
+    // $(this).prop('disabled', true);
+    // $(this).html('');
+    // $(this).html('<i class="fa-solid fa-check fa-lg"></i>');
 });
 
 function tableAddSelective() {
-    var numadd = 0;
-    +numadd;
+    var i = 0;
     $('#tableAddSelective').DataTable({
         data: selectedSelective,
         width: 200,
         columns: [
-            {
-                data: null,
-                render: function (data) {
-                    return '<button class="btn btn-danger add-btn ms-1" type="button" id="checkBtnSelective" \
-                    data-hidden-idvalins="' + data.id_valins + '" \
-                    data-hidden-timestamp="'+ data.updated_at + '" \
-                    data-hidden-idvalinslama="'+ data.id_valins_lama + '" \
-                    data-hidden-ketaso="'+ data.keterangan_aso + '" \
-                    data-hidden-aso="'+ data.approve_aso + '" \
-                    data-hidden-ketram3="'+ data.keterangan_ram3 + '" \
-                    data-hidden-ram3="'+ data.ram3 + '" \
-                    data-hidden-rekon="'+ data.rekon + '"" \
-                    data-hidden-rowid="'+ data.id + '">\
-                    <i class="fa-solid fa-square-minus fa-lg"></i> </button>'
-                },
-                title: "Kurangi"
-            },
+            // {
+            //     data: null,
+            //     render: function (data) {
+            //         return (data.index + 1);
+            //     },
+            //     title: "No"
+            // },
             {
                 data: null,
                 render: function () {
-                    return numadd;
+                    ++i;
+                    return i;
                 },
                 title: "No"
-            },
+            }
+            ,
             {
                 data: null,
                 render: function (data) {
@@ -359,11 +367,149 @@ function tableAddSelective() {
                     return data.rekon;
                 },
                 title: "Rekon"
+            },
+            {
+                data: null,
+                render: function (data) {
+                    return '<button class="btn btn-danger add-btn ms-1" type="button" id="removeBtnSelective" \
+                    data-hidden-idvalins="' + data.id_valins + '" \
+                    data-hidden-timestamp="'+ data.updated_at + '" \
+                    data-hidden-idvalinslama="'+ data.id_valins_lama + '" \
+                    data-hidden-ketaso="'+ data.keterangan_aso + '" \
+                    data-hidden-aso="'+ data.approve_aso + '" \
+                    data-hidden-ketram3="'+ data.keterangan_ram3 + '" \
+                    data-hidden-ram3="'+ data.ram3 + '" \
+                    data-hidden-rekon="'+ data.rekon + '" \
+                    data-hidden-rowid="'+ data.id + '" \
+                    data-hidden-index="'+ data.index + '">\
+                    <i class="fa-solid fa-square-minus fa-lg"></i> </button>'
+                },
+                title: "Kurangi"
             }
         ]
     });
 }
-tableAddSelective();
+
+$(document).on('click', '#removeBtnSelective', function () {
+
+    // let id_valinsToRemove = 2;
+    // selectedSelective = selectedSelective.filter(item => item.id_valins !== id_valinsToRemove);
+
+    var id_valinsToRemove = this.dataset.hiddenIdvalins;
+    var rekonToRemove = this.dataset.hiddenRekon;
+
+    selectedSelective = selectedSelective.filter(function (item) {
+        if (item.id_valins == id_valinsToRemove && item.rekon == rekonToRemove) {
+            return false;
+        } else {
+            return true;
+        }
+    });
+
+    showAddedSelective();
+    $('#tableAddSelective').DataTable().clear().destroy();
+    tableAddSelective();
+
+});
+
+function showAddedSelective() {
+    if (selectedSelective.length == 0) {
+        $('#selectiveSelectedExists').hide();
+    } else {
+        $('#selectiveSelectedExists').show();
+        $('#countDataSelective').html('');
+        $('#countDataSelective').html(selectedSelective.length + ' TOTAL DATA');
+        $('#placeholderMaxSelective').attr('placeholder', 'max: ' + selectedSelective.length);
+    }
+    // console.log(selectedSelective.length);
+}
+
+function selectiveResultSubmit(callback) {
+    var jumlahData = $('#placeholderMaxSelective').val();
+    var assign = $('#assignFormSelective').val();
+    var komentar = $('#komentarFormSelective').val();
+    setTimeout(function () {
+        if (jumlahData <= 0 || !jumlahData) {
+            const toast = document.getElementById('toast-warningLengkapiForm')
+            const toastBootstrap = bootstrap.Toast.getOrCreateInstance(toast);
+            toastBootstrap.show();
+            $('#placeholderMaxSelective').focus();
+            $('#btnSubmitFormSelective').prop('disabled', false);
+            $('#submitSpinnerSelective').hide();
+            return;
+        }
+        if (jumlahData > selectedSelective.length) {
+            $('#countCustomDiv').html('');
+            $('#countCustomDiv').html('<h6> Maksimal jumlah data adalah ' + selectedSelective.length + ' </h6>');
+            const toast = document.getElementById('toast-warningLengkapiForm3');
+            const toastBootstrap = bootstrap.Toast.getOrCreateInstance(toast);
+            toastBootstrap.show();
+            $('#placeholderMaxSelective').focus();
+            $('#btnSubmitFormSelective').prop('disabled', false);
+            $('#submitSpinnerSelective').hide();
+            return;
+        }
+        if (assign == 'null') {
+            const toast = document.getElementById('toast-warningLengkapiForm2')
+            const toastBootstrap = bootstrap.Toast.getOrCreateInstance(toast);
+            toastBootstrap.show();
+            $('#assignFormSelective').focus();
+            $('#btnSubmitFormSelective').prop('disabled', false);
+            $('#submitSpinnerSelective').hide();
+            return;
+        }
+
+        $.ajax({
+            url: '/admin/beriTugas/selectiveAssign',
+            type: 'POST',
+            data: {
+                _token: $('meta[name="csrf_token"]').attr('content'),
+                jumlahData: selectedSelective.length,
+                assign: assign,
+                komentar: komentar,
+                datas: selectedSelective
+            }, success: function (response) {
+                clearTimeout(timeoutGlobal)
+                console.log(response.status);
+                if (response.status == 'ok') {
+                    $('#quick_closeSelectiveModalBtn').click();
+                    let timerInterval;
+                    Swal.fire({
+                        icon: "success",
+                        title: "Berhasil!",
+                        timer: 3500,
+                        timerProgressBar: true,
+                        didOpen: () => {
+                            Swal.showLoading();
+                            const timer = Swal.getPopup().querySelector("b");
+                            timerInterval = setInterval(() => {
+                                timer.textContent = `${Swal.getTimerLeft()}`;
+                            }, 100);
+                        },
+                        willClose: () => {
+                            clearInterval(timerInterval);
+                        }
+                    }).then((result) => {
+                        if (result.dismiss === Swal.DismissReason.timer) {
+                            console.log('✅');
+                        }
+                    });
+                } else {
+                    Swal.fire({
+                        title: "Gagal!",
+                        text: 'Hubungi pengembang dan berikan error code ini: ' + response.status,
+                        icon: "error"
+                    });
+                }
+            },
+            // error: function (error) {
+            //     console.error('Error:', error);
+            // }
+        });
+
+        callback();
+    }, 1000);
+}
 
 document.addEventListener('DOMContentLoaded', function () {
 
@@ -471,6 +617,8 @@ document.addEventListener('DOMContentLoaded', function () {
             $('#submitSelectiveBtn').html('');
             $('#submitSelectiveBtn').append('<i class="fa-brands fa-get-pocket" id="selectiveIcon"></i> Filter');
         });
+        showAddedSelective();
+        tableAddSelective();
 
     });
 
@@ -483,7 +631,31 @@ document.addEventListener('DOMContentLoaded', function () {
             $('#tableAddSelective').DataTable().clear().destroy();
             $('#tableSelective').DataTable().clear().destroy();
             $('#selectiveModal').modal('hide');
+            $('#selectiveResultForm')[0].reset();
         }, 500);
+    });
+
+    $('#selectiveResultForm').on('submit', function (e){
+        e.preventDefault();
+
+        $('#btnSubmitFormSelective').prop('disabled', true);
+        $('#submitSpinnerSelective').show();
+
+        selectiveResultSubmit(function () {
+            $('#btnSubmitFormSelective').prop('disabled', false);
+            $('#submitSpinnerSelective').hide();
+            $('#listsRefresh').prop('disabled', true);
+            $('#refreshIcon').addClass('fa-spin-pulse');
+            $('#listsRefresh1').prop('disabled', true);
+            $('#refreshIcon1').addClass('fa-spin-pulse');
+            loadLists(function () {
+                $('#listsRefresh').prop('disabled', false);
+                $('#refreshIcon').removeClass('fa-spin-pulse');
+                $('#listsRefresh1').prop('disabled', false);
+                $('#refreshIcon1').removeClass('fa-spin-pulse');
+            });
+        });
+
     });
 
 });

@@ -305,20 +305,95 @@
                         </div>
                     </div>
 
-                    <p class="ms-2 mt-4 text-center"> <i class="fa-solid fa-circle-check fa-lg"></i> <span
-                            style="font-weight: bold; font-size: 20px; color: green;"> Data terpilih </span> </p>
-                    <div class="card m-2 rounded shadow border-0">
-                        <div class="card-body">
-                            <div class="table-responsive-lg">
-                                <table class="table table-hover" border="2" id="tableAddSelective">
-                                    <thead>
-                                    </thead>
-                                    <tbody>
-                                    </tbody>
-                                </table>
+                    <section id="selectiveSelectedExists" style="display: none;">
+                        <p class="ms-2 mt-4 text-center"> <i class="fa-solid fa-circle-check fa-lg"></i> <span
+                                style="font-weight: bold; font-size: 20px; color: green;"> Data terpilih </span> </p>
+                        <div class="row">
+                            <div class="col-md-8">
+                                <div class="card m-2 rounded shadow border-0">
+                                    <div class="card-body">
+                                        <div class="table-responsive-lg">
+                                            <table class="table table-hover" border="2" id="tableAddSelective">
+                                                <thead>
+                                                </thead>
+                                                <tbody>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="card m-2 rounded shadow border-0">
+                                    <div class="card-body">
+
+                                        <p style="color: green; font-weight: bold; font-size: 40px;"
+                                            id="countDataSelective">
+                                            unlimited
+                                            data lmao</p>
+                                        <h4 style="margin-top:-7%;"> Belum ter-assign </h4>
+
+                                        <form id="selectiveResultForm">
+                                            @csrf
+                                            <label class="mt-2" for="placeholderMaxSelective">Masukan jumlah data <span
+                                                    style="color: red">* </span></label>
+                                            <input type="number" class="form-control" name="placeholderMaxSelective"
+                                                id="placeholderMaxSelective" placeholder="max: literally no max lmao">
+                                            <label class="mt-2" for="assignFormSelective">Assign data kepada <span
+                                                    style="color: red">* </span></label>
+                                            <select class="form-control" name="assignFormSelective"
+                                                id="assignFormSelective">
+                                                <option value="null" default>-- Pilih --</option>
+                                                <option value="{{ Session::get('username') }}"> Saya
+                                                    ({{ Session::get('role') == 1 ? 'Admin' : 'User' }}) </option>
+                                                @foreach ($users as $user)
+                                                    <option value="{{ $user->username }}">{{ $user->username }}
+                                                        ({{ $user->role == 1 ? 'Admin' : 'User' }})
+                                                    </option>
+                                                @endforeach
+                                            </select>
+                                            <label class="mt-2" for="komentarFormSelective"> Komentar </label>
+                                            <textarea name="komentarFormSelective" id="komentarFormSelective" cols="3" rows="3"
+                                                class="form-control" placeholder="Tolong kerjakan ini ya~"></textarea>
+                                            <small style="font-size: 10px;">Catatan: formulir dengan tanda <span
+                                                    style="color: red">*</span> wajib diisi </small>
+                                            <button type="submit" id="btnSubmitFormSelective"
+                                                class="form-control btn btn-success mt-3"> <span
+                                                    class="spinner-border spinner-border-sm me-1"
+                                                    id="submitSpinnerSelective" style="display: none;"></span> Assign
+                                                Tugas
+                                            </button>
+                                        </form>
+
+                                    </div>
+                                </div>
                             </div>
                         </div>
-                    </div>
+                    </section>
+
+                    {{-- <section id="selectiveSelectedExists">
+                        <p class="ms-2 mt-4 text-center"> <i class="fa-solid fa-circle-check fa-lg"></i> <span
+                                style="font-weight: bold; font-size: 20px; color: green;"> Assign data </span> </p>
+
+                        <div class="card m-2 rounded shadow border-0">
+                            <div class="card-body">
+
+                                <div class="row flex justify-content-center align-items-center">
+                                    <div class="col-md-6">
+
+
+
+                                    </div>
+                                    <div class="col-md-6">
+                                        <img src="{{ asset('assets/img/auth/telkom-mini-logo.png') }}"
+                                            style="width: 100%; height: 80%;">
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+
+                    </section> --}}
 
                 </div>
                 <div class="modal-footer" style="">
@@ -328,9 +403,6 @@
             </div>
         </div>
     </div>
-
-    {{-- TOAST JAVASCRIPT --}}
-    <div id="toastContainer"></div>
 
     {{-- TOAST --}}
     <div class="toast-container top-0 end-0 mt-2 me-2 position-fixed">
@@ -372,6 +444,17 @@
                 <i class="fa-solid fa-check fa-fade fa-2xl mt-2 ms-2"></i>
                 <div class="toast-body">
                     <h6> Data dipilih! </h6>
+                </div>
+                <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"
+                    aria-label="Close"></button>
+            </div>
+        </div>
+        <div class="toast align-items-center text-bg-warning border-0" role="alert" aria-live="assertive"
+            aria-atomic="true" id="toast-warningSelectiveAlreadyExists">
+            <div class="d-flex">
+                <i class="fa fa-circle-exclamation fa-fade fa-2xl mt-2 ms-2"></i>
+                <div class="toast-body">
+                    <h6> Data sudah dipilih! </h6>
                 </div>
                 <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"
                     aria-label="Close"></button>

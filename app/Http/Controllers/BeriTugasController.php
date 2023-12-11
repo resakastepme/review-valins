@@ -191,4 +191,49 @@ class BeriTugasController extends Controller
             'data' => $result
         ]);
     }
+
+    public function selectiveAssign()
+    {
+        try {
+            $jumlahData = $_POST['jumlahData'];
+            $assign = $_POST['assign'];
+            $komentar = $_POST['komentar'];
+            $datas = $_POST['datas'];
+            $komentarRill = $komentar;
+            if ($komentar == null) {
+                $komentarRill = 'Tolong kerjakan ini ya~';
+            }
+            // $dataQuery1 = $_GET['unique'];
+            $unique = time() . Str::random(10);
+            $reviewer = User::where('username', $assign)->first();
+            $tugas_dari = User::where('username', Session::get('username'))->first();
+            Assignment::create([
+                'id_reviewer' => $unique,
+                'reviewer' => $reviewer->id,
+                'tugas_dari' => $tugas_dari->id,
+                'komentar' => $komentarRill
+            ]);
+            $id_assignments = Assignment::where('id_reviewer', $unique)->first();
+            // $dataQuery = Dumps::where('unique_id', $dataQuery1)->get();
+            $counters = 0;
+            foreach ($datas as $data) {
+                Data::where('id', $data['id'])->update([
+                    'id_reviewer' => $unique
+                ]);
+                Reviewer::create([
+                    'id_assignments' => $id_assignments->id,
+                    'id_datas' => $data['id']
+                ]);
+                $counters++;
+                if ($counters == $jumlahData) break;
+            }
+            return response()->json([
+                'status' => 'ok'
+            ]);
+        } catch (\Throwable $th) {
+            return response()->json([
+                'status' => $th->getMessage()
+            ]);
+        }
+    }
 }

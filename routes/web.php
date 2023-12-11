@@ -92,6 +92,7 @@ Route::prefix('/admin')->group(function () {
     });
     Route::get('/beriTugas/yeet', [BeriTugasController::class, 'yeet']);
     Route::get('/beriTugas/selectiveGet', [BeriTugasController::class, 'selectiveGet']);
+    Route::post('/beriTugas/selectiveAssign', [BeriTugasController::class, 'selectiveAssign']);
 });
 
 // ROUTE FOR CHECK, DELETE LATER
