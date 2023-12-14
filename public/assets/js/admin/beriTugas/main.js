@@ -52,6 +52,7 @@ function getData(page) {
 var countResult;
 var unique_quick;
 var timeoutGlobal = setTimeout(() => { }, 10000); // 10 seconds
+var timeoutListEdit = setTimeout(() => { }, 10000); // 10 seconds
 function quickResult(callback) {
     var quickTimestamp = $('#quickTimestamp').val();
     var quickWitel = $('#quickWitel').val();
@@ -511,6 +512,114 @@ function selectiveResultSubmit(callback) {
     }, 1000);
 }
 
+function tableLihat(id, callback) {
+    var num = 0;
+    var table = $('#tableLihat').DataTable({
+        ajax: {
+            url: '/admin/beriTugas/lihat',
+            type: 'GET',
+            data: {
+                _token: $('meta[name="csrf_token"]').attr('content'),
+                id: id
+            },
+            dataSrc: function (response) {
+                console.log(response.status);
+
+
+                $('#lihatTotalData').html('');
+                $('#lihatTotalData').html(response.datas.length + ' TOTAL DATA');
+
+                $('#lihatTotalSelesai').html('');
+                $('#lihatTotalSelesai').html(response.selesai + ' Data selesai');
+
+                $('#lihatTotalBelumSelesai').html('');
+                $('#lihatTotalBelumSelesai').html(response.belum + ' Data belum selesai');
+
+                $('#tugasDari').html('');
+                $('#tugasDari').html(response.assignment.get_users.username);
+                $('#reviewer').html('');
+                $('#reviewer').html(response.assignment.get_reviewer.username);
+
+                let date = new Date(response.assignment.updated_at);
+                let formattedDate = date.toISOString().split('T')[0];
+                $('#tanggal').html('');
+                $('#tanggal').html(formattedDate);
+
+                $('#komentar_lihat').val('');
+                $('#komentar_lihat').val(response.assignment.komentar);
+
+                callback();
+                // console.log(response.datas[0].get_data);
+                return response.datas;
+            }
+        },
+        "columns": [
+            {
+                data: null,
+                render: function () {
+                    ++num;
+                    return num;
+                },
+                title: "No"
+            },
+            {
+                data: null,
+                render: function (item) {
+                    return item.get_data.id_valins;
+                },
+                title: "ID Valins"
+            },
+            {
+                data: null,
+                render: function (item) {
+                    return item.get_data.id_valins_lama;
+                },
+                title: "ID Valins Lama"
+            }, {
+                data: null,
+                render: function (item) {
+                    return item.get_data.keterangan_aso;
+                },
+                title: "Keterangan ASO"
+            }, {
+                data: null,
+                render: function (item) {
+                    return item.get_data.approve_aso;
+                },
+                title: "Approve ASO"
+            }, {
+                data: null,
+                render: function (item) {
+                    return item.get_data.keterangan_ram3;
+                },
+                title: "Keterangan RAM3"
+            }, {
+                data: null,
+                render: function (item) {
+                    return item.get_data.ram3;
+                },
+                title: "RAM3"
+            }, {
+                data: null,
+                render: function (item) {
+                    return item.get_data.rekon;
+                },
+                title: "Rekon"
+            }, {
+                data: null,
+                render: function (item) {
+                    if (item.finish == 0) {
+                        return '<div class="row d-flex justify-content-center align-items-center"><i class="fa-solid fa-xmark" title="Belum selesai"></i></div>';
+                    } else {
+                        return '<div class="row d-flex justify-content-center align-items-center"><i class="fa-solid fa-check" title="Selesai"></i></div>';
+                    }
+                },
+                title: "Selesai"
+            }
+        ]
+    });
+}
+
 document.addEventListener('DOMContentLoaded', function () {
 
     $('#listsRefresh').prop('disabled', true);
@@ -658,11 +767,34 @@ document.addEventListener('DOMContentLoaded', function () {
 
     });
 
-    function tableLihat(id, callback) {
+    $(document).on('click', '#lihatListsBtn', function () {
+        var id = $(this).data('id');
+        $('#lihatModal').removeClass('animate__slideOutDown animate__faster');
+        $('#lihatModal').addClass('animate__slideInUp animate__faster');
+        $('#lihatLoaded').hide();
+        $('#loadLihat').show();
+        $('#lihatModal').modal('show');
+        tableLihat(id, function () {
+            clearTimeout(timeoutGlobal);
+            $('#lihatLoaded').show();
+            $('#loadLihat').hide();
+        });
+    });
+
+    $('#closeLihatModalBtn').on('click', function () {
+        $('#lihatModal').removeClass('animate__slideInUp animate__faster');
+        $('#lihatModal').addClass('animate__slideOutDown animate__faster');
+        setTimeout(() => {
+            $('#tableLihat').DataTable().clear().destroy();
+            $('#lihatModal').modal('hide');
+        }, 500);
+    });
+
+    function tableEdit(id, access, callback) {
         var num = 0;
-        var table = $('#tableLihat').DataTable({
+        var table = $('#tableEdit').DataTable({
             ajax: {
-                url: '/admin/beriTugas/lihat',
+                url: '/admin/beriTugas/edit',
                 type: 'GET',
                 data: {
                     _token: $('meta[name="csrf_token"]').attr('content'),
@@ -671,28 +803,45 @@ document.addEventListener('DOMContentLoaded', function () {
                 dataSrc: function (response) {
                     console.log(response.status);
 
+                    $.get('/getUsername', function (getUsername) {
+                        // console.log(getUsername.username);
 
-                    $('#lihatTotalData').html('');
-                    $('#lihatTotalData').html(response.datas.length + ' TOTAL DATA');
+                        $('#editTotalData').html('');
+                        $('#editTotalData').html(response.datas.length + ' TOTAL DATA');
 
-                    $('#lihatTotalSelesai').html('');
-                    $('#lihatTotalSelesai').html(response.selesai + ' Data selesai');
+                        $('#editTotalSelesai').html('');
+                        $('#editTotalSelesai').html(response.selesai + ' Data selesai');
 
-                    $('#lihatTotalBelumSelesai').html('');
-                    $('#lihatTotalBelumSelesai').html(response.belum + ' Data belum selesai');
+                        $('#editTotalBelumSelesai').html('');
+                        $('#editTotalBelumSelesai').html(response.belum + ' Data belum selesai');
 
-                    $('#tugasDari').html('');
-                    $('#tugasDari').html(response.assignment.get_users.username);
-                    $('#reviewer').html('');
-                    $('#reviewer').html(response.assignment.get_reviewer.username);
+                        $('#edit_tugasDari').val('');
+                        $('#edit_tugasDari').val(response.assignment.get_users.username);
 
-                    let date = new Date(response.assignment.updated_at);
-                    let formattedDate = date.toISOString().split('T')[0];
-                    $('#tanggal').html('');
-                    $('#tanggal').html(formattedDate);
+                        if (access == 'granted') {
+                            $('#edit_reviewer').prop('disabled', false);
+                            $('#edit_komentar').prop('readonly', false);
+                            $('#submitEditLists').prop('disabled', false);
+                            $('#hiddenInputEdit').val('');
+                            $('#hiddenInputEdit').val(id);
+                        } else {
+                            $('#edit_reviewer').prop('disabled', true);
+                            $('#edit_komentar').prop('readonly', true);
+                            $('#submitEditLists').prop('disabled', true);
+                            $('#hiddenInputEdit').val('');
+                        }
 
-                    $('#komentar_lihat').val('');
-                    $('#komentar_lihat').val(response.assignment.komentar);
+                        $('#reviewer' + response.assignment.get_reviewer.id).prop('selected', true);
+
+                        let date = new Date(response.assignment.updated_at);
+                        let formattedDate = date.toISOString().split('T')[0];
+                        $('#edit_tanggal').val('');
+                        $('#edit_tanggal').val(formattedDate);
+
+                        $('#edit_komentar').val('');
+                        $('#edit_komentar').val(response.assignment.komentar);
+
+                    });
 
                     callback();
                     // console.log(response.datas[0].get_data);
@@ -766,27 +915,135 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     }
 
-    $(document).on('click', '#lihatListsBtn', function () {
+    $(document).on('click', '#editListsBtn', function () {
         var id = $(this).data('id');
-        $('#lihatModal').removeClass('animate__slideOutDown animate__faster');
-        $('#lihatModal').addClass('animate__slideInUp animate__faster');
-        $('#lihatLoaded').hide();
-        $('#loadLihat').show();
-        $('#lihatModal').modal('show');
-        tableLihat(id, function () {
-            clearTimeout(timeoutGlobal);
-            $('#lihatLoaded').show();
-            $('#loadLihat').hide();
-        });
+        $.ajax({
+            url: '/admin/beriTugas/editValidation',
+            type: 'GET',
+            data: {
+                _token: $('meta[name="csrf_token"]').attr('content'),
+                id: id
+            }, success: function (response) {
+                // console.log(response.access);
+                clearTimeout(timeoutListEdit);
+                if (response.access == 'granted') {
+                    $('#editModal').removeClass('animate__slideOutDown animate__faster');
+                    $('#editModal').addClass('animate__slideInUp animate__faster');
+                    $('#editLoaded').hide();
+                    $('#loadEdit').show();
+                    $('#editModal').modal('show');
+                    tableEdit(id, response.access, function () {
+                        clearTimeout(timeoutGlobal);
+                        $('#editLoaded').show();
+                        $('#loadEdit').hide();
+                    });
+                } else {
+                    $('#editModal').removeClass('animate__slideOutDown animate__faster');
+                    $('#editModal').addClass('animate__slideInUp animate__faster');
+                    $('#editLoaded').hide();
+                    $('#usernameNotMatch').show();
+                    $('#editModal').modal('show');
+                    tableEdit(id, response.access, function () {
+                        clearTimeout(timeoutGlobal);
+                        $('#editLoaded').show();
+                        $('#loadEdit').hide();
+                    });
+                }
+
+            }
+        })
     });
 
-    $('#closeLihatModalBtn').on('click', function () {
-        $('#lihatModal').removeClass('animate__slideInUp animate__faster');
-        $('#lihatModal').addClass('animate__slideOutDown animate__faster');
+    $('#closeEditModalBtn').on('click', function () {
+        $('#editModal').removeClass('animate__slideInUp animate__faster');
+        $('#editModal').addClass('animate__slideOutDown animate__faster');
         setTimeout(() => {
-            $('#tableLihat').DataTable().clear().destroy();
-            $('#lihatModal').modal('hide');
+            $('#usernameNotMatch').hide();
+            $('#editModal').modal('hide');
+            $('#tableEdit').DataTable().clear().destroy();
         }, 500);
+    });
+
+    $('#listEditForm').on('submit', function (e) {
+        e.preventDefault();
+        var id = $('#hiddenInputEdit').val();
+        var reviewer = $('#edit_reviewer').val();
+        var komentar = $('#edit_komentar').val();
+
+        $('#submitEditLists').prop('disabled', true);
+        $('#submitEditLists').html('');
+        $('#submitEditLists').append('<span class="spinner-border spinner-border-sm text-light me-2" role="status"></span> Update');
+
+        if (reviewer == 'null') {
+            const toast = document.getElementById('toast-warningLengkapiForm2')
+            const toastBootstrap = bootstrap.Toast.getOrCreateInstance(toast);
+            toastBootstrap.show();
+            $('#edit_reviewer').focus();
+            $('#submitEditLists').prop('disabled', false);
+            $('#submitEditLists').html('');
+            $('#submitEditLists').append('<i class="fa-solid fa-pen-to-square" id="selectiveIcon"></i> Update');
+            return;
+        }
+
+        Swal.fire({
+            title: "Lanjutkan proses?",
+            icon: 'question',
+            showDenyButton: true,
+            confirmButtonText: "Ya",
+            denyButtonText: `Batalkan`
+        }).then((result) => {
+            if (result.isConfirmed) {
+                $.ajax({
+                    url: '/admin/beriTugas/updateList',
+                    type: 'POST',
+                    data: {
+                        _token: $('meta[name="csrf_token"]').attr('content'),
+                        id: id,
+                        reviewer: reviewer,
+                        komentar: komentar
+                    }, success: function (response) {
+                        console.log(response.status);
+
+                        clearTimeout(timeoutGlobal);
+
+                        let timerInterval;
+                        Swal.fire({
+                            title: "Berhasil update!",
+                            timer: 2500,
+                            timerProgressBar: true,
+                            didOpen: () => {
+                                Swal.showLoading();
+                                const timer = Swal.getPopup().querySelector("b");
+                                timerInterval = setInterval(() => {
+                                    timer.textContent = `${Swal.getTimerLeft()}`;
+                                }, 100);
+                            },
+                            willClose: () => {
+                                clearInterval(timerInterval);
+                            }
+                        }).then((result) => {
+                            if (result.dismiss == Swal.DismissReason.timer) {
+                                console.log("I was closed by the timer");
+                            }
+                        });
+
+                        $('#listsRefresh').click();
+                        $('#listsRefresh1').click();
+
+                        $('#submitEditLists').prop('disabled', false);
+                        $('#submitEditLists').html('');
+                        $('#submitEditLists').append('<i class="fa-solid fa-pen-to-square" id="selectiveIcon"></i> Update');
+                        $('#closeEditModalBtn').click();
+                    }
+                });
+            } else if (result.isDenied) {
+                console.log("Changes are not saved");
+                $('#submitEditLists').prop('disabled', false);
+                $('#submitEditLists').html('');
+                $('#submitEditLists').append('<i class="fa-solid fa-pen-to-square" id="selectiveIcon"></i> Update');
+            }
+        });
+
     });
 
 });

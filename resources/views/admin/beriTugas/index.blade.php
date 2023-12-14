@@ -455,10 +455,13 @@
                                 <div class="card rounded shadow border-0">
                                     <div class="card-body">
 
-                                        <p> <span style="font-weight: bold;"> Tugas Dari:  </span> <span id="tugasDari" style="font-style: italic;"> Script error </span> </p>
-                                        <p> <span style="font-weight: bold;"> Reviewer:  </span> <span id="reviewer" style="font-style: italic;">Script error</span> </p>
-                                        <p> <span style="font-weight: bold;"> Tanggal:  </span> <span id="tanggal" style="font-style: italic;">Script error</span> </p>
-                                        <h6> <span style="font-weight: bold;"> Komentar:  </span> </h6>
+                                        <p> <span style="font-weight: bold;"> Tugas Dari: </span> <span id="tugasDari"
+                                                style="font-style: italic;"> Script error </span> </p>
+                                        <p> <span style="font-weight: bold;"> Reviewer: </span> <span id="reviewer"
+                                                style="font-style: italic;">Script error</span> </p>
+                                        <p> <span style="font-weight: bold;"> Tanggal: </span> <span id="tanggal"
+                                                style="font-style: italic;">Script error</span> </p>
+                                        <h6> <span style="font-weight: bold;"> Komentar: </span> </h6>
                                         <textarea name="komentar_lihat" id="komentar_lihat" class="form-control" rows="3" readonly>Script error</textarea>
 
                                     </div>
@@ -471,6 +474,110 @@
                 </div>
                 <div class="modal-footer" style="">
                     <button type="button" class="btn btn-secondary" id="closeLihatModalBtn">Tutup</button>
+                </div>
+                </section>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal List Edit -->
+    <div class="modal animate__animated animate__slideInUp animate__faster" id="editModal" data-bs-backdrop="static"
+        tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered modal-fullscreen">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2> <i class="fa-solid fa-pen-to-square"></i> Edit </h2>
+                </div>
+                <div class="modal-body m-4">
+
+                    <section id="loadEdit" style="display: block" class="mt-5 mb-5">
+                        <div class="d-flex justify-content-center">
+                            <div class="spinner-border" style="width: 5rem; height: 5rem;" role="status">
+                                <span class="visually-hidden">Loading...</span>
+                            </div>
+                        </div>
+                    </section>
+
+                    <section id="usernameNotMatch" style="display: none">
+                        <div class="card rounded shadow border-0 p-1 mb-3" style="background-color: red">
+                            <div class="card-body">
+                                <h3 class="text-center text-white"> <i
+                                        class="fa-solid fa-triangle-exclamation fa-fade fa-lg"
+                                        style="color: #fafafa;"></i> Anda hanya bisa Edit jika tugas ini dibuat oleh anda!
+                                </h3>
+                            </div>
+                        </div>
+                    </section>
+
+                    <section id="editLoaded" style="display: none;">
+                        <div class="row">
+                            <div class="col-md-8">
+                                <div class="card shadow rounded border-0 mb-3">
+                                    <div class="card-body">
+                                        <div class="table-responsive-lg">
+                                            <table class="table table-hover" border="2" id="tableEdit">
+                                                <thead>
+                                                </thead>
+                                                <tbody>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+
+                                <div class="card rounded shadow border-0 mb-2">
+                                    <div class="card-body">
+
+                                        <h3 id="editTotalData" style="color: green; font-weight: bold;"></h3>
+                                        <h6 id="editTotalSelesai" style="font-style: italic;"></h6>
+                                        <h6 id="editTotalBelumSelesai" style="font-style: italic;"></h6>
+
+                                    </div>
+                                </div>
+
+                                <div class="card rounded shadow border-0">
+                                    <div class="card-body">
+
+                                        <form id="listEditForm">
+
+                                            <input type="hidden" id="hiddenInputEdit">
+
+                                            <label style="font-weight: bold;" for="edit_tugasDari"> Tugas Dari: </label>
+                                            <input type="text" id="edit_tugasDari" class="form-control mb-2"
+                                                value="Script error" readonly>
+                                            <label style="font-weight: bold;" for="edit_reviewer"> Reviewer: </label>
+                                            <select class="form-control mb-2" id="edit_reviewer">
+                                                <option value="null" default>-- Pilih --</option>
+                                                <option value="{{ Session::get('id') }}" id="reviewer{{ Session::get('id') }}"> Saya
+                                                    ({{ Session::get('role') == 1 ? 'Admin' : 'User' }}) </option>
+                                                @foreach ($users as $user)
+                                                    <option value="{{ $user->id }}" id="reviewer{{ $user->id }}"> {{ $user->username }}
+                                                        ({{ $user->role == 1 ? 'Admin' : 'User' }})
+                                                    </option>
+                                                @endforeach
+                                            </select>
+                                            <label style="font-weight: bold;" for="edit_tanggal"> Tanggal: </label>
+                                            <input type="text" id="edit_tanggal" class="form-control mb-2"
+                                                value="Script error" disabled>
+                                            <label style="font-weight: bold;"> Komentar: </span> </h6>
+                                                <textarea name="edit_komentar" id="edit_komentar" class="form-control mb-4" cols="60" rows="3">Script error</textarea>
+
+                                            <button type="submit" class="form-control btn btn-success" id="submitEditLists"><i class="fa-solid fa-pen-to-square"></i> Update </button>
+
+                                        </form>
+
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </section>
+
+                </div>
+                <div class="modal-footer" style="">
+                    <button type="button" class="btn btn-secondary" id="closeEditModalBtn">Batalkan & tutup</button>
                 </div>
                 </section>
             </div>

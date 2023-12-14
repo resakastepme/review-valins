@@ -12,19 +12,20 @@ class AuthController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function getRole(){
+    public function getRole()
+    {
         // $role = Session('role') == 1 ? 'admin' : Session('role')  == 0 ? 'user' : 'aso';
 
         $role = 'admin';
-        if(Session('role') == 0) return $role = 'user';
-        if(Session('role') == 2) return $role = 'aso';
+        if (Session('role') == 0) return $role = 'user';
+        if (Session('role') == 2) return $role = 'aso';
 
-        if($role){
+        if ($role) {
             return response()->json([
                 'status' => 'BERHASIL',
                 'role' => $role
             ]);
-        }else{
+        } else {
             return response()->json([
                 'status' => 'GAGAL'
             ]);
@@ -34,18 +35,16 @@ class AuthController extends Controller
     public function index()
     {
 
-        if(Session('role')){
+        if (Session('role')) {
 
-            if(Session('role') == 1){
+            if (Session('role') == 1) {
                 return redirect()->to('/admin/dashboard');
-            }else{
+            } else {
                 return redirect()->to('/user/dashboard');
             }
-
-        }else{
+        } else {
             return view('auth.index');
         }
-
     }
 
     public function credCheck()
@@ -80,13 +79,15 @@ class AuthController extends Controller
                     'status' => 'Username/password tidak ditemukan!',
                     'trigger' => 'USERNAME/PASSWORD ERROR'
                 ]);
-            }else{
+            } else {
 
                 $role = $passCheck['role'];
                 $username = $passCheck['username'];
+                $id = $passCheck['id'];
 
                 Auth::login($passCheck);
                 Session::put('username', $username);
+                Session::put('id', $id);
                 Session::put('role', $role);
                 Session::put('attempt', time());
 
@@ -95,11 +96,21 @@ class AuthController extends Controller
                     'trigger' => 'BERHASIL LOGIN',
                     'role' => $role == 1 ? 'admin' : 'user'
                 ]);
-
             }
-
         }
-
     }
 
+    public function getUsername()
+    {
+        return response()->json([
+            'username' => Session::get('username')
+        ]);
+    }
+
+    public function getId()
+    {
+        return response()->json([
+            'id' => Session::get('id')
+        ]);
+    }
 }

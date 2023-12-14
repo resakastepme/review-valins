@@ -54,6 +54,8 @@ Route::get('/', function () {
 });
 
 Route::get('/getRole', [AuthController::class, 'getRole']);
+Route::get('/getUsername', [AuthController::class, 'getUsername']);
+Route::get('/getId', [AuthController::class, 'getId']);
 Route::get('/download/{parameter}', [DownloadController::class, 'download']);
 Route::post('/excelhandle', [ExcelController::class, 'process']);
 
@@ -94,12 +96,15 @@ Route::prefix('/admin')->group(function () {
     Route::get('/beriTugas/selectiveGet', [BeriTugasController::class, 'selectiveGet']);
     Route::post('/beriTugas/selectiveAssign', [BeriTugasController::class, 'selectiveAssign']);
     Route::get('/beriTugas/lihat', [BeriTugasController::class, 'lihat']);
+    Route::get('/beriTugas/edit', [BeriTugasController::class, 'edit']);
+    Route::get('/beriTugas/editValidation', [BeriTugasController::class, 'editValidation']);
+    Route::post('/beriTugas/updateList', [BeriTugasController::class, 'updateList']);
 });
 
 // ROUTE FOR CHECK, DELETE LATER
 Route::get('/check', function () {
-    if (Session::has('preview_access')) {
-        return Session::get('preview_access');
+    if (Session::has('username')) {
+        return Session::get('username');
     } else {
         return 'no';
     }

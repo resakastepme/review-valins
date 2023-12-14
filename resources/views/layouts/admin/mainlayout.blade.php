@@ -213,6 +213,29 @@
             background-color: #333;
             color: #fff;
         }
+        body.dark-mode #tableLihat th {
+            /* border-color: #555; */
+            background-color: #555;
+            color: #fff;
+        }
+
+        body.dark-mode #tableLihat td {
+            /* border-color: #555; */
+            background-color: #333;
+            color: #fff;
+        }
+
+        body.dark-mode #tableEdit th {
+            /* border-color: #555; */
+            background-color: #555;
+            color: #fff;
+        }
+
+        body.dark-mode #tableEdit td {
+            /* border-color: #555; */
+            background-color: #333;
+            color: #fff;
+        }
 
         /* Add more styles for other elements in dark mode */
     </style>

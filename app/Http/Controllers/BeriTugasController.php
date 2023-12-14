@@ -258,4 +258,69 @@ class BeriTugasController extends Controller
             ]);
         }
     }
+
+    public function edit()
+    {
+        try {
+            $id = $_GET['id'];
+            $q1 = Reviewer::with('getAssignment')->with('getData')->where('id_assignments', $id)->get();
+            $selesai = Reviewer::where('id_assignments', $id)->where('finish', 1)->count();
+            $belumSelesai = Reviewer::where('id_assignments', $id)->where('finish', 0)->count();
+            $assignment = Assignment::with('getUsers')->with('getReviewer')->where('id', $id)->first();
+            return response()->json([
+                'status' => 'ok',
+                'belum' => $belumSelesai,
+                'selesai' => $selesai,
+                'assignment' => $assignment,
+                'datas' => $q1
+            ]);
+        } catch (\Throwable $th) {
+            return response()->json([
+                'status' => $th->getMessage()
+            ]);
+        }
+    }
+
+    public function editValidation()
+    {
+        $id = $_GET['id'];
+        $q = Assignment::with('getUsers')->where('id', $id)->first();
+        $username = $q->getUsers->username;
+
+        if (Session::get('username') == $username) {
+            return response()->json([
+                'access' => 'granted'
+            ]);
+        } else {
+            return response()->json([
+                'access' => 'not granted'
+            ]);
+        }
+    }
+
+    public function updateList()
+    {
+        $id = $_POST['id'];
+        $reviewer = $_POST['reviewer'];
+        $komentar = $_POST['komentar'];
+        $rillKomentar = $komentar;
+        if ($komentar == '') $rillKomentar = 'Tolong kerjakan ya~';
+
+        $update = [
+            'reviewer' => $reviewer,
+            'komentar' => $rillKomentar
+        ];
+
+        $q = Assignment::where('id', $id)->update($update);
+
+        if ($q) {
+            return response()->json([
+                'status' => 'ok'
+            ]);
+        } else {
+            return response()->json([
+                'status' => 'not ok'
+            ]);
+        }
+    }
 }

@@ -18,7 +18,7 @@
                         <p class="mb-0 ml-md-5 d-none d-md-block ms-5" style="font-weight: bold">
                             Tanggal:</p>
                         <p class="mb-0 ml-2 d-none d-md-block ms-2" style="font-style: italic">
-                            {{ \Carbon\Carbon::parse($p->created_at)->format('Y-m-d') }}</p>
+                            {{ \Carbon\Carbon::parse($p->updated_at)->format('Y-m-d') }}</p>
                     </div>
                     <div class="d-md-none mb-3 d-flex">
                         <p class="mb-0" style="font-weight: bold">Reviewer:</p>
@@ -28,7 +28,7 @@
                     <div class="d-md-none mb-3 d-flex">
                         <p class="mb-0" style="font-weight: bold">Tanggal:</p>
                         <p class="mb-0 ml-2 ms-2" style="font-style: italic">
-                            {{ \Carbon\Carbon::parse($p->created_at)->format('Y-m-d') }}</p>
+                            {{ \Carbon\Carbon::parse($p->updated_at)->format('Y-m-d') }}</p>
                     </div>
                     <p style="font-weight: bold" class="mt-3">Komentar</p>
                     <textarea class="form-control" rows="3" readonly>{{ $p->komentar }}</textarea>
