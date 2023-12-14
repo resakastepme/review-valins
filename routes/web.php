@@ -99,6 +99,7 @@ Route::prefix('/admin')->group(function () {
     Route::get('/beriTugas/edit', [BeriTugasController::class, 'edit']);
     Route::get('/beriTugas/editValidation', [BeriTugasController::class, 'editValidation']);
     Route::post('/beriTugas/updateList', [BeriTugasController::class, 'updateList']);
+    Route::get('/beriTugas/hapusList', [BeriTugasController::class, 'hapusList']);
 });
 
 // ROUTE FOR CHECK, DELETE LATER

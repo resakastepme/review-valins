@@ -1046,7 +1046,89 @@ document.addEventListener('DOMContentLoaded', function () {
 
     });
 
+    $(document).on('click', '#hapusListsBtn', function () {
+        var id = $(this).data('id');
+
+        $.get('/admin/beriTugas/editValidation', {
+            _token: $('meta[name="csrf_token"]').attr('content'),
+            id: id
+        }, function (response) {
+            console.log(response.access);
+            if (response.access == 'granted') {
+                Swal.fire({
+                    title: "Anda yakin akan menghapus tugas ini?",
+                    text: "Anda tidak bisa memulihkan tugas ini lagi!",
+                    icon: "warning",
+                    showCancelButton: true,
+                    confirmButtonColor: "#3085d6",
+                    cancelButtonColor: "#d33",
+                    confirmButtonText: "Hapus",
+                    cancelButtonText: "Batalkan"
+                }).then((result) => {
+                    if (result.isConfirmed) {
+
+                        $.ajax({
+                            url: '/admin/beriTugas/hapusList',
+                            type: 'GET',
+                            data: {
+                                _token: $('meta[name="csrf_token"]').attr('content'),
+                                id: id
+                            }, success: function (response) {
+                                console.log(response.status);
+
+                                clearTimeout(timeoutGlobal);
+
+                                if (response.status == 'ok') {
+                                    let timerInterval;
+                                    Swal.fire({
+                                        title: "Berhasil dihapus!",
+                                        icon: 'success',
+                                        timer: 2500,
+                                        timerProgressBar: true,
+                                        didOpen: () => {
+                                            Swal.showLoading();
+                                            const timer = Swal.getPopup().querySelector("b");
+                                            timerInterval = setInterval(() => {
+                                                timer.textContent = `${Swal.getTimerLeft()}`;
+                                            }, 100);
+                                        },
+                                        willClose: () => {
+                                            clearInterval(timerInterval);
+                                        }
+                                    }).then((result) => {
+                                        if (result.dismiss == Swal.DismissReason.timer) {
+                                            console.log("I was closed by the timer");
+                                        }
+                                    });
+
+                                    $('#listsRefresh').click();
+                                    $('#listsRefresh1').click();
+                                } else {
+                                    Swal.fire({
+                                        title: "Error || Hubungi pengembang!",
+                                        text: response.status,
+                                        icon: "error"
+                                    });
+                                }
+
+                            }
+                        });
+
+                    }
+                });
+            } else {
+                Swal.fire({
+                    title: "Akses ditolak!",
+                    text: "Anda tidak dapat menghapus tugas yang bukan anda buat!",
+                    icon: "error"
+                });
+            }
+        });
+
+    });
+
 });
+
 // tableSelective();
 // function tableSelective() {
 //     $(document).on('click', '#checkBtnSelective', function () {

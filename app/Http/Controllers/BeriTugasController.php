@@ -323,4 +323,26 @@ class BeriTugasController extends Controller
             ]);
         }
     }
+
+    public function hapusList()
+    {
+        try {
+            $id = $_GET['id'];
+            $reviewer = Reviewer::where('id_assignments', $id)->get();
+            foreach ($reviewer as $r) {
+                Data::where('id', $r['id_datas'])->update([
+                    'id_reviewer' => null
+                ]);
+            }
+            Assignment::where('id', $id)->delete();
+            Reviewer::where('id_assignments', $id)->delete();
+            return response()->json([
+                'status' => 'ok'
+            ]);
+        } catch (\Throwable $th) {
+            return response()->json([
+                'status' => $th->getMessage()
+            ]);
+        }
+    }
 }
