@@ -1009,6 +1009,7 @@ document.addEventListener('DOMContentLoaded', function () {
                         let timerInterval;
                         Swal.fire({
                             title: "Berhasil update!",
+                            icon:'success',
                             timer: 2500,
                             timerProgressBar: true,
                             didOpen: () => {
