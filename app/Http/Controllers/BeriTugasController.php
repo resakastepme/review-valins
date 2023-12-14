@@ -236,4 +236,26 @@ class BeriTugasController extends Controller
             ]);
         }
     }
+
+    public function lihat()
+    {
+        try {
+            $id = $_GET['id'];
+            $q1 = Reviewer::with('getAssignment')->with('getData')->where('id_assignments', $id)->get();
+            $selesai = Reviewer::where('id_assignments', $id)->where('finish', 1)->count();
+            $belumSelesai = Reviewer::where('id_assignments', $id)->where('finish', 0)->count();
+            $assignment = Assignment::with('getUsers')->with('getReviewer')->where('id', $id)->first();
+            return response()->json([
+                'status' => 'ok',
+                'belum' => $belumSelesai,
+                'selesai' => $selesai,
+                'assignment' => $assignment,
+                'datas' => $q1
+            ]);
+        } catch (\Throwable $th) {
+            return response()->json([
+                'status' => $th->getMessage()
+            ]);
+        }
+    }
 }

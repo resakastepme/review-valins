@@ -14,4 +14,14 @@ class Reviewer extends Model
         'id_datas',
         'finish'
     ];
+
+    public function getAssignment()
+    {
+        return $this->belongsTo(Assignment::class, 'id_assignments', 'id');
+    }
+
+    public function getData()
+    {
+        return $this->belongsTo(Data::class, 'id_datas', 'id');
+    }
 }

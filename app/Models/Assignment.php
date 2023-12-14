@@ -21,6 +21,11 @@ class Assignment extends Model
         return $this->belongsTo(User::class, 'tugas_dari', 'id');
     }
 
+    public function getReviewer()
+    {
+        return $this->belongsTo(User::class, 'reviewer', 'id');
+    }
+
     public function getReviewers()
     {
         return $this->belongsTo(User::class, 'reviewer', 'id');

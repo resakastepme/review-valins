@@ -635,7 +635,7 @@ document.addEventListener('DOMContentLoaded', function () {
         }, 500);
     });
 
-    $('#selectiveResultForm').on('submit', function (e){
+    $('#selectiveResultForm').on('submit', function (e) {
         e.preventDefault();
 
         $('#btnSubmitFormSelective').prop('disabled', true);
@@ -656,6 +656,137 @@ document.addEventListener('DOMContentLoaded', function () {
             });
         });
 
+    });
+
+    function tableLihat(id, callback) {
+        var num = 0;
+        var table = $('#tableLihat').DataTable({
+            ajax: {
+                url: '/admin/beriTugas/lihat',
+                type: 'GET',
+                data: {
+                    _token: $('meta[name="csrf_token"]').attr('content'),
+                    id: id
+                },
+                dataSrc: function (response) {
+                    console.log(response.status);
+
+
+                    $('#lihatTotalData').html('');
+                    $('#lihatTotalData').html(response.datas.length + ' TOTAL DATA');
+
+                    $('#lihatTotalSelesai').html('');
+                    $('#lihatTotalSelesai').html(response.selesai + ' Data selesai');
+
+                    $('#lihatTotalBelumSelesai').html('');
+                    $('#lihatTotalBelumSelesai').html(response.belum + ' Data belum selesai');
+
+                    $('#tugasDari').html('');
+                    $('#tugasDari').html(response.assignment.get_users.username);
+                    $('#reviewer').html('');
+                    $('#reviewer').html(response.assignment.get_reviewer.username);
+
+                    let date = new Date(response.assignment.updated_at);
+                    let formattedDate = date.toISOString().split('T')[0];
+                    $('#tanggal').html('');
+                    $('#tanggal').html(formattedDate);
+
+                    $('#komentar_lihat').val('');
+                    $('#komentar_lihat').val(response.assignment.komentar);
+
+                    callback();
+                    // console.log(response.datas[0].get_data);
+                    return response.datas;
+                }
+            },
+            "columns": [
+                {
+                    data: null,
+                    render: function () {
+                        ++num;
+                        return num;
+                    },
+                    title: "No"
+                },
+                {
+                    data: null,
+                    render: function (item) {
+                        return item.get_data.id_valins;
+                    },
+                    title: "ID Valins"
+                },
+                {
+                    data: null,
+                    render: function (item) {
+                        return item.get_data.id_valins_lama;
+                    },
+                    title: "ID Valins Lama"
+                }, {
+                    data: null,
+                    render: function (item) {
+                        return item.get_data.keterangan_aso;
+                    },
+                    title: "Keterangan ASO"
+                }, {
+                    data: null,
+                    render: function (item) {
+                        return item.get_data.approve_aso;
+                    },
+                    title: "Approve ASO"
+                }, {
+                    data: null,
+                    render: function (item) {
+                        return item.get_data.keterangan_ram3;
+                    },
+                    title: "Keterangan RAM3"
+                }, {
+                    data: null,
+                    render: function (item) {
+                        return item.get_data.ram3;
+                    },
+                    title: "RAM3"
+                }, {
+                    data: null,
+                    render: function (item) {
+                        return item.get_data.rekon;
+                    },
+                    title: "Rekon"
+                }, {
+                    data: null,
+                    render: function (item) {
+                        if (item.finish == 0) {
+                            return '<div class="row d-flex justify-content-center align-items-center"><i class="fa-solid fa-xmark" title="Belum selesai"></i></div>';
+                        } else {
+                            return '<div class="row d-flex justify-content-center align-items-center"><i class="fa-solid fa-check" title="Selesai"></i></div>';
+                        }
+                    },
+                    title: "Selesai"
+                }
+            ]
+        });
+    }
+
+    $(document).on('click', '#lihatListsBtn', function () {
+        var id = $(this).data('id');
+        $('#lihatModal').removeClass('animate__slideOutDown animate__faster');
+        $('#lihatModal').addClass('animate__slideInUp animate__faster');
+        $('#lihatLoaded').hide();
+        $('#loadLihat').show();
+        $('#lihatModal').modal('show');
+        tableLihat(id, function () {
+            clearTimeout(timeoutGlobal);
+            $('#lihatLoaded').show();
+            $('#loadLihat').hide();
+        });
+    });
+
+    $('#closeLihatModalBtn').on('click', function () {
+        $('#lihatModal').removeClass('animate__slideInUp animate__faster');
+        $('#lihatModal').addClass('animate__slideOutDown animate__faster');
+        setTimeout(() => {
+            $('#tableLihat').DataTable().clear().destroy();
+            $('#lihatModal').modal('hide');
+        }, 500);
     });
 
 });

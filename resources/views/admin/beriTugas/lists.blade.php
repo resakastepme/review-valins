@@ -71,15 +71,15 @@
                 </div>
                 <div class="col-12 col-md-2">
                     <div class="d-flex justify-content-center align-items-center">
-                        <button class="btn btn-secondary" data-bs-toggle="tooltip" data-bs-placement="top"
-                            data-bs-title="Lihat" title="Lihat" id="lihatListsBtn"> <i
-                                class="fa-solid fa-eye"></i></button>
-                        <button class="btn btn-primary ms-2" data-bs-toggle="tooltip" data-bs-placement="top"
-                            data-bs-title="Edit" title="Edit" id="editListsBtn"> <i
-                                class="fa-solid fa-pen-to-square"></i></button>
-                        <button class="btn btn-danger ms-2" data-bs-toggle="tooltip" data-bs-placement="top"
-                            data-bs-title="Hapus" title="Hapus" id="hapusListsBtn"> <i
-                                class="fa-solid fa-trash"></i></button>
+                        <button class="btn btn-secondary" id="lihatListsBtn" data-id="{{ $p->id }}"> <i class="fa-solid fa-eye"
+                                data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Lihat"
+                                title="Lihat"></i></button>
+                        <button class="btn btn-primary ms-2" id="editListsBtn" data-id="{{ $p->id }}"> <i class="fa-solid fa-pen-to-square"
+                                data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Edit"
+                                title="Edit"></i></button>
+                        <button class="btn btn-danger ms-2" id="hapusListsBtn" data-id="{{ $p->id }}"> <i class="fa-solid fa-trash"
+                                data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Hapus"
+                                title="Hapus"></i></button>
                     </div>
                 </div>
             </div>
