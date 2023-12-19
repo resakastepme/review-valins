@@ -238,6 +238,36 @@
             color: #fff;
         }
 
+        body.dark-mode {
+            background-color: #333;
+            color: #fff;
+        }
+
+        body.dark-mode .accordion-button {
+            background-color: #555;
+            color: #fff;
+        }
+        body.dark-mode #acor-content {
+            background-color: #555;
+            color: #fff;
+        }
+
+        /* Define styles for light mode (default) */
+        body.light-mode {
+            background-color: #fff;
+            color: #333;
+        }
+
+        body.light-mode .accordion-button {
+            background-color: #f8f9fa;
+            color: #000;
+        }
+
+        body.light-mode #acor-content {
+            background-color: #f8f9fa;
+            color: #000;
+        }
+
         /* Add more styles for other elements in dark mode */
     </style>
 
