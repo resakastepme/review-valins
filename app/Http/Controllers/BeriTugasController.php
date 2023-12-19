@@ -9,6 +9,7 @@ use App\Models\User;
 use App\Models\Dumps;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Str;
 use Illuminate\View\View;
@@ -96,7 +97,8 @@ class BeriTugasController extends Controller
                 'id_eviden1' => $d['id_eviden1'],
                 'id_eviden2' => $d['id_eviden2'],
                 'id_eviden3' => $d['id_eviden3'],
-                'unique_id' => $unique
+                'unique_id' => $unique,
+                'data_id' => $d['id']
             ];
             Dumps::create($create);
         }
@@ -113,50 +115,149 @@ class BeriTugasController extends Controller
         }
     }
 
-    public function quickAssign()
+    // public function quickAssign()
+    // {
+    //     try {
+    //         $jumlahData = $_GET['jumlahData'];
+    //         $assign = $_GET['assign'];
+    //         $komentar = $_GET['komentar'];
+    //         $komentarRill = $komentar;
+    //         if ($komentar == null) {
+    //             $komentarRill = 'Tolong kerjakan ini ya~';
+    //         }
+    //         $dataQuery1 = $_GET['unique'];
+    //         $unique = time() . Str::random(10);
+    //         $reviewer = User::where('username', $assign)->first();
+    //         $tugas_dari = User::where('username', Session::get('username'))->first();
+    //         Assignment::create([
+    //             'id_reviewer' => $unique,
+    //             'reviewer' => $reviewer->id,
+    //             'tugas_dari' => $tugas_dari->id,
+    //             'komentar' => $komentarRill
+    //         ]);
+    //         $id_assignments = Assignment::where('id_reviewer', $unique)->first();
+    //         $dataQuery = Dumps::where('unique_id', $dataQuery1)->get();
+    //         $counters = 0;
+    //         foreach ($dataQuery as $data) {
+    //             Data::where('id', $data['id'])->update([
+    //                 'id_reviewer' => $unique
+    //             ]);
+    //             Reviewer::create([
+    //                 'id_assignments' => $id_assignments->id,
+    //                 'id_datas' => $data['id']
+    //             ]);
+    //             $counters++;
+    //             if ($counters == $jumlahData) {
+    //                 break;
+    //             }
+    //         }
+    //         return response()->json([
+    //             'status' => 'ok',
+    //             'unique' => $dataQuery1
+    //         ]);
+    //     } catch (\Throwable $th) {
+    //         return response()->json([
+    //             'status' => $th->getMessage()
+    //         ]);
+    //     }
+    // }
+
+    public function quickAssign(Request $request)
     {
         try {
-            $jumlahData = $_GET['jumlahData'];
-            $assign = $_GET['assign'];
-            $komentar = $_GET['komentar'];
+            // $request->validate([
+            //     'jumlahData' => 'required',
+            //     'assign' => 'required',
+            //     'komentar' => '',
+            //     'unique' => 'required',
+            // ]);
+
+            $jumlahData = $request->input('jumlahData');
+            $assign = $request->input('assign');
+            $komentar = $request->input('komentar');
             $komentarRill = $komentar;
             if ($komentar == null) {
                 $komentarRill = 'Tolong kerjakan ini ya~';
             }
-            $dataQuery1 = $_GET['unique'];
+            $dataQuery1 = $request->input('unique');
+            // return response()->json([
+            //     'status' => $dataQuery1
+            // ]);
+
+            // $jumlahData = 100;
+            // $assign = 'AKUN CHECK';
+            // $komentarRill = 'IYA INI RILL~';
+            // $dataQuery1 = '1702965826Te6A9rHYsm';
+
             $unique = time() . Str::random(10);
             $reviewer = User::where('username', $assign)->first();
             $tugas_dari = User::where('username', Session::get('username'))->first();
-            Assignment::create([
-                'id_reviewer' => $unique,
-                'reviewer' => $reviewer->id,
-                'tugas_dari' => $tugas_dari->id,
-                'komentar' => $komentarRill
-            ]);
-            $id_assignments = Assignment::where('id_reviewer', $unique)->first();
-            $dataQuery = Dumps::where('unique_id', $dataQuery1)->get();
-            $counters = 0;
-            foreach ($dataQuery as $data) {
-                Data::where('id', $data['id'])->update([
-                    'id_reviewer' => $unique
+
+            // DB::beginTransaction();
+
+            try {
+                $assignment = Assignment::create([
+                    'id_reviewer' => $unique,
+                    'reviewer' => $reviewer->id,
+                    'tugas_dari' => $tugas_dari->id,
+                    'komentar' => $komentarRill,
                 ]);
-                Reviewer::create([
-                    'id_assignments' => $id_assignments->id,
-                    'id_datas' => $data['id']
+
+                // return response()->json([
+                //     'status' => $assignment['id']
+                // ]);
+
+                $dataQuery = Dumps::where('unique_id', $dataQuery1)->get();
+                // return response()->json([
+                //     'status' => $assignment['id'],
+                //     'throw' => $dataQuery[100]
+                // ]);
+                $counters = 0;
+
+                foreach ($dataQuery as $data) {
+                    $datadua = Data::where('id', $data['data_id'])->update([
+                        'id_reviewer' => $unique,
+                    ]);
+
+                    $review = Reviewer::create([
+                        'id_assignments' => $assignment['id'],
+                        'id_datas' => $data['id'],
+                    ]);
+
+                    $counters++;
+                    if ($counters == $jumlahData) {
+                        break;
+                    }
+                }
+
+                if($datadua && $review){
+                    return response()->json([
+                        'status' => 'ok',
+                        'unique' => $dataQuery1,
+                    ]);
+                }else{
+                    return response()->json([
+                        'status' => 'not ok',
+                        'throw' => $dataQuery[100]
+                    ]);
+                }
+
+                // DB::commit();
+            } catch (\Exception $e) {
+                DB::rollBack();
+
+                return response()->json([
+                    'status' => $e->getMessage(),
                 ]);
-                $counters++;
-                if ($counters == $jumlahData) break;
             }
+        } catch (\Throwable $e) {
             return response()->json([
-                'status' => 'ok',
-                'unique' => $dataQuery1
-            ]);
-        } catch (\Throwable $th) {
-            return response()->json([
-                'status' => $th->getMessage()
+                'status' => 'error',
+                'message' => $e->getMessage(),
             ]);
         }
     }
+
 
     public function yeet()
     {

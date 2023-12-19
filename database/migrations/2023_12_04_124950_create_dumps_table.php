@@ -31,6 +31,7 @@ return new class extends Migration
             $table->String('upload_by')->nullable();
             $table->string('id_reviewer')->nullable();
             $table->text('unique_id');
+            $table->integer('data_id');
             $table->timestamps();
         });
     }

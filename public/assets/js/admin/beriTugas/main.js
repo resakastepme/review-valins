@@ -79,6 +79,7 @@ function quickResult(callback) {
                 if (response.count != 0) {
                     countResult = response.count;
                     unique_quick = response.unique;
+                    console.log(unique_quick);
                     $('#querySuccess').css('display', 'block');
                     $('#countData').html('');
                     $('#countData').html(response.count + ' TOTAL DATA');
@@ -172,6 +173,7 @@ function quickResultSubmit(callback) {
                         }
                     });
                 } else {
+                    console.log(response.throw);
                     Swal.fire({
                         title: "Gagal!",
                         text: 'Hubungi pengembang dan berikan error code ini: ' + response.status,
@@ -282,13 +284,10 @@ function loadSelectiveTable(callback) {
             }
         ]
     })
-
     table.on('init.dt', function (e) {
         table.page(0).draw(false);
     });
-
 }
-
 var selectedSelective = [];
 $(document).on('click', '#checkBtnSelective', function () {
     var table = $('#tableSelective').DataTable();
@@ -1049,6 +1048,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
     $(document).on('click', '#hapusListsBtn', function () {
         var id = $(this).data('id');
+
 
         $.get('/admin/beriTugas/editValidation', {
             _token: $('meta[name="csrf_token"]').attr('content'),

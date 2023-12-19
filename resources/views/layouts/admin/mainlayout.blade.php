@@ -213,6 +213,7 @@
             background-color: #333;
             color: #fff;
         }
+
         body.dark-mode #tableLihat th {
             /* border-color: #555; */
             background-color: #555;
@@ -260,7 +261,8 @@
                             href="{{ url('/' . (Session::get('role') == 1 ? 'admin' : 'user') . '/dashboard') }}">Dashboard</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#">Tugas</a>
+                        <a class="nav-link {{ request()->is('admin/tugas') || request()->is('user/tugas') ? 'active' : '' }}"
+                            href="{{ url('/' . (Session::get('role') == 1 ? 'admin' : 'user') . '/tugas') }}">Tugas</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link {{ request()->is('admin/beriTugas') || request()->is('user/beriTugas') ? 'active' : '' }}"

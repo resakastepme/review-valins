@@ -6,6 +6,7 @@ use App\Http\Controllers\DownloadController;
 use App\Http\Controllers\ExcelController;
 use App\Http\Controllers\PenggunaController;
 use App\Http\Controllers\BeriTugasController;
+use App\Http\Controllers\TugasController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Session;
 
@@ -100,6 +101,8 @@ Route::prefix('/admin')->group(function () {
     Route::get('/beriTugas/editValidation', [BeriTugasController::class, 'editValidation']);
     Route::post('/beriTugas/updateList', [BeriTugasController::class, 'updateList']);
     Route::get('/beriTugas/hapusList', [BeriTugasController::class, 'hapusList']);
+
+    Route::get('/tugas', [TugasController::class, 'index']);
 });
 
 // ROUTE FOR CHECK, DELETE LATER

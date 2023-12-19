@@ -27,7 +27,8 @@ class Dumps extends Model
         'id_eviden1',
         'id_eviden2',
         'id_eviden3',
-        'unique_id'
+        'unique_id',
+        'data_id'
     ];
     public $timestamps = true;
 }

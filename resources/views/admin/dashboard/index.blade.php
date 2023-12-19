@@ -102,5 +102,17 @@
             window.location.href = '/' + link + '/beriTugas';
 
         });
+        $('#tugasBtn').on('click', function() {
+
+            var role = '{{ Session('role') }}';
+            var link = null;
+            if (role == 1) {
+                var link = 'admin'
+            } else {
+                var link = 'user'
+            };
+            window.location.href = '/' + link + '/tugas';
+
+        });
     </script>
 @endsection
