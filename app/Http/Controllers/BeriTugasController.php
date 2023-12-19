@@ -221,7 +221,7 @@ class BeriTugasController extends Controller
 
                     $review = Reviewer::create([
                         'id_assignments' => $assignment['id'],
-                        'id_datas' => $data['id'],
+                        'id_datas' => $data['data_id'],
                     ]);
 
                     $counters++;
