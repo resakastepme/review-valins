@@ -64,26 +64,96 @@
                         </div>
                     </section>
 
-                    <div class="accordion" id="accordionPanelsStayOpenExample">
-                        <div class="accordion-item">
-                            <h2 class="accordion-header" id="acor1Btn">
-                                <button class="accordion-button" type="button">
-                                    Tabel data belum di review
-                                </button>
-                            </h2>
-                            <div id="acor-content" class="accordion-collapse collapse show"
-                                aria-labelledby="panelsStayOpen-headingOne">
-                                <div class="accordion-body">
-                                    <strong>This is the first item's accordion body.</strong> It is shown by default, until
-                                    the collapse plugin adds the appropriate classes that we use to style each element.
-                                    These classes control the overall appearance, as well as the showing and hiding via CSS
-                                    transitions. You can modify any of this with custom CSS or overriding our default
-                                    variables. It's also worth noting that just about any HTML can go within the
-                                    <code>.accordion-body</code>, though the transition does limit overflow.
+                    <section id="loadedCard" style="display: none;">
+                        <div class="row d-flex justify-content-center mb-3">
+                            <div class="col-md-4">
+
+                                <div class="card rounded shadow border-0 mb-2">
+                                    <div class="card-body">
+
+                                        <h1 class="mb-3" id="lihatTotalDataKerjakan"
+                                            style="color: green; font-weight: bold;"></h1>
+                                        <h6 id="lihatTotalSelesaiKerjakan" style="font-style: italic;"></h6>
+                                        <h6 id="lihatTotalBelumSelesaiKerjakan" style="font-style: italic;"></h6>
+
+                                    </div>
+                                </div>
+
+                            </div>
+                            <div class="col-md-8">
+
+                                <div class="card rounded shadow border-0">
+                                    <div class="card-body">
+
+                                        <div class="row d-flex">
+                                            <div class="col-md-4">
+                                                <p> <span style="font-weight: bold;"> Tugas Dari: </span> <span
+                                                        id="tugasDariKerjakan" style="font-style: italic;"> Script error
+                                                    </span>
+                                                </p>
+                                                <p> <span style="font-weight: bold;"> Reviewer: </span> <span
+                                                        id="reviewerKerjakan" style="font-style: italic;">Script
+                                                        error</span>
+                                                </p>
+                                                <p> <span style="font-weight: bold;"> Tanggal: </span> <span
+                                                        id="tanggalKerjakan" style="font-style: italic;">Script error</span>
+                                                </p>
+                                            </div>
+                                            <div class="col-md-8">
+                                                <h6> <span style="font-weight: bold;"> Komentar: </span> </h6>
+                                                <textarea name="komentar_lihatKerjakan" id="komentar_lihatKerjakan" class="form-control" rows="3" readonly>Script error</textarea>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </section>
+
+                    <section id="loadedKerjakan" style="display: none;">
+                        <div class="accordion" id="accordionPanelsStayOpenExample">
+                            <div class="accordion-item">
+                                <h2 class="accordion-header" id="acor1Btn">
+                                    <button class="accordion-button" type="button">
+                                        <h3> Data </h3>
+                                    </button>
+                                </h2>
+                                <div id="acor-content" class="accordion-collapse collapse show"
+                                    aria-labelledby="panelsStayOpen-headingOne">
+                                    <div class="accordion-body">
+
+                                        <div class="table-responsive-lg">
+                                            <table class="table table-hover" border="2" id="tableKerjakanData">
+                                                <thead>
+                                                </thead>
+                                                <tbody>
+                                                </tbody>
+                                            </table>
+                                        </div>
+
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
+                    </section>
+
+                    <section class="mt-3" id="reviewCard">
+                        <div class="row">
+                            <div class="col">
+
+                                <div class="card shadow rounded border-0">
+                                    <div class="card-body">
+
+                                        <h1 class="text-center"> Silahkan pilih data </h1>
+
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </section>
 
                 </div>
                 <div class="modal-footer" style="">

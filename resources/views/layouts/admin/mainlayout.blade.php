@@ -238,6 +238,18 @@
             color: #fff;
         }
 
+        body.dark-mode #tableKerjakanData th {
+            /* border-color: #555; */
+            background-color: #555;
+            color: #fff;
+        }
+
+        body.dark-mode #tableKerjakanData td {
+            /* border-color: #555; */
+            background-color: #333;
+            color: #fff;
+        }
+
         body.dark-mode {
             background-color: #333;
             color: #fff;

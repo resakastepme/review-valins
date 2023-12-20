@@ -103,6 +103,8 @@ Route::prefix('/admin')->group(function () {
     Route::get('/beriTugas/hapusList', [BeriTugasController::class, 'hapusList']);
 
     Route::get('/tugas', [TugasController::class, 'index']);
+    Route::get('/tugas/data', [TugasController::class, 'data']);
+    Route::get('/tugas/loadCard', [TugasController::class, 'loadCard']);
 });
 
 // ROUTE FOR CHECK, DELETE LATER

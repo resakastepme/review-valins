@@ -75,7 +75,7 @@
                                 class="fa-solid fa-eye" data-bs-toggle="tooltip" data-bs-placement="top"
                                 data-bs-title="Lihat" title="Lihat"></i></button>
                         <button class="btn btn-primary ms-2" id="kerjakanListsBtn" data-id="{{ $p->id }}"> <span
-                                class="d-flex d-none d-md-block"> Kerjakan <i class="fa-solid fa-chevron-right"
+                                class="d-flex d-none d-md-block"> Review <i class="fa-solid fa-chevron-right"
                                     data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Kerjakan"
                                     title="Kerjakan"></i> </span> <i class="fa-solid fa-chevron-right d-md-none"
                                 data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Kerjakan"

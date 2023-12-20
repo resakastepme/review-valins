@@ -203,6 +203,137 @@ function tableLihat(id, callback) {
     });
 }
 
+function tableKerjakanData(id, callback) {
+    var num = 0;
+    var table = $('#tableKerjakanData').DataTable({
+        ajax: {
+            url: '/admin/tugas/data',
+            type: 'GET',
+            data: {
+                _token: $('meta[name="csrf_token"]').attr('content'),
+                id: id
+            },
+            dataSrc: function (response) {
+                console.log(response.status);
+
+                callback();
+                // console.log(response.datas[0].get_data.id);
+                return response.datas;
+            }
+        },
+        "columns": [
+            {
+                data: null,
+                render: function () {
+                    ++num;
+                    return num;
+                },
+                title: "No"
+            },
+            {
+                data: null,
+                render: function (item) {
+                    return item.get_data.id_valins;
+                },
+                title: "ID Valins"
+            },
+            {
+                data: null,
+                render: function (item) {
+                    return item.get_data.id_valins_lama;
+                },
+                title: "ID Valins Lama"
+            }, {
+                data: null,
+                render: function (item) {
+                    return item.get_data.keterangan_aso;
+                },
+                title: "Keterangan ASO"
+            }, {
+                data: null,
+                render: function (item) {
+                    return item.get_data.approve_aso;
+                },
+                title: "Approve ASO"
+            }, {
+                data: null,
+                render: function (item) {
+                    return item.get_data.keterangan_ram3;
+                },
+                title: "Keterangan RAM3"
+            }, {
+                data: null,
+                render: function (item) {
+                    return item.get_data.ram3;
+                },
+                title: "RAM3"
+            }, {
+                data: null,
+                render: function (item) {
+                    return item.get_data.rekon;
+                },
+                title: "Rekon"
+            }, {
+                data: null,
+                render: function (item) {
+                    return '<a href="#reviewCard"><button class="btn btn-primary" id="dataTerpilih" data-id="' + item.get_data.id + '"><i class="fa-solid fa-chevron-right"\
+                    data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Pilih data"\
+                    title="Kerjakan"></i></button></a>';
+                },
+                title: "Pilih data"
+            }
+        ]
+    });
+}
+
+function loadCard(id, callback) {
+    $.get('/getRole', function (response) {
+        var role = response.role;
+        var token = $('meta[name="csrf_token"]').attr('content');
+        $.ajax({
+            url: '/' + role + '/tugas/loadCard',
+            type: 'GET',
+            data: {
+                _token: token,
+                id: id
+            }, success: function (response) {
+                if (response.status == 'ok') {
+                    $('#lihatTotalDataKerjakan').html('');
+                    $('#lihatTotalDataKerjakan').html(response.datas.length + ' TOTAL DATA');
+
+                    $('#lihatTotalSelesaiKerjakan').html('');
+                    $('#lihatTotalSelesaiKerjakan').html(response.selesai + ' Data selesai');
+
+                    $('#lihatTotalBelumSelesaiKerjakan').html('');
+                    $('#lihatTotalBelumSelesaiKerjakan').html(response.belum + ' Data belum selesai');
+
+                    $('#tugasDariKerjakan').html('');
+                    $('#tugasDariKerjakan').html(response.assignment.get_users.username);
+                    $('#reviewerKerjakan').html('');
+                    $('#reviewerKerjakan').html(response.assignment.get_reviewer.username);
+
+                    let date = new Date(response.assignment.updated_at);
+                    let formattedDate = date.toISOString().split('T')[0];
+                    $('#tanggalKerjakan').html('');
+                    $('#tanggalKerjakan').html(formattedDate);
+
+                    $('#komentar_lihatKerjakan').val('');
+                    $('#komentar_lihatKerjakan').val(response.assignment.komentar);
+
+                    callback();
+                } else {
+                    Swal.fire({
+                        icon: "error",
+                        title: "Error",
+                        text: response.status
+                    });
+                    $('#closeKerjakanModalBtn').click();
+                }
+            }
+        });
+    });
+}
+
 // {{{{{{{{{{{{{{{{{{{{{{ DOM CONTENT LOADED }}}}}}}}}}}}}}}}}}}}}}}}}}}}}
 
 $(document).ready(function () {
@@ -238,13 +369,32 @@ $(document).ready(function () {
         var id = $(this).data('id');
         $('#kerjakanModal').removeClass('animate__slideOutDown animate__faster');
         $('#kerjakanModal').addClass('animate__slideInUp animate__faster');
+        $('#loadedKerjakan').hide();
+        $('#loadedCard').hide();
+        $('#loadKerjakan').show();
         $('#kerjakanModal').modal('show');
+        loadCard(id, function () {
+            clearTimeout(timeoutGlobal);
+            $('#loadedCard').show();
+            $('#loadKerjakan').hide();
+        });
+        setTimeout(() => {
+            tableKerjakanData(id, function () {
+                clearTimeout(timeoutGlobal);
+                $('#loadedKerjakan').show();
+                $('#loadKerjakan').hide();
+            });
+        }, 500);
     });
 
     $('#closeKerjakanModalBtn').on('click', function () {
         $('#kerjakanModal').removeClass('animate__slideInUp animate__faster');
         $('#kerjakanModal').addClass('animate__slideOutDown animate__faster');
         setTimeout(function () {
+            $('#tableKerjakanData').DataTable().clear().destroy();
+            $('#acor-content').addClass('show');
+            $('#acor-content').removeClass('collapsing');
+            $('#acor1customed').attr('id', 'acor1Btn');
             $('#kerjakanModal').modal('hide');
         }, 500);
     });
@@ -270,6 +420,11 @@ $(document).ready(function () {
             $('#tableLihat').DataTable().clear().destroy();
             $('#lihatModal').modal('hide');
         }, 500);
+    });
+
+    $(document).on('click', '#dataTerpilih', function () {
+        var id = $(this).data('id');
+        console.log(id);
     });
 
 });
