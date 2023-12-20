@@ -49,14 +49,14 @@
         </div>
     </div>
 
-    <!-- Modal List Lihat -->
+    <!-- Modal Kerjakan -->
     <div class="modal animate__animated animate__slideInUp animate__faster" id="kerjakanModal" data-bs-backdrop="static"
         tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered modal-fullscreen">
             <div class="modal-content">
                 <div class="modal-body m-4">
 
-                    <section id="loadLihat" style="display: block" class="mt-5 mb-5">
+                    <section id="loadKerjakan" style="display: block" class="mt-5 mb-5">
                         <div class="d-flex justify-content-center">
                             <div class="spinner-border" style="width: 5rem; height: 5rem;" role="status">
                                 <span class="visually-hidden">Loading...</span>
@@ -88,6 +88,82 @@
                 </div>
                 <div class="modal-footer" style="">
                     <button type="button" class="btn btn-secondary" id="closeKerjakanModalBtn">Tutup</button>
+                </div>
+                </section>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal List Lihat -->
+    <div class="modal animate__animated animate__slideInUp animate__faster" id="lihatModal" data-bs-backdrop="static"
+        tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered modal-fullscreen">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2> <i class="fa-solid fa-eye"></i> Lihat </h2>
+                </div>
+                <div class="modal-body m-4">
+
+                    {{-- <h1 id="testo"> TEST </h1> --}}
+
+                    <section id="loadLihat" style="display: block" class="mt-5 mb-5">
+                        <div class="d-flex justify-content-center">
+                            <div class="spinner-border" style="width: 5rem; height: 5rem;" role="status">
+                                <span class="visually-hidden">Loading...</span>
+                            </div>
+                        </div>
+                    </section>
+
+                    <section id="lihatLoaded" style="display: none;">
+                        <div class="row">
+                            <div class="col-md-8">
+                                <div class="card shadow rounded border-0 mb-3">
+                                    <div class="card-body">
+                                        <div class="table-responsive-lg">
+                                            <table class="table table-hover" border="2" id="tableLihat">
+                                                <thead>
+                                                </thead>
+                                                <tbody>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+
+                                <div class="card rounded shadow border-0 mb-2">
+                                    <div class="card-body">
+
+                                        <h3 id="lihatTotalData" style="color: green; font-weight: bold;"></h3>
+                                        <h6 id="lihatTotalSelesai" style="font-style: italic;"></h6>
+                                        <h6 id="lihatTotalBelumSelesai" style="font-style: italic;"></h6>
+
+                                    </div>
+                                </div>
+
+                                <div class="card rounded shadow border-0">
+                                    <div class="card-body">
+
+                                        <p> <span style="font-weight: bold;"> Tugas Dari: </span> <span id="tugasDari"
+                                                style="font-style: italic;"> Script error </span> </p>
+                                        <p> <span style="font-weight: bold;"> Reviewer: </span> <span id="reviewer"
+                                                style="font-style: italic;">Script error</span> </p>
+                                        <p> <span style="font-weight: bold;"> Tanggal: </span> <span id="tanggal"
+                                                style="font-style: italic;">Script error</span> </p>
+                                        <h6> <span style="font-weight: bold;"> Komentar: </span> </h6>
+                                        <textarea name="komentar_lihat" id="komentar_lihat" class="form-control" rows="3" readonly>Script error</textarea>
+
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </section>
+
+                </div>
+                <div class="modal-footer" style="">
+                    <button type="button" class="btn btn-secondary" id="closeLihatModalBtn">Tutup</button>
                 </div>
                 </section>
             </div>
