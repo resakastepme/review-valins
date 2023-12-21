@@ -4,7 +4,9 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Assignment;
+use App\Models\Data;
 use App\Models\Reviewer;
+use App\Models\Values;
 use Illuminate\Support\Facades\Session;
 
 class TugasController extends Controller
@@ -15,12 +17,13 @@ class TugasController extends Controller
     public function index(Request $r)
     {
         $post = Assignment::with('getUsers')->with('getReviewers')->where('reviewer', Session::get('id'))->orderby('id', 'DESC')->paginate(5);
+        $v = Values::get();
 
         if ($r->ajax()) {
-            return view('admin.tugas.lists', compact('post'));
+            return view('admin.tugas.lists', compact('post'), ['values' => $v]);
         }
 
-        return view('admin.tugas.index', compact('post'));
+        return view('admin.tugas.index', compact('post'), ['values' => $v]);
     }
 
     public function data()
@@ -53,6 +56,23 @@ class TugasController extends Controller
                 'selesai' => $selesai,
                 'assignment' => $assignment,
                 'datas' => $q1
+            ]);
+        } catch (\Throwable $th) {
+            return response()->json([
+                'status' => $th->getMessage()
+            ]);
+        }
+    }
+
+    public function dataChoosed()
+    {
+        try {
+            $id = $_GET['id'];
+            $q = Data::where('id', $id)->first();
+
+            return response()->json([
+                'status' => 'ok',
+                'datas' => $q
             ]);
         } catch (\Throwable $th) {
             return response()->json([

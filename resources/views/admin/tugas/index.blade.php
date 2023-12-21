@@ -4,10 +4,38 @@
 @endsection
 @section('css')
     <link rel="stylesheet" href="{{ asset('assets/css/admin/dataTables.bootstrap4.min.css') }}">
+    <script type="text/javascript">
+        // IMAGE ZOOM ON HOVER BEGIN
+        let images_to_zoom = document.querySelectorAll('.image-hover-zoom img')
+        for (let item of images_to_zoom) {
+            item.parentElement.style.height = item.height + 'px'
+            item.parentElement.style.width = item.width + 'px'
+            item.parentElement.style.overflow = 'hidden'
+            item.addEventListener('mousemove', (e) => zoom_element(e, item.parentElement.offsetLeft, item
+                .parentElement.offsetTop, item.parentElement.offsetWidth, item.parentElement
+                .offsetHeight))
+            item.addEventListener('mouseenter', function(e) {
+                let item = e.currentTarget
+                let scale = item.parentElement.getAttribute('scale')
+                e.currentTarget.style.transform = scale ? 'scale(' + scale + ')' : 'scale(1.5)'
+            })
+            item.addEventListener('mouseleave', function(e) {
+                e.currentTarget.style.transform = 'none'
+            })
+        }
+
+        function zoom_element(e, start_x, start_y, width, height) {
+            let p_x = (e.clientX - start_x) * 100 / width
+            let p_y = (e.clientY - start_y) * 100 / height
+            e.currentTarget.style.transformOrigin = p_x + "% " + p_y + "%"
+        }
+        // IMAGE ZOOM ON HOVER END
+    </script>
 @endsection
 @section('content')
     <div class="container mb-3 mt-3">
         <div class="row-auto">
+
             <div class="card rounded shadow">
                 <div class="card-body">
 
@@ -139,17 +167,140 @@
                         </div>
                     </section>
 
-                    <section class="mt-3" id="reviewCard">
+                    <section class="mt-3" id="reviewCard" style="display: none; height: 600px;">
                         <div class="row">
                             <div class="col">
 
-                                <div class="card shadow rounded border-0">
-                                    <div class="card-body">
-
-                                        <h1 class="text-center"> Silahkan pilih data </h1>
-
+                                <section id="loadReviewCard" style="display: none;">
+                                    <div class="d-flex justify-content-center align-items-center 100vh">
+                                        <div class="spinner-border" style="width: 5rem; height: 5rem;" role="status">
+                                            <span class="visually-hidden">Loading...</span>
+                                        </div>
                                     </div>
-                                </div>
+                                </section>
+
+                                <section id="haventChooseData" style="display: block;">
+                                    <div class="card shadow rounded border-0" style="height: 600px;">
+                                        <div class="card-body d-flex justify-content-center align-items-center 100vh">
+
+                                            <h1 class="text-center"> Silahkan pilih data </h1>
+
+                                        </div>
+                                    </div>
+                                </section>
+
+                                {{-- <a href="https://drive.google.com/open?id=1a9MfNNk8R2S2vC_VlD8YmRHCKUw27isC"
+                                    target="blank">
+                                    <div class="image-hover-zoom" scale="2.0">
+                                        <img src="https://drive.google.com/uc?id=1a9MfNNk8R2S2vC_VlD8YmRHCKUw27isC"
+                                            alt="Error/tidak ada image">
+                                    </div>
+                                </a> --}}
+
+                                <section id="dataChoosed" style="display: none;">
+
+                                    <div class="row d-flex justify-content-center align-items-center">
+                                        <div class="col-md-5 mb-2">
+                                            <div class="card shadow rounded border-0" style="height: 610px;">
+                                                <div class="card-body d-flex justify-content-center align-items-center 100vh"
+                                                    id="imageViewer">
+
+                                                    <section id="loadImage" style="display: none;">
+                                                        <div
+                                                            class="d-flex justify-content-center align-items-center 100vh">
+                                                            <div class="spinner-border" style="width: 5rem; height: 5rem;"
+                                                                role="status">
+                                                                <span class="visually-hidden">Loading...</span>
+                                                            </div>
+                                                        </div>
+                                                    </section>
+
+                                                    <section id="imageViewer" style="display: block">
+                                                        <p class="text-center"> Silahkan pilih eviden </p>
+                                                    </section>
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-7">
+
+                                            <div class="card shadow rounded border-0 p-2">
+                                                <div class="card-body">
+
+                                                    <div class="row">
+                                                        <div class="col-md-4">
+                                                            <h6> ID Valins: <span style="font-weight: 100;"
+                                                                    id="reviewIdValins"> Script error
+                                                                </span> </h6>
+                                                            <h6> ID Valins Lama: <span style="font-weight: 100;"
+                                                                    id="reviewIdValinsLama"> Script error
+                                                                </span> </h6>
+                                                            <h6> Approve ASO: <span style="font-weight: 100;"
+                                                                    id="reviewApproveAso"> Script error
+                                                                </span> </h6>
+                                                            <h6> Keterangan ASO: <span style="font-weight: 100;"
+                                                                    id="reviewKeteranganAso"> Script error
+                                                                </span> </h6>
+                                                            <h6> Rekon: <span style="font-weight: 100;" id="reviewRekon">
+                                                                    Script error </span>
+                                                            </h6>
+                                                        </div>
+                                                        <div class="col-md-8">
+                                                            <h6> RAM3: <span style="font-weight: 100;" id="reviewRam3">
+                                                                    Script error </span>
+                                                            </h6>
+                                                            <h6> Keterangan RAM3: <span style="font-weight: 100;"
+                                                                    id="reviewKeteranganRam3">
+                                                                    Script error </span> </h6>
+                                                        </div>
+                                                    </div>
+
+
+                                                    <hr>
+
+                                                    <h5> Pilih eviden </h5>
+                                                    <div class="row d-flex">
+                                                        <div class="col" id="reviewEvidenButton">
+                                                            Script error
+                                                        </div>
+                                                    </div>
+
+                                                    <hr>
+
+                                                    <h5> Review </h5>
+                                                    <form>
+                                                        <label for="reviewFormRam3"> RAM3 </label>
+                                                        <select name="reviewFormRam3" id="reviewFormRam3"
+                                                            class="form-control mb-2">
+                                                            <option value="null" id="selectDefault" default> -- Pilih --
+                                                            </option>
+                                                            <option value="OK" id="selectOK"> OK </option>
+                                                            <option value="NOK" id="selectNOK"> NOK </option>
+                                                        </select>
+                                                        <label for="reviewFormKeteranganRam3"> Keterangan RAM3 </label>
+                                                        <input type="text" class="form-control mb-2"
+                                                            name="reviewFormKeteranganRam3" id="reviewFormKeteranganRam3">
+
+                                                        @foreach ($values as $value)
+                                                            <button type="button" class="btn btn-secondary mb-1"
+                                                                style="height: 25px; font-size: 10px;"
+                                                                data-value="{{ $value['keterangan_ram3'] }}"
+                                                                id="reviewTemplateBtn"> {{ $value['keterangan_ram3'] }}
+                                                            </button>
+                                                        @endforeach
+
+                                                        <button type="submit" class="btn btn-primary form-control mt-4">
+                                                            Submit
+                                                        </button>
+                                                    </form>
+
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                    </div>
+
+                                </section>
 
                             </div>
                         </div>
@@ -243,5 +394,15 @@
 @section('script')
     <script type="text/javascript" src="{{ asset('assets/js/admin/pengguna/jquery.dataTables.min.js') }}"></script>
     <script type="text/javascript" src="{{ asset('assets/js/admin/pengguna/dataTables.bootstrap4.min.js') }}"></script>
+    {{-- <script type="text/javascript">
+        $('#test').html('');
+        $('#test').html('<a href="https://drive.google.com/open?id=1a9MfNNk8R2S2vC_VlD8YmRHCKUw27isC"\
+                                                                                    target="blank">\
+                                                                                    <div class="image-hover-zoom" scale="2.0">\
+                                                                                        <img src="https://drive.google.com/uc?id=1a9MfNNk8R2S2vC_VlD8YmRHCKUw27isC"\
+                                                                                            alt="Error/tidak ada image">\
+                                                                                    </div>\
+                                                                                </a>');
+    </script> --}}
     <script type="text/javascript" src="{{ asset('assets/js/admin/tugas/main.js') }}"></script>
 @endsection

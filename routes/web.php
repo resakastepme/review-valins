@@ -105,6 +105,7 @@ Route::prefix('/admin')->group(function () {
     Route::get('/tugas', [TugasController::class, 'index']);
     Route::get('/tugas/data', [TugasController::class, 'data']);
     Route::get('/tugas/loadCard', [TugasController::class, 'loadCard']);
+    Route::get('/tugas/dataChoosed', [TugasController::class, 'dataChoosed']);
 });
 
 // ROUTE FOR CHECK, DELETE LATER

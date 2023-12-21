@@ -334,9 +334,81 @@ function loadCard(id, callback) {
     });
 }
 
+function dataTerpilih(id) {
+    $.get('/getRole', function (response) {
+        $.ajax({
+            url: '/' + response.role + '/tugas/dataChoosed',
+            type: 'GET',
+            data: {
+                _token: $('meta[name="csrf_token"]').attr('content'),
+                id: id
+            }, beforeSend: function () {
+                $('#dataChoosed').hide();
+                $('#loadReviewCard').show();
+            }, success: function (response) {
+                if (response.status == 'ok') {
+                    console.log(response.datas.id_eviden1);
+
+                    $('#reviewIdValins').html('');
+                    $('#reviewIdValins').html(response.datas.id_valins);
+                    $('#reviewIdValinsLama').html('');
+                    $('#reviewIdValinsLama').html(response.datas.id_valins_lama);
+                    $('#reviewApproveAso').html('');
+                    $('#reviewApproveAso').html(response.datas.approve_aso);
+                    $('#reviewKeteranganAso').html('');
+                    $('#reviewKeteranganAso').html(response.datas.keterangan_aso);
+                    $('#reviewRekon').html('');
+                    $('#reviewRekon').html(response.datas.rekon);
+                    $('#reviewRam3').html('');
+                    $('#reviewRam3').html(response.datas.ram3);
+                    $('#reviewKeteranganRam3').html('');
+                    $('#reviewKeteranganRam3').html(response.datas.keterangan_ram3);
+
+                    $('#reviewEvidenButton').html('');
+                    $('#reviewEvidenButton').html('<button class="btn btn-secondary mb-1" type="button"\
+                    style="min-width: 20%" id="btnEviden1" data-eviden="'+ response.datas.id_eviden1 + '"> Eviden 1 </button>\
+                <button class="btn btn-secondary mb-1" type="button"\
+                    style="min-width: 20%" id="btnEviden2" data-eviden="'+ response.datas.id_eviden2 + '"> Eviden 2 </button>\
+                <button class="btn btn-secondary mb-1" type="button"\
+                    style="min-width: 20%" id="btnEviden3" data-eviden="'+ response.datas.id_eviden3 + '"> Eviden 3 </button>');
+
+                    if (response.datas.ram3 != '') {
+                        if (response.datas.ram3 == 'OK') {
+                            $('#selectOK').prop('selected', true);
+                        }
+                        if (response.datas.ram3 == 'NOK') {
+                            $('#selectNOK').prop('selected', true);
+                        }
+                    } else {
+                        $('#selectDefault').prop('selected', true);
+                    }
+
+                    if (response.datas.keterangan_ram3 != '') {
+                        $('#reviewFormKeteranganRam3').val(response.datas.keterangan_ram3);
+                    } else {
+                        $('#reviewFormKeteranganRam3').val('');
+                    }
+
+                } else {
+                    Swal.fire({
+                        icon: "error",
+                        title: "Error",
+                        text: response.status
+                    });
+                }
+            }, complete: function () {
+                $('#loadReviewCard').hide();
+                $('#dataChoosed').show();
+                console.log('on complete');
+            }
+        });
+    });
+}
+
 // {{{{{{{{{{{{{{{{{{{{{{ DOM CONTENT LOADED }}}}}}}}}}}}}}}}}}}}}}}}}}}}}
 
 $(document).ready(function () {
+
     $('#listsRefresh').prop('disabled', true);
     $('#refreshIcon').addClass('fa-spin-pulse');
     $('#listsRefresh1').prop('disabled', true);
@@ -371,6 +443,7 @@ $(document).ready(function () {
         $('#kerjakanModal').addClass('animate__slideInUp animate__faster');
         $('#loadedKerjakan').hide();
         $('#loadedCard').hide();
+        $('#reviewCard').hide();
         $('#loadKerjakan').show();
         $('#kerjakanModal').modal('show');
         loadCard(id, function () {
@@ -382,6 +455,7 @@ $(document).ready(function () {
             tableKerjakanData(id, function () {
                 clearTimeout(timeoutGlobal);
                 $('#loadedKerjakan').show();
+                $('#reviewCard').show();
                 $('#loadKerjakan').hide();
             });
         }, 500);
@@ -395,6 +469,14 @@ $(document).ready(function () {
             $('#acor-content').addClass('show');
             $('#acor-content').removeClass('collapsing');
             $('#acor1customed').attr('id', 'acor1Btn');
+            $('#haventChooseData').show();
+            $('#dataChoosed').hide();
+            $('#selectDefault').prop('selected', true);
+            $('#reviewFormKeteranganRam3').val('');
+            $('#loadImage').hide();
+            $('#imageViewer').show();
+            $('#imageViewer').html('');
+            $('#imageViewer').html('<p class="text-center"> Silahkan pilih eviden </p>');
             $('#kerjakanModal').modal('hide');
         }, 500);
     });
@@ -424,7 +506,81 @@ $(document).ready(function () {
 
     $(document).on('click', '#dataTerpilih', function () {
         var id = $(this).data('id');
-        console.log(id);
+        // console.log(id);
+
+        $('#loadImage').hide();
+        $('#imageViewer').show();
+        $('#imageViewer').html('');
+        $('#imageViewer').html('<p class="text-center"> Silahkan pilih eviden </p>');
+
+        $('#haventChooseData').hide();
+        dataTerpilih(id);
+    });
+
+    $(document).on('click', '#btnEviden1', function () {
+        var eviden = $(this).data('eviden');
+
+        $('#imageViewer').html('');
+        $('#imageViewer').hide();
+        $('#loadImage').show();
+
+        setTimeout(function () {
+
+            $('#imageViewer').html('<a href="https://drive.google.com/open?id=' + eviden + '"\
+            target="blank">\
+            <div class="image-hover-zoom" scale="2.0" id="zoomImage">\
+                <img src="https://drive.google.com/uc?id='+ eviden + '"\
+                    alt="Error/tidak ada image">\
+            </div>\
+        </a>');
+
+            $('#loadImage').hide();
+            $('#imageViewer').show();
+        }, 1000);
+
+        $('#zoomImage').removeClass('image-hover-zoom');
+        $('#zoomImage').addClass('image-hover-zoom');
+
+    });
+    $(document).on('click', '#btnEviden2', function () {
+        var eviden = $(this).data('eviden');
+
+        $('#imageViewer').html('');
+        $('#imageViewer').hide();
+        $('#loadImage').show();
+
+        setTimeout(function () {
+            $('#imageViewer').html('<a href="https://drive.google.com/open?id=' + eviden + '"\
+            target="blank">\
+            <div class="image-hover-zoom" scale="2.0">\
+                <img src="https://drive.google.com/uc?id='+ eviden + '"\
+                    alt="Error/tidak ada image">\
+            </div>\
+        </a>');
+
+            $('#loadImage').hide();
+            $('#imageViewer').show();
+        }, 1000);
+    });
+    $(document).on('click', '#btnEviden3', function () {
+        var eviden = $(this).data('eviden');
+
+        $('#imageViewer').html('');
+        $('#imageViewer').hide();
+        $('#loadImage').show();
+
+        setTimeout(function () {
+            $('#imageViewer').html('<a href="https://drive.google.com/open?id=' + eviden + '"\
+            target="blank">\
+            <div class="image-hover-zoom" scale="2.0">\
+                <img src="https://drive.google.com/uc?id='+ eviden + '"\
+                    alt="Error/tidak ada image">\
+            </div>\
+        </a>');
+
+            $('#loadImage').hide();
+            $('#imageViewer').show();
+        }, 1000);
     });
 
 });
