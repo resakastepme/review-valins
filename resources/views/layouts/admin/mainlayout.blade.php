@@ -250,6 +250,18 @@
             color: #fff;
         }
 
+        body.dark-mode #tableDataFinish th {
+            /* border-color: #555; */
+            background-color: #555;
+            color: #fff;
+        }
+
+        body.dark-mode #tableDataFinish td {
+            /* border-color: #555; */
+            background-color: #333;
+            color: #fff;
+        }
+
         body.dark-mode {
             background-color: #333;
             color: #fff;
@@ -260,6 +272,15 @@
             color: #fff;
         }
         body.dark-mode #acor-content {
+            background-color: #555;
+            color: #fff;
+        }
+
+        body.dark-mode .accordion-button2 {
+            background-color: #555;
+            color: #fff;
+        }
+        body.dark-mode #acor-content2 {
             background-color: #555;
             color: #fff;
         }
@@ -276,6 +297,16 @@
         }
 
         body.light-mode #acor-content {
+            background-color: #f8f9fa;
+            color: #000;
+        }
+
+        body.light-mode .accordion-button2 {
+            background-color: #f8f9fa;
+            color: #000;
+        }
+
+        body.light-mode #acor-content2 {
             background-color: #f8f9fa;
             color: #000;
         }

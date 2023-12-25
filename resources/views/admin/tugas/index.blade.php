@@ -34,6 +34,9 @@
 @endsection
 @section('content')
     <div class="container mb-3 mt-3">
+
+        <button id="testBtn"> Click me! </button>
+
         <div class="row-auto">
 
             <div class="card rounded shadow">
@@ -167,7 +170,7 @@
                         </div>
                     </section>
 
-                    <section class="mt-3" id="reviewCard" style="display: none; height: 600px;">
+                    <section class="mt-3" id="reviewCard" style="display: none; height: 800px;">
                         <div class="row">
                             <div class="col">
 
@@ -180,7 +183,7 @@
                                 </section>
 
                                 <section id="haventChooseData" style="display: block;">
-                                    <div class="card shadow rounded border-0" style="height: 600px;">
+                                    <div class="card shadow rounded border-0" style="height: 800px;">
                                         <div class="card-body d-flex justify-content-center align-items-center 100vh">
 
                                             <h1 class="text-center"> Silahkan pilih data </h1>
@@ -200,8 +203,9 @@
                                 <section id="dataChoosed" style="display: none;">
 
                                     <div class="row d-flex justify-content-center align-items-center">
-                                        <div class="col-md-5 mb-2">
-                                            <div class="card shadow rounded border-0" style="height: 610px;">
+                                        <div class="col-md-7 mb-2">
+                                            <div class="card shadow rounded border-0" style="height: 800px;">
+                                                {{-- 610px --}}
                                                 <div class="card-body d-flex justify-content-center align-items-center 100vh"
                                                     id="imageViewer">
 
@@ -222,34 +226,36 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="col-md-7">
+                                        <div class="col-md-5">
 
                                             <div class="card shadow rounded border-0 p-2">
                                                 <div class="card-body">
 
                                                     <div class="row">
-                                                        <div class="col-md-4">
-                                                            <h6> ID Valins: <span style="font-weight: 100;"
+                                                        <div class="col-md-6">
+                                                            <h6> ID Valins: <br><span style="font-weight: 100;"
                                                                     id="reviewIdValins"> Script error
                                                                 </span> </h6>
-                                                            <h6> ID Valins Lama: <span style="font-weight: 100;"
+                                                            <h6> ID Valins Lama: <br><span style="font-weight: 100;"
                                                                     id="reviewIdValinsLama"> Script error
                                                                 </span> </h6>
-                                                            <h6> Approve ASO: <span style="font-weight: 100;"
+                                                            <h6> Approve ASO: <br><span style="font-weight: 100;"
                                                                     id="reviewApproveAso"> Script error
                                                                 </span> </h6>
-                                                            <h6> Keterangan ASO: <span style="font-weight: 100;"
+                                                            <h6> Keterangan ASO: <br><span style="font-weight: 100;"
                                                                     id="reviewKeteranganAso"> Script error
                                                                 </span> </h6>
-                                                            <h6> Rekon: <span style="font-weight: 100;" id="reviewRekon">
+                                                            <h6> Rekon: <br><span style="font-weight: 100;"
+                                                                    id="reviewRekon">
                                                                     Script error </span>
                                                             </h6>
                                                         </div>
-                                                        <div class="col-md-8">
-                                                            <h6> RAM3: <span style="font-weight: 100;" id="reviewRam3">
+                                                        <div class="col-md-6">
+                                                            <h6> RAM3: <br><span style="font-weight: 100;"
+                                                                    id="reviewRam3">
                                                                     Script error </span>
                                                             </h6>
-                                                            <h6> Keterangan RAM3: <span style="font-weight: 100;"
+                                                            <h6> Keterangan RAM3: <br><span style="font-weight: 100;"
                                                                     id="reviewKeteranganRam3">
                                                                     Script error </span> </h6>
                                                         </div>
@@ -268,7 +274,9 @@
                                                     <hr>
 
                                                     <h5> Review </h5>
-                                                    <form>
+                                                    <form id="reviewForm">
+                                                        <input type="hidden" id="hiddenIdData">
+                                                        <input type="hidden" id="hiddenIdReviewer">
                                                         <label for="reviewFormRam3"> RAM3 </label>
                                                         <select name="reviewFormRam3" id="reviewFormRam3"
                                                             class="form-control mb-2">
@@ -289,7 +297,10 @@
                                                             </button>
                                                         @endforeach
 
-                                                        <button type="submit" class="btn btn-primary form-control mt-4">
+                                                        <button type="submit" class="btn btn-primary form-control mt-4"
+                                                            id="submitBtn">
+                                                            <i class="spinner-border spinner-border-sm me-1"
+                                                                style="display: none;" id="loadSubmit"></i>
                                                             Submit
                                                         </button>
                                                     </form>
@@ -304,6 +315,35 @@
 
                             </div>
                         </div>
+                    </section>
+
+                    <section id="sectionDataFinish" class="mt-3">
+
+                        <div class="accordion" id="accordionPanelsStayOpenExample2">
+                            <div class="accordion-item">
+                                <h2 class="accordion-header" id="acor2customed">
+                                    <button class="accordion-button" type="button">
+                                        <h3> Selesai ✓ </h3>
+                                    </button>
+                                </h2>
+                                <div id="acor-content2" class="accordion-collapse collapse"
+                                    aria-labelledby="panelsStayOpen-headingOne">
+                                    <div class="accordion-body">
+
+                                        <div class="table-responsive-lg">
+                                            <table class="table table-hover" border="2" id="tableDataFinish">
+                                                <thead>
+                                                </thead>
+                                                <tbody>
+                                                </tbody>
+                                            </table>
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
                     </section>
 
                 </div>
@@ -387,6 +427,21 @@
                     <button type="button" class="btn btn-secondary" id="closeLihatModalBtn">Tutup</button>
                 </div>
                 </section>
+            </div>
+        </div>
+    </div>
+
+    {{-- TOAST --}}
+    <div class="toast-container top-0 end-0 mt-2 me-2 position-fixed">
+        <div class="toast align-items-center text-bg-success border-0" role="alert" aria-live="assertive"
+            aria-atomic="true" id="toast-successSubmit">
+            <div class="d-flex">
+                <i class="fa-solid fa-check fa-fade fa-2xl mt-2 ms-2"></i>
+                <div class="toast-body">
+                    <h6> Selesai! </h6>
+                </div>
+                <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"
+                    aria-label="Close"></button>
             </div>
         </div>
     </div>

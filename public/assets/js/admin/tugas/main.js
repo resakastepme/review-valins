@@ -19,6 +19,24 @@ $(document).on('click', '#acor1customed', function () {
     }, 500);
 });
 
+$(document).on('click', '#acor2Btn', function () {
+    $('#acor-content2').addClass('collapsing');
+    setTimeout(() => {
+        $('#acor-content2').removeClass('show');
+        $('#acor-content2').removeClass('collapsing');
+        $(this).attr('id', 'acor2customed');
+    }, 500);
+});
+
+$(document).on('click', '#acor2customed', function () {
+    $('#acor-content2').addClass('collapsing');
+    setTimeout(() => {
+        $('#acor-content2').addClass('show');
+        $('#acor-content2').removeClass('collapsing');
+        $(this).attr('id', 'acor2Btn');
+    }, 500);
+});
+
 // ACCORDION END
 
 var appUrl = "{{ url('/') }}";
@@ -276,7 +294,90 @@ function tableKerjakanData(id, callback) {
             }, {
                 data: null,
                 render: function (item) {
-                    return '<a href="#reviewCard"><button class="btn btn-primary" id="dataTerpilih" data-id="' + item.get_data.id + '"><i class="fa-solid fa-chevron-right"\
+                    return '<a href="#reviewCard"><button class="btn btn-primary" id="dataTerpilih" data-id="' + item.get_data.id + '" data-idr="' + item.id + '"><i class="fa-solid fa-chevron-right"\
+                    data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Pilih data"\
+                    title="Kerjakan"></i></button></a>';
+                },
+                title: "Pilih data"
+            }
+        ]
+    });
+}
+
+function tableDataFinish(id, callback) {
+    var num = 0;
+    var table = $('#tableDataFinish').DataTable({
+        ajax: {
+            url: '/admin/tugas/dataFinish',
+            type: 'GET',
+            data: {
+                _token: $('meta[name="csrf_token"]').attr('content'),
+                id: id
+            },
+            dataSrc: function (response) {
+                console.log(response.status);
+
+                callback();
+                // console.log(response.datas[0].get_data.id);
+                return response.datas;
+            }
+        },
+        "columns": [
+            {
+                data: null,
+                render: function () {
+                    ++num;
+                    return num;
+                },
+                title: "No"
+            },
+            {
+                data: null,
+                render: function (item) {
+                    return item.get_data.id_valins;
+                },
+                title: "ID Valins"
+            },
+            {
+                data: null,
+                render: function (item) {
+                    return item.get_data.id_valins_lama;
+                },
+                title: "ID Valins Lama"
+            }, {
+                data: null,
+                render: function (item) {
+                    return item.get_data.keterangan_aso;
+                },
+                title: "Keterangan ASO"
+            }, {
+                data: null,
+                render: function (item) {
+                    return item.get_data.approve_aso;
+                },
+                title: "Approve ASO"
+            }, {
+                data: null,
+                render: function (item) {
+                    return item.get_data.keterangan_ram3;
+                },
+                title: "Keterangan RAM3"
+            }, {
+                data: null,
+                render: function (item) {
+                    return item.get_data.ram3;
+                },
+                title: "RAM3"
+            }, {
+                data: null,
+                render: function (item) {
+                    return item.get_data.rekon;
+                },
+                title: "Rekon"
+            }, {
+                data: null,
+                render: function (item) {
+                    return '<a href="#reviewCard"><button class="btn btn-primary" id="dataTerpilih" data-id="' + item.get_data.id + '" data-idr="' + item.id + '"><i class="fa-solid fa-chevron-right"\
                     data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Pilih data"\
                     title="Kerjakan"></i></button></a>';
                 },
@@ -347,7 +448,7 @@ function dataTerpilih(id) {
                 $('#loadReviewCard').show();
             }, success: function (response) {
                 if (response.status == 'ok') {
-                    console.log(response.datas.id_eviden1);
+                    // console.log(response.datas.id_eviden1);
 
                     $('#reviewIdValins').html('');
                     $('#reviewIdValins').html(response.datas.id_valins);
@@ -397,6 +498,8 @@ function dataTerpilih(id) {
                     });
                 }
             }, complete: function () {
+                $('#imageViewer').html('');
+                $('#imageViewer').html('<p class="text-center"> Silahkan pilih eviden </p>');
                 $('#loadReviewCard').hide();
                 $('#dataChoosed').show();
                 console.log('on complete');
@@ -437,13 +540,16 @@ $(document).ready(function () {
         });
     });
 
+    var idAGlobal;
     $(document).on('click', '#kerjakanListsBtn', function () {
         var id = $(this).data('id');
+        idAGlobal = id;
         $('#kerjakanModal').removeClass('animate__slideOutDown animate__faster');
         $('#kerjakanModal').addClass('animate__slideInUp animate__faster');
         $('#loadedKerjakan').hide();
         $('#loadedCard').hide();
         $('#reviewCard').hide();
+        $('#sectionDataFinish').hide();
         $('#loadKerjakan').show();
         $('#kerjakanModal').modal('show');
         loadCard(id, function () {
@@ -456,6 +562,14 @@ $(document).ready(function () {
                 clearTimeout(timeoutGlobal);
                 $('#loadedKerjakan').show();
                 $('#reviewCard').show();
+                $('#sectionDataFinish').show();
+                $('#loadKerjakan').hide();
+            });
+            tableDataFinish(id, function () {
+                clearTimeout(timeoutGlobal);
+                $('#loadedKerjakan').show();
+                $('#reviewCard').show();
+                $('#sectionDataFinish').show();
                 $('#loadKerjakan').hide();
             });
         }, 500);
@@ -464,11 +578,16 @@ $(document).ready(function () {
     $('#closeKerjakanModalBtn').on('click', function () {
         $('#kerjakanModal').removeClass('animate__slideInUp animate__faster');
         $('#kerjakanModal').addClass('animate__slideOutDown animate__faster');
+        idAGlobal.length = 0;
         setTimeout(function () {
             $('#tableKerjakanData').DataTable().clear().destroy();
+            $('#tableDataFinish').DataTable().clear().destroy();
             $('#acor-content').addClass('show');
             $('#acor-content').removeClass('collapsing');
             $('#acor1customed').attr('id', 'acor1Btn');
+            $('#acor-content2').removeClass('show');
+            $('#acor-content2').removeClass('collapsing');
+            $('#acor2Btn').attr('id', 'acor2customed');
             $('#haventChooseData').show();
             $('#dataChoosed').hide();
             $('#selectDefault').prop('selected', true);
@@ -506,12 +625,17 @@ $(document).ready(function () {
 
     $(document).on('click', '#dataTerpilih', function () {
         var id = $(this).data('id');
-        // console.log(id);
+        var idR = $(this).data('idr');
+        console.log(idR);
+
+        $('#hiddenIdData').val('');
+        $('#hiddenIdData').val(id);
+
+        $('#hiddenIdReviewer').val('');
+        $('#hiddenIdReviewer').val(idR);
 
         $('#loadImage').hide();
         $('#imageViewer').show();
-        $('#imageViewer').html('');
-        $('#imageViewer').html('<p class="text-center"> Silahkan pilih eviden </p>');
 
         $('#haventChooseData').hide();
         dataTerpilih(id);
@@ -526,13 +650,20 @@ $(document).ready(function () {
 
         setTimeout(function () {
 
-            $('#imageViewer').html('<a href="https://drive.google.com/open?id=' + eviden + '"\
-            target="blank">\
-            <div class="image-hover-zoom" scale="2.0" id="zoomImage">\
-                <img src="https://drive.google.com/uc?id='+ eviden + '"\
-                    alt="Error/tidak ada image">\
-            </div>\
-        </a>');
+            $('#imageViewer').html('<a class="d-none d-md-block" href="https://drive.google.com/open?id=' + eviden + '"\
+                target="blank">\
+                <div class="image-hover-zoom" scale="2.0" id="zoomImage">\
+                    <img class="d-md-img-fluid" src="https://drive.google.com/uc?id='+ eviden + '"\
+                        alt="Error/tidak ada image" style="height: 770px;">\
+                </div>\
+            </a>');
+            $('#imageViewer').append('<a class="d-md-none" href="https://drive.google.com/open?id=' + eviden + '"\
+                target="blank">\
+                <div class="image-hover-zoom" scale="2.0" id="zoomImage">\
+                    <img class="img-fluid" src="https://drive.google.com/uc?id='+ eviden + '"\
+                        alt="Error/tidak ada image">\
+                </div>\
+            </a>');
 
             $('#loadImage').hide();
             $('#imageViewer').show();
@@ -550,11 +681,18 @@ $(document).ready(function () {
         $('#loadImage').show();
 
         setTimeout(function () {
-            $('#imageViewer').html('<a href="https://drive.google.com/open?id=' + eviden + '"\
+            $('#imageViewer').html('<a class="d-none d-md-block" href="https://drive.google.com/open?id=' + eviden + '"\
             target="blank">\
             <div class="image-hover-zoom" scale="2.0">\
                 <img src="https://drive.google.com/uc?id='+ eviden + '"\
-                    alt="Error/tidak ada image">\
+                    alt="Error/tidak ada image" style="height: 770px;">\
+            </div>\
+        </a>');
+            $('#imageViewer').append('<a class="d-md-none" href="https://drive.google.com/open?id=' + eviden + '"\
+            target="blank">\
+            <div class="image-hover-zoom" scale="2.0">\
+                <img src="https://drive.google.com/uc?id='+ eviden + '"\
+                    alt="Error/tidak ada image" class="img-fluid">\
             </div>\
         </a>');
 
@@ -570,17 +708,123 @@ $(document).ready(function () {
         $('#loadImage').show();
 
         setTimeout(function () {
-            $('#imageViewer').html('<a href="https://drive.google.com/open?id=' + eviden + '"\
+            $('#imageViewer').html('<a class="d-none d-md-block" href="https://drive.google.com/open?id=' + eviden + '"\
             target="blank">\
             <div class="image-hover-zoom" scale="2.0">\
                 <img src="https://drive.google.com/uc?id='+ eviden + '"\
-                    alt="Error/tidak ada image">\
+                    alt="Error/tidak ada image" style="height: 770px;">\
+            </div>\
+        </a>');
+            $('#imageViewer').append('<a class="d-md-none" href="https://drive.google.com/open?id=' + eviden + '"\
+            target="blank">\
+            <div class="image-hover-zoom" scale="2.0">\
+                <img src="https://drive.google.com/uc?id='+ eviden + '"\
+                    alt="Error/tidak ada image" class="img-fluid">\
             </div>\
         </a>');
 
             $('#loadImage').hide();
             $('#imageViewer').show();
         }, 1000);
+    });
+
+    $(document).on('click', '#reviewTemplateBtn', function () {
+        var value = $(this).data('value');
+
+        $('#reviewFormKeteranganRam3').val('');
+        $('#reviewFormKeteranganRam3').val(value);
+
+    });
+
+    $('#reviewForm').on('submit', function (e) {
+        e.preventDefault();
+
+        var idData = $('#hiddenIdData').val();
+        var idReviewer = $('#hiddenIdReviewer').val();
+        var ram3 = $('#reviewFormRam3').val();
+        var ketRam3 = $('#reviewFormKeteranganRam3').val();
+
+        $.get('/getRole', function (response) {
+            var role = response.role;
+            $.ajax({
+                url: '/' + role + '/tugas/submitReview',
+                type: 'POST',
+                data: {
+                    _token: $('meta[name="csrf_token"]').attr('content'),
+                    idData: idData,
+                    idReviewer: idReviewer,
+                    ram3: ram3,
+                    ketRam3: ketRam3
+                }, beforeSend: function () {
+                    $('#loadSubmit').show();
+                    $('#submitBtn').prop('disabled', true);
+                }, success: function (response) {
+
+                    if (response.status == 'ok') {
+                        console.log(response.status);
+
+                        $('#tableKerjakanData').DataTable().clear().destroy();
+                        $('#tableDataFinish').DataTable().clear().destroy();
+
+                        $('#dataChoosed').hide();
+                        $('#haventChooseData').show();
+
+                        loadCard(idAGlobal, function () {
+                            clearTimeout(timeoutGlobal);
+                            $('#loadedCard').show();
+                            $('#loadKerjakan').hide();
+                        });
+
+                        tableKerjakanData(idAGlobal, function () {
+                            clearTimeout(timeoutGlobal);
+                            $('#loadedKerjakan').show();
+                            $('#reviewCard').show();
+                            $('#sectionDataFinish').show();
+                            $('#loadKerjakan').hide();
+                        });
+                        tableDataFinish(idAGlobal, function () {
+                            clearTimeout(timeoutGlobal);
+                            $('#loadedKerjakan').show();
+                            $('#reviewCard').show();
+                            $('#sectionDataFinish').show();
+                            $('#loadKerjakan').hide();
+                        });
+
+                        const toast = document.getElementById('toast-successSubmit')
+                        const toastBootstrap = bootstrap.Toast.getOrCreateInstance(toast);
+                        toastBootstrap.show();
+
+                    } else {
+                        Swal.fire({
+                            icon: "error",
+                            title: "Error",
+                            text: response.status
+                        });
+                    }
+
+                }, complete: function () {
+                    $('#loadSubmit').hide();
+                    $('#submitBtn').prop('disabled', false);
+                }
+            })
+        });
+
+    });
+
+    $('#testBtn').on('click', function () {
+
+        $.ajax({
+            url: 'https://val.resaka.my.id/api/v1/ajax',
+            type: 'GET',
+            success: function (response) {
+                Swal.fire({
+                    icon: "success",
+                    title: "Success",
+                    text: "datas: " + response.datas
+                });
+            }
+        })
+
     });
 
 });

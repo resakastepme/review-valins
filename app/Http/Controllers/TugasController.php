@@ -42,6 +42,22 @@ class TugasController extends Controller
         }
     }
 
+    public function finish()
+    {
+        try {
+            $id = $_GET['id'];
+            $q1 = Reviewer::with('getAssignment')->with('getData')->where('id_assignments', $id)->where('finish', 1)->get();
+            return response()->json([
+                'status' => 'ok',
+                'datas' => $q1
+            ]);
+        } catch (\Throwable $th) {
+            return response()->json([
+                'status' => $th->getMessage()
+            ]);
+        }
+    }
+
     public function loadCard()
     {
         try {
@@ -73,6 +89,35 @@ class TugasController extends Controller
             return response()->json([
                 'status' => 'ok',
                 'datas' => $q
+            ]);
+        } catch (\Throwable $th) {
+            return response()->json([
+                'status' => $th->getMessage()
+            ]);
+        }
+    }
+
+    public function submit()
+    {
+        try {
+            $idData = $_POST['idData'];
+            $idR = $_POST['idReviewer'];
+            $ram3  = $_POST['ram3'];
+            $ketRam3 = $_POST['ketRam3'];
+
+            $updateData = [
+                'ram3' => $ram3,
+                'keterangan_ram3' => $ketRam3
+            ];
+            $updateR = [
+                'finish' => 1
+            ];
+
+            Data::where('id', $idData)->update($updateData);
+            Reviewer::where('id', $idR)->update($updateR);
+
+            return response()->json([
+                'status' => 'ok'
             ]);
         } catch (\Throwable $th) {
             return response()->json([
