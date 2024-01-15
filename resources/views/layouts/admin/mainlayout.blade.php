@@ -271,6 +271,7 @@
             background-color: #555;
             color: #fff;
         }
+
         body.dark-mode #acor-content {
             background-color: #555;
             color: #fff;
@@ -280,6 +281,7 @@
             background-color: #555;
             color: #fff;
         }
+
         body.dark-mode #acor-content2 {
             background-color: #555;
             color: #fff;
@@ -337,21 +339,25 @@
                         <a class="nav-link {{ request()->is('admin/tugas') || request()->is('user/tugas') ? 'active' : '' }}"
                             href="{{ url('/' . (Session::get('role') == 1 ? 'admin' : 'user') . '/tugas') }}">Tugas</a>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link {{ request()->is('admin/beriTugas') || request()->is('user/beriTugas') ? 'active' : '' }}"
-                            href="{{ url('/' . (Session::get('role') == 1 ? 'admin' : 'user') . '/beriTugas') }}">Beri
-                            tugas</a>
-                    </li>
+                    @if (Session::get('role') == 1)
+                        <li class="nav-item">
+                            <a class="nav-link {{ request()->is('admin/beriTugas') || request()->is('user/beriTugas') ? 'active' : '' }}"
+                                href="{{ url('/' . (Session::get('role') == 1 ? 'admin' : 'user') . '/beriTugas') }}">Beri
+                                tugas</a>
+                        </li>
+                    @endif
                     <li class="nav-item">
                         <a class="nav-link {{ request()->is('admin/data') || request()->is('user/data') || request()->is('admin/data/preview') ? 'active' : '' }}"
                             href="{{ url('/' . (Session::get('role') == 1 ? 'admin' : 'user') . '/data') }}"
                             tabindex="-1" aria-disabled="true">Data</a>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link {{ request()->is('admin/pengguna') || request()->is('user/pengguna') ? 'active' : '' }}"
-                            href="{{ url('/' . (Session::get('role') == 1 ? 'admin' : 'user') . '/pengguna') }}"
-                            tabindex="-1" aria-disabled="true">Pengguna</a>
-                    </li>
+                    @if (Session::get('role') == 1)
+                        <li class="nav-item">
+                            <a class="nav-link {{ request()->is('admin/pengguna') || request()->is('user/pengguna') ? 'active' : '' }}"
+                                href="{{ url('/' . (Session::get('role') == 1 ? 'admin' : 'user') . '/pengguna') }}"
+                                tabindex="-1" aria-disabled="true">Pengguna</a>
+                        </li>
+                    @endif
                     {{-- <li class"nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" id="dropdown03" data-bs-toggle="dropdown"
                             aria-expanded="false">Pengguna</a>

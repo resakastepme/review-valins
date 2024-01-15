@@ -35,7 +35,7 @@
 @section('content')
     <div class="container mb-3 mt-3">
 
-        <button id="testBtn"> Click me! </button>
+        {{-- <button id="testBtn"> Click me! </button> --}}
 
         <div class="row-auto">
 

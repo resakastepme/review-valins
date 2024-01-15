@@ -12,30 +12,33 @@
 @endsection
 @section('content')
     <div class="card bg-light m-4 rounded shadow border-0">
-        <div class="card-header p-4 d-flex">
-            <button class="btn btn-primary me-2" data-bs-toggle="modal" data-bs-target="#tambahDataModal"> <span class="me-1">
-                    <i class="fas fa-plus-circle fa-lg">
-                    </i> </span> Tambah Data </button>
-            <form id="excelForm" action="{{ url('/excelhandle') }}" method="POST" enctype="multipart/form-data">
-                @csrf
-                <input type="hidden" id="hiddenCsrfUpload" value="{{ csrf_token() }}">
-                <button type="button" class="btn btn-success" id="btnUploadExcelBtn"><i
-                        class="fa-solid fa-file-excel fa-lg me-2"></i><span>Upload Excel</span></button>
-                <input type="file" name="file" id="file" accept=".xlsx" style="display: none;" />
-                <button type="submit" id="btnUploadSubmit" style="display:none"></button>
-            </form>
-            <span class="ms-2 mt-2" align="center" id="uploadExcelQuestion"> <i
-                    class="fa-solid fa-circle-question fa-xl"></i> </span>
-        </div>
-        <div class="card-header p-4">
+        @if (Session::get('role') == 1)
+            <div class="card-header p-4 d-flex">
+                <button class="btn btn-primary me-2" data-bs-toggle="modal" data-bs-target="#tambahDataModal"> <span
+                        class="me-1">
+                        <i class="fas fa-plus-circle fa-lg">
+                        </i> </span> Tambah Data </button>
+                <form id="excelForm" action="{{ url('/excelhandle') }}" method="POST" enctype="multipart/form-data">
+                    @csrf
+                    <input type="hidden" id="hiddenCsrfUpload" value="{{ csrf_token() }}">
+                    <button type="button" class="btn btn-success" id="btnUploadExcelBtn"><i
+                            class="fa-solid fa-file-excel fa-lg me-2"></i><span>Upload Excel</span></button>
+                    <input type="file" name="file" id="file" accept=".xlsx" style="display: none;" />
+                    <button type="submit" id="btnUploadSubmit" style="display:none"></button>
+                </form>
+                <span class="ms-2 mt-2" align="center" id="uploadExcelQuestion"> <i
+                        class="fa-solid fa-circle-question fa-xl"></i> </span>
+            </div>
+        @endif
+        {{-- <div class="card-header p-4">
             <h1> THIS SECTION IS FOR FILTERS </h1>
-        </div>
+        </div> --}}
         <div class="card-body">
             <button type="button" class="btn btn-success mb-3" id="refresh"><i class="fa-solid fa-arrows-rotate me-1"
                     id="refreshIcon"></i> Refresh </button>
-            <button type="button" class="btn btn-secondary mb-3" id="historyBtn"><i
+            {{-- <button type="button" class="btn btn-secondary mb-3" id="historyBtn"><i
                     class="fa-solid fa-clock-rotate-left"></i>
-                History </button>
+                History </button> --}}
 
             <section id="loadTableSection" style="display: block" class="mt-5 mb-5">
                 <div class="d-flex justify-content-center">
@@ -440,8 +443,17 @@
         var error = '{{ Session('excelNotValid') }}';
         var previewStatus = '{{ Session('batalkan_status') }}';
         var previewSubmit = '{{ Session('excelStatus') }}';
+        var role = '{{ Session('role') }}';
+
+        if (role != 1) {
+            $('#btnEdit').prop('disabled', true);
+            $('#btnEdit').attr('id', '');
+            $('#btnHapus').prop('disabled', true);
+            $('#btnHapus').attr('id', '');
+        }
+
         console.log(previewStatus);
-        if(error){
+        if (error) {
             console.log(error);
         }
         // if(previewStatus) return console.log(previewStatus);

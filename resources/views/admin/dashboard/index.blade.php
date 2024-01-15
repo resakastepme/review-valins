@@ -19,26 +19,30 @@
                     </div>
                 </div>
 
-                <div class="card text-white bg-light mb-3" style="max-width: 18rem;" id="beriTugasBtn">
-                    <div class="card-body mt-3 mb-3">
-                        <h3 class="card-title"><span class="me-3"><i class="fas fa-plus fa-lg">
-                                </i></span> BERI TUGAS</h3>
+                @if (Session::get('role') == 1)
+                    <div class="card text-white bg-light mb-3" style="max-width: 18rem;" id="beriTugasBtn">
+                        <div class="card-body mt-3 mb-3">
+                            <h3 class="card-title"><span class="me-3"><i class="fas fa-plus fa-lg">
+                                    </i></span> BERI TUGAS</h3>
+                        </div>
                     </div>
-                </div>
+                @endif
 
                 <div class="card text-white bg-light mb-3" style="max-width: 18rem;" id="dataBtn">
                     <div class="card-body mt-3 mb-3">
-                        <h3 class="card-title"><span class="me-4"> <i
-                                    class="fas fa-database fa-lg"> </i> </span> DATA</h3>
+                        <h3 class="card-title"><span class="me-4"> <i class="fas fa-database fa-lg"> </i> </span> DATA
+                        </h3>
                     </div>
                 </div>
 
-                <div class="card text-white bg-light mb-3" style="max-width: 18rem;" id="penggunaBtn">
-                    <div class="card-body mt-3 mb-3">
-                        <h3 class="card-title"> <span class="me-3"> <i class="fas fa-users fa-lg">
-                                </i> </span> PENGGUNA</h3>
+                @if (Session::get('role') == 1)
+                    <div class="card text-white bg-light mb-3" style="max-width: 18rem;" id="penggunaBtn">
+                        <div class="card-body mt-3 mb-3">
+                            <h3 class="card-title"> <span class="me-3"> <i class="fas fa-users fa-lg">
+                                    </i> </span> PENGGUNA</h3>
+                        </div>
                     </div>
-                </div>
+                @endif
             </div>
 
             <div class="col-md-7 justify-content-center align-items-center d-flex">

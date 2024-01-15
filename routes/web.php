@@ -110,6 +110,29 @@ Route::prefix('/admin')->group(function () {
     Route::post('/tugas/submitReview', [TugasController::class, 'submit']);
 });
 
+Route::prefix('/user')->group(function () {
+
+    Route::get('/dashboard', [AuthController::class, 'user']);
+
+    Route::get('/data', [DataController::class, 'index']);
+    Route::post('/data/create', [DataController::class, 'create']);
+    Route::get('/data/getData', [DataController::class, 'getData']);
+    Route::get('/data/editIndex', [DataController::class, 'getDataEdit']);
+    Route::post('/data/update', [DataController::class, 'update']);
+    Route::post('/data/destroy', [DataController::class, 'destroy']);
+    Route::get('/data/preview', [DataController::class, 'preview']);
+    Route::get('/data/preview/batal', [DataController::class, 'previewBatal']);
+    Route::get('/data/preview/submit', [DataController::class, 'previewSubmit']);
+    Route::get('/data/refresh', [DataController::class, 'refreshTable']);
+
+    Route::get('/tugas', [TugasController::class, 'index']);
+    Route::get('/tugas/data', [TugasController::class, 'data']);
+    Route::get('/tugas/dataFinish', [TugasController::class, 'finish']);
+    Route::get('/tugas/loadCard', [TugasController::class, 'loadCard']);
+    Route::get('/tugas/dataChoosed', [TugasController::class, 'dataChoosed']);
+    Route::post('/tugas/submitReview', [TugasController::class, 'submit']);
+});
+
 // ROUTE FOR CHECK, DELETE LATER
 Route::get('/check', function () {
     if (Session::has('username')) {

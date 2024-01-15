@@ -73,8 +73,9 @@ class AuthController extends Controller
             ]);
         } else {
 
-            $passCheck = User::where('password', md5($password))->first();
-            if (!$passCheck) {
+            // $passCheck = User::where('password', md5($password))->first();
+            $passCheck = $emailCheck;
+            if ($passCheck['password'] != md5($password)) {
                 return response()->json([
                     'status' => 'Username/password tidak ditemukan!',
                     'trigger' => 'USERNAME/PASSWORD ERROR'
@@ -112,5 +113,9 @@ class AuthController extends Controller
         return response()->json([
             'id' => Session::get('id')
         ]);
+    }
+
+    public function user(){
+        return view('admin.dashboard.index');
     }
 }
