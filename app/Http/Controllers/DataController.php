@@ -88,6 +88,58 @@ class DataController extends Controller
         }
     }
 
+    public function index_user()
+    {
+        try {
+            $q = Data::orderby('id', 'ASC')->get();
+            $uri1 = $q[0]['eviden1'];
+            $uri2 = $q[0]['eviden2'];
+            $uri3 = $q[0]['eviden3'];
+            $queryString1 = parse_url($uri1, PHP_URL_QUERY);
+            if ($queryString1) {
+                parse_str($queryString1, $queryParameters1);
+                $id1 = $queryParameters1['id'];
+            } else {
+                $id1 = '';
+            }
+            if ($uri2 != '') {
+                $queryString2 = parse_url($uri2, PHP_URL_QUERY);
+                if ($queryString2) {
+                    parse_str($queryString2, $queryParameters2);
+                    $id2 = $queryParameters2['id'];
+                } else {
+                    $id2 = '';
+                }
+            } else {
+                $id2 = '';
+            }
+            if ($uri3 != '') {
+                $queryString3 = parse_url($uri3, PHP_URL_QUERY);
+                if ($queryString3) {
+                    parse_str($queryString3, $queryParameters3);
+                    $id3 = $queryParameters3['id'];
+                } else {
+                    $id3 = '';
+                }
+            } else {
+                $id3 = '';
+            }
+            $array_id = [
+                'id1' => $id1,
+                'id2' => $id2,
+                'id3' => $id3
+            ];
+            return view('user.data.index', [
+                'datas' => $q,
+                'id' => $array_id
+            ]);
+        } catch (Exception $e) {
+            return view('user.data.index', [
+                'no data' => $e->getMessage()
+            ]);
+        }
+    }
+
     /**
      * Show the form for creating a new resource.
      */

@@ -17,8 +17,8 @@ class AuthController extends Controller
         // $role = Session('role') == 1 ? 'admin' : Session('role')  == 0 ? 'user' : 'aso';
 
         $role = 'admin';
-        if (Session('role') == 0) return $role = 'user';
-        if (Session('role') == 2) return $role = 'aso';
+        if (Session('role') == 0) $role = 'user';
+        if (Session('role') == 2) $role = 'aso';
 
         if ($role) {
             return response()->json([
@@ -36,11 +36,12 @@ class AuthController extends Controller
     {
 
         if (Session('role')) {
-
             if (Session('role') == 1) {
                 return redirect()->to('/admin/dashboard');
-            } else {
+            } elseif (Session('role') == 0) {
                 return redirect()->to('/user/dashboard');
+            } else {
+                return redirect()->to('/aso/dashboard');
             }
         } else {
             return view('auth.index');
@@ -115,7 +116,8 @@ class AuthController extends Controller
         ]);
     }
 
-    public function user(){
+    public function user()
+    {
         return view('admin.dashboard.index');
     }
 }

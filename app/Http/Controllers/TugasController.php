@@ -26,6 +26,18 @@ class TugasController extends Controller
         return view('admin.tugas.index', compact('post'), ['values' => $v]);
     }
 
+    public function index_user(Request $r)
+    {
+        $post = Assignment::with('getUsers')->with('getReviewers')->where('reviewer', Session::get('id'))->orderby('id', 'DESC')->paginate(5);
+        $v = Values::get();
+
+        if ($r->ajax()) {
+            return view('admin.tugas.lists', compact('post'), ['values' => $v]);
+        }
+
+        return view('user.tugas.index', compact('post'), ['values' => $v]);
+    }
+
     public function data()
     {
         try {

@@ -8,9 +8,9 @@ if (Session::has('role')) {
             ->to('/auth')
             ->with('session-timeout', 'session-timeout')
             ->send();
-    }elseif (!Session('role') == 1) {
+    }elseif (Session('role') != 0) {
         return redirect()
-            ->to('/user/dashboard')
+            ->to('/admin/dashboard')
             ->send();
     }
 } else {

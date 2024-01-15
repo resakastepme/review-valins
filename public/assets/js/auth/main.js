@@ -28,7 +28,8 @@ document.addEventListener("DOMContentLoaded", function () {
                         const toastBootstrap = bootstrap.Toast.getOrCreateInstance(toast_success);
                         toastBootstrap.show();
                         console.log(response['status']);
-                        window.location.href = '/' + response['role'] + '/dashboard';
+                        // window.location.href = '/' + response['role'] + '/dashboard';
+                        window.location.href = window.location.origin + '/admin/dashboard';
                     }
                     if (response['trigger'] == 'USERNAME/PASSWORD ERROR') {
                         const toast_fail = document.getElementById('toast-user/userpass')

@@ -118,13 +118,13 @@ function refresh(callback) {
                     <div class="col-auto mb-1">\
                         <button class="btn btn-warning" type="button" style="color: white;"\
                             data-data-id="'+ row.id + '"\
-                            data-valins-id="'+ row.id_valins + '" id="btnEdit"> Edit\
+                            data-valins-id="'+ row.id_valins + '" id="btnEdit" '+(role == 1 ? "" : "disabled")+'> Edit\
                         </button>\
                     </div>\
                     <div class="col-auto">\
                         <button class="btn btn-danger" type="button"\
                             data-data-id="'+ row.id + '"\
-                            data-valins-id="'+ row.id_valins + '" id="btnHapus"> Hapus\
+                            data-valins-id="'+ row.id_valins + '" id="btnHapus" '+(role == 1 ? "" : "disabled")+'> Hapus\
                         </button>\
                     </div>\
                 </div>'
