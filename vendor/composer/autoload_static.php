@@ -184,6 +184,7 @@ class ComposerStaticInita9fe739481737a1b4eb2f4ad5cc2b101
         'A' => 
         array (
             'App\\' => 4,
+            'Andyabih\\LaravelToUML\\' => 22,
         ),
     );
 
@@ -366,8 +367,8 @@ class ComposerStaticInita9fe739481737a1b4eb2f4ad5cc2b101
         ),
         'Psr\\Http\\Message\\' => 
         array (
-            0 => __DIR__ . '/..' . '/psr/http-message/src',
-            1 => __DIR__ . '/..' . '/psr/http-factory/src',
+            0 => __DIR__ . '/..' . '/psr/http-factory/src',
+            1 => __DIR__ . '/..' . '/psr/http-message/src',
         ),
         'Psr\\Http\\Client\\' => 
         array (
@@ -554,6 +555,10 @@ class ComposerStaticInita9fe739481737a1b4eb2f4ad5cc2b101
             0 => __DIR__ . '/../..' . '/app',
             1 => __DIR__ . '/..' . '/laravel/pint/app',
         ),
+        'Andyabih\\LaravelToUML\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/andyabih/laravel-to-uml/src',
+        ),
     );
 
     public static $prefixesPsr0 = array (
@@ -567,14 +572,21 @@ class ComposerStaticInita9fe739481737a1b4eb2f4ad5cc2b101
     );
 
     public static $classMap = array (
+        'Andyabih\\LaravelToUML\\Facades\\LaravelToUML' => __DIR__ . '/..' . '/andyabih/laravel-to-uml/src/Facades/LaravelToUML.php',
+        'Andyabih\\LaravelToUML\\Http\\Controllers\\Controller' => __DIR__ . '/..' . '/andyabih/laravel-to-uml/src/Http/Controllers/Controller.php',
+        'Andyabih\\LaravelToUML\\Http\\Controllers\\LaravelToUMLController' => __DIR__ . '/..' . '/andyabih/laravel-to-uml/src/Http/Controllers/LaravelToUMLController.php',
+        'Andyabih\\LaravelToUML\\LaravelToUML' => __DIR__ . '/..' . '/andyabih/laravel-to-uml/src/LaravelToUML.php',
+        'Andyabih\\LaravelToUML\\LaravelToUMLServiceProvider' => __DIR__ . '/..' . '/andyabih/laravel-to-uml/src/LaravelToUMLServiceProvider.php',
         'App\\Console\\Kernel' => __DIR__ . '/../..' . '/app/Console/Kernel.php',
         'App\\Exceptions\\Handler' => __DIR__ . '/../..' . '/app/Exceptions/Handler.php',
         'App\\Http\\Controllers\\AuthController' => __DIR__ . '/../..' . '/app/Http/Controllers/AuthController.php',
+        'App\\Http\\Controllers\\BeriTugasController' => __DIR__ . '/../..' . '/app/Http/Controllers/BeriTugasController.php',
         'App\\Http\\Controllers\\Controller' => __DIR__ . '/../..' . '/app/Http/Controllers/Controller.php',
         'App\\Http\\Controllers\\DataController' => __DIR__ . '/../..' . '/app/Http/Controllers/DataController.php',
         'App\\Http\\Controllers\\DownloadController' => __DIR__ . '/../..' . '/app/Http/Controllers/DownloadController.php',
         'App\\Http\\Controllers\\ExcelController' => __DIR__ . '/../..' . '/app/Http/Controllers/ExcelController.php',
         'App\\Http\\Controllers\\PenggunaController' => __DIR__ . '/../..' . '/app/Http/Controllers/PenggunaController.php',
+        'App\\Http\\Controllers\\TugasController' => __DIR__ . '/../..' . '/app/Http/Controllers/TugasController.php',
         'App\\Http\\Kernel' => __DIR__ . '/../..' . '/app/Http/Kernel.php',
         'App\\Http\\Middleware\\Authenticate' => __DIR__ . '/../..' . '/app/Http/Middleware/Authenticate.php',
         'App\\Http\\Middleware\\EncryptCookies' => __DIR__ . '/../..' . '/app/Http/Middleware/EncryptCookies.php',
@@ -586,9 +598,13 @@ class ComposerStaticInita9fe739481737a1b4eb2f4ad5cc2b101
         'App\\Http\\Middleware\\ValidateSignature' => __DIR__ . '/../..' . '/app/Http/Middleware/ValidateSignature.php',
         'App\\Http\\Middleware\\VerifyCsrfToken' => __DIR__ . '/../..' . '/app/Http/Middleware/VerifyCsrfToken.php',
         'App\\Imports\\DatasImport' => __DIR__ . '/../..' . '/app/Imports/DatasImport.php',
+        'App\\Models\\Assignment' => __DIR__ . '/../..' . '/app/Models/Assignment.php',
         'App\\Models\\Data' => __DIR__ . '/../..' . '/app/Models/Data.php',
+        'App\\Models\\Dumps' => __DIR__ . '/../..' . '/app/Models/Dumps.php',
         'App\\Models\\PreviewData' => __DIR__ . '/../..' . '/app/Models/PreviewData.php',
+        'App\\Models\\Reviewer' => __DIR__ . '/../..' . '/app/Models/Reviewer.php',
         'App\\Models\\User' => __DIR__ . '/../..' . '/app/Models/User.php',
+        'App\\Models\\Values' => __DIR__ . '/../..' . '/app/Models/Values.php',
         'App\\Providers\\AppServiceProvider' => __DIR__ . '/../..' . '/app/Providers/AppServiceProvider.php',
         'App\\Providers\\AuthServiceProvider' => __DIR__ . '/../..' . '/app/Providers/AuthServiceProvider.php',
         'App\\Providers\\BroadcastServiceProvider' => __DIR__ . '/../..' . '/app/Providers/BroadcastServiceProvider.php',

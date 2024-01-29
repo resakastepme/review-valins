@@ -653,14 +653,14 @@ $(document).ready(function () {
             $('#imageViewer').html('<a class="d-none d-md-block" href="https://drive.google.com/open?id=' + eviden + '"\
                 target="blank">\
                 <div class="image-hover-zoom" scale="2.0" id="zoomImage">\
-                    <img class="d-md-img-fluid" src="https://drive.google.com/uc?id='+ eviden + '"\
+                    <img class="d-md-img-fluid" src="https://drive.google.com/thumbnail?id='+ eviden + '&sz=w2000"\
                         alt="Error/tidak ada image" style="height: 770px;">\
                 </div>\
             </a>');
             $('#imageViewer').append('<a class="d-md-none" href="https://drive.google.com/open?id=' + eviden + '"\
                 target="blank">\
                 <div class="image-hover-zoom" scale="2.0" id="zoomImage">\
-                    <img class="img-fluid" src="https://drive.google.com/uc?id='+ eviden + '"\
+                    <img class="img-fluid" src="https://drive.google.com/thumbnail?id='+ eviden + '&sz=w2000"\
                         alt="Error/tidak ada image">\
                 </div>\
             </a>');
