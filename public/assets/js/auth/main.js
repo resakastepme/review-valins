@@ -58,6 +58,9 @@ document.addEventListener("DOMContentLoaded", function () {
 
                 $('#mainCard').removeClass('animate__animated animate__headShake');
 
+            },
+            error: function(error) {
+                console.log(error);
             }
         });
 
